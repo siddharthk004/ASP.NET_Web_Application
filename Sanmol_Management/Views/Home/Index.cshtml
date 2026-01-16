@@ -1,0 +1,916 @@
+﻿@{
+    ViewBag.Title = "Dashboard - Sanmol Management";
+}
+
+<main>
+    <!-- Dashboard Header -->
+    <section class="row banner mb-4">
+        <div class="col-md-12">
+            <div class="banner-content">
+                <div class="banner-icon-wrapper">
+                    <i class="fas fa-building banner-icon"></i>
+                    <div class="icon-pulse"></div>
+                </div>
+                <div class="banner-text">
+                    <h1 class="sanmol-name" id="title">Sanmol Management Dashboard</h1>
+                    <p class="lead banner-subtitle">Welcome to your comprehensive employee and company management system.</p>
+                </div>
+            </div>
+            <div class="banner-decoration">
+                <div class="decoration-circle decoration-circle-1"></div>
+                <div class="decoration-circle decoration-circle-2"></div>
+                <div class="decoration-circle decoration-circle-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-uppercase mb-0">Total Employees</h6>
+                            <h2 class="display-4 mb-0">@ViewBag.TotalEmployees</h2>
+                        </div>
+                        <div>
+                            <i class="fas fa-users fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-primary border-top border-light">
+                    <a href="@Url.Action("Index", "Employee")" class="text-white text-decoration-none">
+                        View All <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-uppercase mb-0">Total Companies</h6>
+                            <h2 class="display-4 mb-0">@ViewBag.TotalCompanies</h2>
+                        </div>
+                        <div>
+                            <i class="fas fa-building fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-success border-top border-light">
+                    <a href="@Url.Action("Index", "Company")" class="text-white text-decoration-none">
+                        View All <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-uppercase mb-0">Total Work Days</h6>
+                            <h2 class="display-4 mb-0">@ViewBag.TotalWorkDays</h2>
+                        </div>
+                        <div>
+                            <i class="fas fa-calendar-alt fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-warning border-top border-light">
+                    <span class="text-white">Across all companies</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-uppercase mb-0">Employee Count</h6>
+                            <h2 class="display-4 mb-0">@ViewBag.TotalEmployeeCount</h2>
+                        </div>
+                        <div>
+                            <i class="fas fa-user-tie fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-info border-top border-light">
+                    <span class="text-white">In all companies</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions and Recent Activity -->
+    <div class="row">
+        <!-- Quick Actions -->
+        <section class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0"><i class="fas fa-bolt"></i> Quick Actions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="@Url.Action("Create", "Employee")" class="list-group-item list-group-item-action">
+                            <i class="fas fa-user-plus text-primary"></i> Add New Employee
+                        </a>
+                        <a href="@Url.Action("Create", "Company")" class="list-group-item list-group-item-action">
+                            <i class="fas fa-plus-circle text-success"></i> Add New Company
+                        </a>
+                        <a href="@Url.Action("Index", "Employee")" class="list-group-item list-group-item-action">
+                            <i class="fas fa-list text-info"></i> View All Employees
+                        </a>
+                        <a href="@Url.Action("Index", "Company")" class="list-group-item list-group-item-action">
+                            <i class="fas fa-building text-warning"></i> View All Companies
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Employees -->
+        <section class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-clock"></i> Recent Employees</h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentEmployees != null && ViewBag.RecentEmployees.Count > 0)
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var employee in ViewBag.RecentEmployees)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">@employee.Ename</h6>
+                                        <small class="badge bg-secondary">@employee.Etype</small>
+                                    </div>
+                                    <p class="mb-1"><small><i class="fas fa-briefcase"></i> @employee.Edesign</small></p>
+                                    <small class="text-muted"><i class="fas fa-phone"></i> @employee.Emob</small>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center">No employees found. <a href="@Url.Action("Create", "Employee")">Add one now</a></p>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- System Information -->
+    <div class="row footer">
+        <section class="col-md-12">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-info-circle text-info"></i> About Sanmol Management</h5>
+                    <p class="card-text">
+                        Sanmol Management is your comprehensive solution for managing employees and company information.
+                        Track employee details, monitor company work days, and maintain accurate records all in one place.
+                    </p>
+                    <div class="row text-center mt-3">
+                        <div class="col-md-4">
+                            <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
+                            <p><strong>Secure</strong><br />Your data is protected</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-tachometer-alt fa-2x text-primary mb-2"></i>
+                            <p><strong>Fast</strong><br />Quick access to information</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-mobile-alt fa-2x text-info mb-2"></i>
+                            <p><strong>Responsive</strong><br />Works on all devices</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- AI Chatbot Widget -->
+    <div id="chatbot-widget">
+        <div id="chat-button" onclick="toggleChat()">
+            <i class="fas fa-comments"></i>
+            <span class="chat-badge">AI</span>
+        </div>
+        
+        <div id="chat-window" style="display: none;">
+            <div class="chat-header">
+                <div class="chat-header-content">
+                    <i class="fas fa-robot"></i>
+                    <div>
+                        <h6 class="mb-0">Sanmol AI Assistant</h6>
+                        <small class="text-white-50">Ask me anything about your data</small>
+                    </div>
+                </div>
+                <button class="chat-close-btn" onclick="toggleChat()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chat-body" id="chat-messages">
+                <div class="chat-message bot-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>Hello! 👋 I'm your Sanmol AI assistant. I can help you with:</p>
+                        <ul class="mb-0">
+                            <li>Employee & Company statistics</li>
+                            <li>Searching records</li>
+                            <li>Data insights</li>
+                        </ul>
+                        <p class="mb-0 mt-2"><small>Type <strong>'help'</strong> to see all commands</small></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-footer">
+                <div class="chat-input-group">
+                    <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..." onkeypress="handleChatKeyPress(event)">
+                    <button class="chat-send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="chat-suggestions">
+                    <button class="suggestion-btn" onclick="sendQuickMessage('How many employees?')">
+                        <i class="fas fa-users"></i> Employee Count
+                    </button>
+                    <button class="suggestion-btn" onclick="sendQuickMessage('Show statistics')">
+                        <i class="fas fa-chart-bar"></i> Statistics
+                    </button>
+                    <button class="suggestion-btn" onclick="sendQuickMessage('List companies')">
+                        <i class="fas fa-building"></i> Companies
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function toggleChat() {
+        const chatWindow = document.getElementById('chat-window');
+        const chatButton = document.getElementById('chat-button');
+        
+        if (chatWindow.style.display === 'none') {
+            chatWindow.style.display = 'flex';
+            chatButton.style.display = 'none';
+        } else {
+            chatWindow.style.display = 'none';
+            chatButton.style.display = 'flex';
+        }
+    }
+
+    function handleChatKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    function sendQuickMessage(message) {
+        document.getElementById('chat-input').value = message;
+        sendMessage();
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        
+        if (message === '') return;
+        
+        // Add user message to chat
+        addMessage(message, 'user');
+        input.value = '';
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        // Send to server using jQuery AJAX (ASP.NET MVC compatible)
+        $.ajax({
+            url: '@Url.Action("ChatBot", "Home")',
+            type: 'POST',
+            data: { message: message },
+            success: function(data) {
+                removeTypingIndicator();
+                if (data.success) {
+                    addMessage(data.response, 'bot');
+                } else {
+                    addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                }
+            },
+            error: function(xhr, status, error) {
+                removeTypingIndicator();
+                addMessage('Sorry, something went wrong. Please try again.', 'bot');
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function addMessage(text, sender) {
+        const chatMessages = document.getElementById('chat-messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${sender}-message`;
+        
+        if (sender === 'bot') {
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <p class="mb-0">${text}</p>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <p class="mb-0">${text}</p>
+                </div>
+                <div class="message-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            `;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        const chatMessages = document.getElementById('chat-messages');
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'chat-message bot-message typing-indicator';
+        typingDiv.id = 'typing-indicator';
+        typingDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `;
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        const typingIndicator = document.getElementById('typing-indicator');
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+</script>
+
+<style>
+    .banner {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-size: 200% 200%;
+        animation: gradientShift 15s ease infinite;
+        padding: 4vh 3vh;
+        border-radius: 15px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        margin-bottom: 2rem;
+        margin-top: .1rem;
+    }
+
+    @@keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .banner-content {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .banner-icon-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .banner-icon {
+        font-size: 4.5rem;
+        color: rgba(255, 255, 255, 0.95);
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+        animation: iconFloat 3s ease-in-out infinite;
+        position: relative;
+        z-index: 2;
+    }
+
+    @@keyframes iconFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .icon-pulse {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        animation: pulse 2s ease-out infinite;
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(0.8);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    .banner-text {
+        flex: 1;
+    }
+
+    .sanmol-name {
+        color: white;
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        letter-spacing: -0.5px;
+        animation: slideInRight 0.8s ease-out;
+    }
+
+    @@keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .banner-subtitle {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.15rem;
+        margin-bottom: 0;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        animation: slideInRight 0.8s ease-out 0.2s both;
+    }
+
+    .banner-decoration {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .decoration-circle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .decoration-circle-1 {
+        width: 150px;
+        height: 150px;
+        top: -50px;
+        right: 10%;
+        animation-delay: 0s;
+    }
+
+    .decoration-circle-2 {
+        width: 100px;
+        height: 100px;
+        bottom: -30px;
+        right: 30%;
+        animation-delay: 2s;
+    }
+
+    .decoration-circle-3 {
+        width: 80px;
+        height: 80px;
+        top: 50%;
+        right: 5%;
+        animation-delay: 4s;
+    }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(180deg);
+        }
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .banner-content {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .sanmol-name {
+            font-size: 2rem;
+        }
+
+        .banner-icon {
+            font-size: 3rem;
+        }
+
+        .banner-subtitle {
+            font-size: 1rem;
+        }
+    }
+
+
+    .opacity-50 {
+        opacity: 0.5;
+    }
+
+    .card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .display-4 {
+        font-size: 2.5rem;
+        font-weight: 300;
+    }
+
+    .display-6 {
+        font-size: 1.5rem;
+        font-weight: 300;
+    }
+
+    .list-group-item-action:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Chatbot Styles */
+    #chatbot-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    #chat-button {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        position: relative;
+        animation: bounce 2s infinite;
+    }
+
+    #chat-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    #chat-button i {
+        font-size: 24px;
+    }
+
+    .chat-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4757;
+        color: white;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 10px;
+        animation: pulse-badge 1.5s ease-in-out infinite;
+    }
+
+    @@keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+    }
+
+    @@keyframes pulse-badge {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    #chat-window {
+        width: 380px;
+        height: 550px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        animation: slideUp 0.3s ease-out;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .chat-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chat-header-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .chat-header i.fa-robot {
+        font-size: 32px;
+        animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    .chat-close-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .chat-close-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: rotate(90deg);
+    }
+
+    .chat-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: #f8f9fa;
+    }
+
+    .chat-body::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .chat-body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .chat-body::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    .chat-body::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .chat-message {
+        display: flex;
+        margin-bottom: 16px;
+        animation: messageSlide 0.3s ease-out;
+    }
+
+    @@keyframes messageSlide {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .bot-message {
+        justify-content: flex-start;
+    }
+
+    .user-message {
+        justify-content: flex-end;
+    }
+
+    .message-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .bot-message .message-avatar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        margin-right: 10px;
+    }
+
+    .user-message .message-avatar {
+        background: #3498db;
+        color: white;
+        margin-left: 10px;
+    }
+
+    .message-content {
+        max-width: 70%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .bot-message .message-content {
+        background: white;
+        color: #333;
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .user-message .message-content {
+        background: #3498db;
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .message-content ul {
+        margin: 8px 0;
+        padding-left: 20px;
+    }
+
+    .message-content li {
+        margin: 4px 0;
+    }
+
+    .typing-indicator .typing-dots {
+        display: flex;
+        gap: 4px;
+        padding: 8px 0;
+    }
+
+    .typing-dots span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #667eea;
+        animation: typingBounce 1.4s infinite;
+    }
+
+    .typing-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .typing-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @@keyframes typingBounce {
+        0%, 60%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-10px); }
+    }
+
+    .chat-footer {
+        padding: 15px;
+        background: white;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .chat-input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .chat-input {
+        flex: 1;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        padding: 10px 18px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    .chat-input:focus {
+        border-color: #667eea;
+    }
+
+    .chat-send-btn {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chat-send-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .chat-suggestions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .suggestion-btn {
+        background: #f0f2f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #555;
+    }
+
+    .suggestion-btn:hover {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+        transform: translateY(-2px);
+    }
+
+    .suggestion-btn i {
+        font-size: 11px;
+    }
+
+    /* Mobile Responsive */
+    @@media (max-width: 768px) {
+        #chat-window {
+            width: calc(100vw - 40px);
+            height: calc(100vh - 100px);
+            max-width: 380px;
+        }
+
+        #chatbot-widget {
+            bottom: 15px;
+            right: 15px;
+        }
+    }
+
+    .footer {
+        margin-bottom: 1rem;
+    }
+</style>
