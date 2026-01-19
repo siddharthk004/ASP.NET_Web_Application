@@ -43,7 +43,7 @@ public class AuthApiController : ApiController
         {
             client.DefaultRequestHeaders.Add(
                 "Authorization",
-                "Bearer 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"
+                "Bearer "
             );
 
             var payload = new
@@ -70,3 +70,4 @@ public class AuthApiController : ApiController
         }
     }
 }
+ 
