@@ -1,0 +1,91 @@
+﻿@model Role_Base_Authentication.Models.login
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-header text-center">
+                        <h4>Login</h4>
+                    </div>
+
+                    <div class="card-body">
+
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger">
+                                @ViewBag.Error
+                            </div>
+                        }
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-group">
+                                <h6>Name</h6>
+                                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.name)
+                            </div>
+
+                            <div class="form-group">
+                                <h6>Password</h6>
+                                @Html.PasswordFor(m => m.password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.password)
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block login_btn">
+                                Login
+                            </button>
+                        }
+
+                        <!-- REGISTER BUTTON -->
+                        <div class="text-center mt-3">
+                            <span>Don't have an account?</span><br />
+                            <a href="@Url.Action("Index", "registration")"
+                               class="btn btn-link">
+                                Register here
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<Style>
+    .login_btn {
+        margin-top: 10%;
+        margin-left: 40%;
+    }
+    .card {
+        border: solid;
+        border-color: antiquewhite;
+        border-width: .3vh;
+    }
+    .container {
+        margin-top: 10%;
+    }
+    .card-header {
+        background-color: cadetblue;
+    }
+    .form-group{
+        margin-top:5%;
+    }
+</Style>

@@ -1,57 +1,617 @@
 ﻿@model IEnumerable<Sanmol_Management.Models.Employee>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Employee Management";
 }
 
-<h2>Index</h2>
+<div class="employee-index-container">
+    <!-- Page Header -->
+    <div class="page-header-section">
+        <div class="header-content">
+            <a href="@Url.Action("Index","home")" class="header-link">
+                <div class="header-title">
+                    <i class="fas fa-users"></i>
+                    <h2>Employee Management</h2>
+                </div>
+            </a>
+            <p class="header-subtitle">Manage and view all employee records</p>
+        </div>
+        <div class="header-actions">
+            @Html.ActionLink("Add New Employee", "Create", null, new { @class = "btn btn-create" })
+        </div>
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Ename)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Etype)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Eaddr)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Emob)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Edesign)
-        </th>
-        <th></th>
-    </tr>
+    <!-- Search and Filter Section -->
+    <div class="search-filter-section">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search by name, type, designation..." />
+        </div>
+        <div class="filter-info">
+            <span class="employee-count">Total Employees: <strong id="totalCount">@Model.Count()</strong></span>
+            <span class="employee-count">Showing: <strong id="visibleCount">@Model.Count()</strong></span>
+        </div>
+    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ename)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Etype)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Eaddr)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Emob)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Edesign)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Eid }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Eid }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Eid })
-        </td>
-    </tr>
+    <!-- Employee Table -->
+    <div class="table-wrapper">
+        <table class="table employee-table" id="employeeTable">
+            <thead>
+                <tr>
+                    <th class="sortable" data-sort="name">
+                        <i class="fas fa-user"></i> Name 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="type">
+                        <i class="fas fa-tag"></i> Type 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th>
+                        <i class="fas fa-map-marker-alt"></i> Address
+                    </th>
+                    <th>
+                        <i class="fas fa-phone"></i> Mobile
+                    </th>
+                    <th class="sortable" data-sort="designation">
+                        <i class="fas fa-briefcase"></i> Designation 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="actions-column">
+                        <i class="fas fa-cog"></i> Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="employee-row">
+                        <td class="employee-name" data-name="@item.Ename">
+                            <div class="name-wrapper">
+                                <span class="avatar">@item.Ename.Substring(0, 1).ToUpper()</span>
+                                <span class="name-text">@item.Ename</span>
+                            </div>
+                        </td>
+                        <td data-type="@item.Etype">
+                            <span class="badge badge-type">@(item.Etype ?? "N/A")</span>
+                        </td>
+                        <td data-address="@item.Eaddr">
+                            <span class="text-muted">@(item.Eaddr ?? "N/A")</span>
+                        </td>
+                        <td data-mobile="@item.Emob">
+                            <span class="mobile-number">@(item.Emob ?? "N/A")</span>
+                        </td>
+                        <td data-designation="@item.Edesign">
+                            <span class="designation-text">@(item.Edesign ?? "N/A")</span>
+                        </td>
+                        <td class="action-buttons">
+                            @Html.ActionLink("Details", "Details", new { id = item.Eid }, new { @class = "btn-action btn-details", title = "View Details" })
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Eid }, new { @class = "btn-action btn-edit", title = "Edit" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Eid }, new { @class = "btn-action btn-delete", title = "Delete" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Any())
+        {
+            <div class="no-data">
+                <i class="fas fa-users-slash"></i>
+                <h3>No Employees Found</h3>
+                <p>Start by adding your first employee</p>
+                @Html.ActionLink("Add Employee", "Create", null, new { @class = "btn btn-create" })
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+
+    .header-link {
+        text-decoration: none; /* remove underline */
+        color: inherit; /* use normal text color */
+        display: inline-block; /* clickable area */
+    }
+
+    .header-link:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .employee-index-container {
+        padding: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    /* Page Header */
+    .page-header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        background: white;
+        padding: 25px 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+        flex: 1;
+    }
+
+    .header-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 8px;
+    }
+
+    .header-title i {
+        font-size: 32px;
+        color: #667eea;
+    }
+
+    .header-title h2 {
+        margin: 0;
+        color: #2d3748;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .header-subtitle {
+        margin: 0;
+        color: #718096;
+        font-size: 14px;
+        margin-left: 47px;
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-create:before {
+        content: "\f067";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
+
+    .btn-create:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Search and Filter */
+    .search-filter-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        position: relative;
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a0aec0;
+        font-size: 16px;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 15px 20px 15px 50px;
+        border: none;
+        border-radius: 12px;
+        font-size: 14px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+        outline: none;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    .filter-info {
+        display: flex;
+        gap: 20px;
+        background: white;
+        padding: 15px 25px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .employee-count {
+        color: #4a5568;
+        font-size: 14px;
+    }
+
+    .employee-count strong {
+        color: #667eea;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    /* Table Wrapper */
+    .table-wrapper {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .employee-table {
+        margin: 0;
+        width: 100%;
+    }
+
+    .employee-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .employee-table thead th {
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        padding: 18px 15px;
+        border: none;
+        white-space: nowrap;
+    }
+
+    .employee-table thead th i {
+        margin-right: 5px;
+    }
+
+    .sortable {
+        cursor: pointer;
+        position: relative;
+        user-select: none;
+    }
+
+    .sortable:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sort-icon {
+        margin-left: 5px;
+        opacity: 0.5;
+        font-size: 10px;
+    }
+
+    .employee-table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .employee-table tbody tr:hover {
+        background: #f7fafc;
+        transform: scale(1.01);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .employee-table tbody td {
+        padding: 18px 15px;
+        vertical-align: middle;
+        color: #4a5568;
+    }
+
+    /* Name Column */
+    .name-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .name-text {
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    /* Badge */
+    .badge-type {
+        background: #edf2f7;
+        color: #4a5568;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .mobile-number {
+        color: #667eea;
+        font-weight: 500;
+    }
+
+    .designation-text {
+        color: #2d3748;
+        font-weight: 500;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        margin: 0 3px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        position: relative;
+        font-size: 0;
+    }
+
+    .btn-action:before {
+        font-size: 14px;
+    }
+
+    .btn-details {
+        background: #e6f7ff;
+        color: #0066cc;
+    }
+
+    .btn-details:before {
+        content: "\f06e";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
+
+    .btn-details:hover {
+        background: #0066cc;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 102, 204, 0.3);
+    }
+
+    .btn-edit {
+        background: #fff4e6;
+        color: #ff9800;
+    }
+
+    .btn-edit:before {
+        content: "\f044";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
+
+    .btn-edit:hover {
+        background: #ff9800;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+    }
+
+    .btn-delete {
+        background: #ffe6e6;
+        color: #e74c3c;
+    }
+
+    .btn-delete:before {
+        content: "\f2ed";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
+
+    .btn-delete:hover {
+        background: #e74c3c;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+    }
+
+    /* No Data State */
+    .no-data {
+        text-align: center;
+        padding: 60px 20px;
+        color: #a0aec0;
+    }
+
+    .no-data i {
+        font-size: 64px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .no-data h3 {
+        color: #4a5568;
+        margin-bottom: 10px;
+    }
+
+    .no-data p {
+        color: #718096;
+        margin-bottom: 25px;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .employee-index-container {
+            padding: 15px;
+        }
+
+        .page-header-section {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .search-filter-section {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-box {
+            min-width: 100%;
+        }
+
+        .filter-info {
+            justify-content: space-between;
+        }
+
+        .employee-table {
+            font-size: 12px;
+        }
+
+        .employee-table thead th {
+            padding: 12px 8px;
+        }
+
+        .employee-table tbody td {
+            padding: 12px 8px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+        }
+
+        .name-wrapper {
+            gap: 8px;
+        }
+    }
+</style>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var $table = $('#employeeTable');
+            var $rows = $table.find('tbody tr');
+            var $searchInput = $('#searchInput');
+            var $visibleCount = $('#visibleCount');
+            var totalCount = $rows.length;
+
+            // Search functionality
+            $searchInput.on('keyup', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                var visibleCount = 0;
+
+                $rows.each(function () {
+                    var $row = $(this);
+                    var name = $row.find('[data-name]').data('name').toString().toLowerCase();
+                    var type = $row.find('[data-type]').data('type').toString().toLowerCase();
+                    var address = $row.find('[data-address]').data('address').toString().toLowerCase();
+                    var mobile = $row.find('[data-mobile]').data('mobile').toString().toLowerCase();
+                    var designation = $row.find('[data-designation]').data('designation').toString().toLowerCase();
+
+                    var searchText = name + ' ' + type + ' ' + address + ' ' + mobile + ' ' + designation;
+
+                    if (searchText.indexOf(searchTerm) > -1) {
+                        $row.show();
+                        visibleCount++;
+                    } else {
+                        $row.hide();
+                    }
+                });
+
+                $visibleCount.text(visibleCount);
+            });
+
+            // Sorting functionality
+            $('.sortable').on('click', function () {
+                var $th = $(this);
+                var sortType = $th.data('sort');
+                var isAsc = $th.hasClass('asc');
+
+                // Remove sort classes from all headers
+                $('.sortable').removeClass('asc desc');
+                $('.sortable .sort-icon').removeClass('fa-sort-up fa-sort-down').addClass('fa-sort');
+
+                // Add appropriate class to current header
+                if (isAsc) {
+                    $th.removeClass('asc').addClass('desc');
+                    $th.find('.sort-icon').removeClass('fa-sort').addClass('fa-sort-down');
+                } else {
+                    $th.removeClass('desc').addClass('asc');
+                    $th.find('.sort-icon').removeClass('fa-sort').addClass('fa-sort-up');
+                }
+
+                // Sort rows
+                var $tbody = $table.find('tbody');
+                var rows = $tbody.find('tr').get();
+
+                rows.sort(function (a, b) {
+                    var aVal, bVal;
+
+                    if (sortType === 'name') {
+                        aVal = $(a).find('[data-name]').data('name').toString().toLowerCase();
+                        bVal = $(b).find('[data-name]').data('name').toString().toLowerCase();
+                    } else if (sortType === 'type') {
+                        aVal = $(a).find('[data-type]').data('type').toString().toLowerCase();
+                        bVal = $(b).find('[data-type]').data('type').toString().toLowerCase();
+                    } else if (sortType === 'designation') {
+                        aVal = $(a).find('[data-designation]').data('designation').toString().toLowerCase();
+                        bVal = $(b).find('[data-designation]').data('designation').toString().toLowerCase();
+                    }
+
+                    if (isAsc) {
+                        return aVal > bVal ? -1 : (aVal < bVal ? 1 : 0);
+                    } else {
+                        return aVal < bVal ? -1 : (aVal > bVal ? 1 : 0);
+                    }
+                });
+
+                $.each(rows, function (index, row) {
+                    $tbody.append(row);
+                });
+            });
+
+            // Add animation on page load
+            $rows.each(function (index) {
+                $(this).css({
+                    'opacity': '0',
+                    'transform': 'translateY(20px)'
+                }).delay(index * 50).animate({
+                    'opacity': '1'
+                }, 300, function () {
+                    $(this).css('transform', 'translateY(0)');
+                });
+            });
+        });
+    </script>
 }
 
-</table>
+
