@@ -1,0 +1,25 @@
+﻿<!-- Header Section -->
+<div class="dashboard-header">
+    <div class="header-content">
+        <div class="welcome-section">
+            <div class="welcome-text"
+                 style="cursor:pointer;"
+                 onclick="location.href='@Url.Action("Index","Home")'">
+
+                <h1>Welcome back, @(Session["Username"] ?? "User")!</h1>
+                <p>Here's what's happening with your projects today</p>
+            </div>
+
+            <div class="header-actions">
+                <a href="@Url.Action("Create", "Task")" class="btn-header btn-primary">
+                    <i class="fas fa-plus"></i>
+                    New Task
+                </a>
+                <a href="@Url.Action("Logout", "Login")" class="btn-header btn-secondary">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

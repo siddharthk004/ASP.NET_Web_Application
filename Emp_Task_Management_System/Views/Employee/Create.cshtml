@@ -1,0 +1,268 @@
+@model Emp_Task_Management_System.Models.Registration
+
+@{
+    ViewBag.Title = "Add Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f5f7fa;
+    }
+
+    .create-wrapper {
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 30px;
+        text-align: center;
+    }
+
+        .header-content h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .header-content p {
+            font-size: 15px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+    .main-content {
+        max-width: 900px;
+        margin: -30px auto 0;
+        padding: 0 30px 50px;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 15px;
+        padding: 35px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+        .form-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 25px 0;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #2d3748;
+        }
+
+            .form-group label i {
+                color: #667eea;
+                margin-right: 5px;
+            }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: #f7fafc;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+    .status-toggle {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+        .status-toggle input[type="checkbox"] {
+            width: 50px;
+            height: 26px;
+            appearance: none;
+            background: #cbd5e0;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .status-toggle input[type="checkbox"]:checked {
+                background: #48bb78;
+            }
+
+            .status-toggle input[type="checkbox"]::before {
+                content: '';
+                position: absolute;
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                background: white;
+                top: 2px;
+                left: 2px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+
+            .status-toggle input[type="checkbox"]:checked::before {
+                left: 26px;
+            }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 2px solid #e2e8f0;
+    }
+
+    .btn-submit {
+        flex: 1;
+        padding: 14px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+    .btn-cancel {
+        flex: 1;
+        padding: 14px 30px;
+        background: #f7fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        color: #4a5568;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-cancel:hover {
+            background: #edf2f7;
+        }
+
+    .text-danger {
+        color: #e53e3e;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+</style>
+
+<div class="create-wrapper">
+    <div class="page-header">
+        <div class="header-content">
+            <h1><i class="fas fa-user-plus"></i> Add New Employee</h1>
+            <p>Create a new employee account</p>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="form-card">
+            <h3><i class="fas fa-user"></i> Employee Information</h3>
+
+            @using (Html.BeginForm("Create", "Employee", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Username *</label>
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Enter username", required = "required" })
+                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email *</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", placeholder = "Enter email", required = "required" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password *</label>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter password", required = "required" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-briefcase"></i> Designation</label>
+                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", placeholder = "Enter designation" })
+                    @Html.ValidationMessageFor(m => m.Designation, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-toggle-on"></i> Status</label>
+                    <div class="status-toggle">
+                        @Html.CheckBoxFor(m => m.IsActive, new { @checked = "checked" })
+                        <span>Active Employee</span>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.IsActive, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-calendar"></i> Created Date</label>
+                    @Html.TextBoxFor(m => m.CreatedAt, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                    @Html.ValidationMessageFor(m => m.CreatedAt, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Create Employee
+                    </button>
+                    <a href="@Url.Action("Index", "Employee")" class="btn-cancel">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

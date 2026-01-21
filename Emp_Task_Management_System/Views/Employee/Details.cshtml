@@ -1,0 +1,430 @@
+﻿@model Emp_Task_Management_System.Models.Registration
+
+@{
+    ViewBag.Title = "Employee Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var initials = !string.IsNullOrEmpty(Model.Username)
+        ? string.Join("", Model.Username.Split(' ').Take(2).Select(n => n[0])).ToUpper()
+        : "NA";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f5f7fa;
+        color: #2d3748;
+    }
+
+    .details-wrapper {
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+        }
+
+        50% {
+            transform: translateY(-20px) scale(1.05);
+        }
+    }
+
+    .header-content {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 30px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .header-title-section h1 {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+    }
+
+    .header-title-section p {
+        font-size: 15px;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-header {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 2px solid rgba(255,255,255,0.3);
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        background: rgba(255,255,255,0.2);
+        color: white;
+    }
+
+        .btn-header:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-header.btn-primary {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+            .btn-header.btn-primary:hover {
+                background: rgba(255,255,255,0.9);
+            }
+
+    .main-content {
+        max-width: 900px;
+        margin: -30px auto 0;
+        padding: 0 30px 50px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .details-card {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        animation: fadeInUp 0.6s ease;
+        border-left: 5px solid #667eea;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .employee-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 25px;
+        border-bottom: 2px solid #e2e8f0;
+        margin-bottom: 30px;
+    }
+
+    .employee-id-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .employee-avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 36px;
+        font-weight: 700;
+        flex-shrink: 0;
+        border: 4px solid #f7fafc;
+    }
+
+    .employee-title h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0 0 5px 0;
+    }
+
+    .employee-title p {
+        font-size: 16px;
+        color: #718096;
+        margin: 0 0 10px 0;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background: #e6fffa;
+        color: #38a169;
+    }
+
+    .status-inactive {
+        background: #fff5f5;
+        color: #e53e3e;
+    }
+
+    .details-grid {
+        display: grid;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .detail-row {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 15px;
+        padding: 15px;
+        background: #f7fafc;
+        border-radius: 10px;
+        border-left: 3px solid #667eea;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .detail-label i {
+            color: #667eea;
+        }
+
+    .detail-value {
+        color: #2d3748;
+        font-weight: 500;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        padding-top: 25px;
+        border-top: 2px solid #e2e8f0;
+    }
+
+    .btn-action {
+        flex: 1;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 2px solid;
+    }
+
+    .btn-edit {
+        background: #ebf8ff;
+        color: #3182ce;
+        border-color: #3182ce;
+    }
+
+        .btn-edit:hover {
+            background: #3182ce;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .btn-back {
+        background: #f7fafc;
+        color: #4a5568;
+        border-color: #cbd5e0;
+    }
+
+        .btn-back:hover {
+            background: #edf2f7;
+            border-color: #a0aec0;
+            transform: translateY(-2px);
+        }
+
+    @@media (max-width: 768px) {
+        .page-header {
+            padding: 30px 0;
+        }
+
+        .header-title-section h1 {
+            font-size: 24px;
+        }
+
+        .details-card {
+            padding: 25px 20px;
+        }
+
+        .employee-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .detail-row {
+            grid-template-columns: 1fr;
+            gap: 5px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .main-content {
+            padding: 0 20px 30px;
+        }
+    }
+</style>
+
+<div class="details-wrapper">
+    <div class="page-header">
+        <div class="header-content">
+            <div class="header-top">
+                <div class="header-title-section">
+                    <h1><i class="fas fa-user"></i> Employee Details</h1>
+                    <p>View complete employee information</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Edit", "Employee", new { id = Model.Id })" class="btn-header btn-primary">
+                        <i class="fas fa-edit"></i>
+                        Edit
+                    </a>
+                    <a href="@Url.Action("Index", "Employee")" class="btn-header">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="details-card">
+            <div class="employee-id-badge">
+                <i class="fas fa-hashtag"></i> Employee ID: @Model.Id
+            </div>
+
+            <div class="employee-header">
+                <div class="employee-avatar">@initials</div>
+                <div class="employee-title">
+                    <h2>@Model.Username</h2>
+                    <p><i class="fas fa-briefcase"></i> @(Model.Designation ?? "Team Member")</p>
+                    <span class="status-badge @(Model.IsActive ? "status-active" : "status-inactive")">
+                        <i class="fas @(Model.IsActive ? "fa-check-circle" : "fa-times-circle")"></i>
+                        @(Model.IsActive ? "Active" : "Inactive")
+                    </span>
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-row">
+                    <div class="detail-label">
+                        <i class="fas fa-envelope"></i> Email
+                    </div>
+                    <div class="detail-value">@Model.Email</div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Designation))
+                {
+                    <div class="detail-row">
+                        <div class="detail-label">
+                            <i class="fas fa-briefcase"></i> Designation
+                        </div>
+                        <div class="detail-value">@Model.Designation</div>
+                    </div>
+                }
+
+                <div class="detail-row">
+                    <div class="detail-label">
+                        <i class="fas fa-calendar-plus"></i> Joined Date
+                    </div>
+                    <div class="detail-value">@Model.CreatedAt.ToString("MMMM dd, yyyy")</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">
+                        <i class="fas fa-clock"></i> Account Age
+                    </div>
+                    <div class="detail-value">
+                        @{
+                            var daysSinceCreated = (DateTime.Now - Model.CreatedAt).Days;
+                        }
+                        @daysSinceCreated days
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">
+                        <i class="fas fa-toggle-on"></i> Account Status
+                    </div>
+                    <div class="detail-value">
+                        <span class="status-badge @(Model.IsActive ? "status-active" : "status-inactive")">
+                            <i class="fas @(Model.IsActive ? "fa-check-circle" : "fa-times-circle")"></i>
+                            @(Model.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="@Url.Action("Edit", "Employee", new { id = Model.Id })" class="btn-action btn-edit">
+                    <i class="fas fa-edit"></i> Edit Employee
+                </a>
+                <a href="@Url.Action("Index", "Employee")" class="btn-action btn-back">
+                    <i class="fas fa-list"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

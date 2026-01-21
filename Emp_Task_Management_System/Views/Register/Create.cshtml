@@ -1,0 +1,563 @@
+﻿@model Emp_Task_Management_System.Models.Registration
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .registration-wrapper {
+        width: 100%;
+        max-width: 950px;
+        margin: 0 auto;
+        perspective: 1000px;
+    }
+
+    .register-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        overflow: hidden;
+        animation: slideUp 0.6s ease-out;
+        position: relative;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .register-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 40px;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .register-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: pulse 3s ease-in-out infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .register-header-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .register-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .register-icon i {
+        font-size: 35px;
+        color: white;
+    }
+
+    .register-header h2 {
+        font-weight: 700;
+        margin: 0 0 10px;
+        font-size: 32px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .register-header p {
+        margin: 0;
+        opacity: 0.95;
+        font-size: 15px;
+        font-weight: 300;
+    }
+
+    .register-body {
+        padding: 40px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2d3748;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a0aec0;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+
+    .form-control {
+        width: 100%;
+        height: 50px;
+        padding: 12px 15px 12px 45px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: #f7fafc;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-control:focus ~ label,
+    .form-control:not(:placeholder-shown) ~ label {
+        color: #667eea;
+    }
+
+    .input-wrapper:focus-within .input-icon {
+        color: #667eea;
+    }
+
+    textarea.form-control {
+        height: auto;
+        min-height: 100px;
+        resize: vertical;
+        padding-top: 15px;
+    }
+
+    .text-danger {
+        color: #e53e3e;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .btn-register {
+        width: 30%;
+        margin-left:30%;
+        height: 55px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-register::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-register:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+    }
+
+    .btn-register:active {
+        transform: translateY(0);
+    }
+
+    .btn-register i {
+        margin-left: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-register:hover i {
+        transform: translateX(5px);
+    }
+
+    .footer-link {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .footer-link a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+    }
+
+    .footer-link a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -3px;
+        left: 50%;
+        background: #667eea;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .footer-link a:hover::after {
+        width: 100%;
+    }
+
+    .footer-link a:hover {
+        color: #764ba2;
+    }
+
+    .alert {
+        border-radius: 10px;
+        margin-bottom: 25px;
+        animation: shake 0.5s ease;
+    }
+
+    @@keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+
+    .validation-summary-errors {
+        background: #fff5f5;
+        border: 1px solid #feb2b2;
+        color: #c53030;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+    .validation-summary-errors ul {
+        margin: 10px 0 0 20px;
+        padding: 0;
+    }
+
+    .password-strength {
+        height: 4px;
+        width: 50%;
+        background: #e2e8f0;
+        border-radius: 2px;
+        margin-top: 8px;
+        overflow: hidden;
+        display: none;
+    }
+
+    .password-strength-bar {
+        height: 100%;
+        width: 0;
+        background: #48bb78;
+        transition: all 0.3s ease;
+    }
+
+    .row {
+        display: flex;
+        margin: 0 -10px;
+        flex-wrap: wrap;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    @@media (max-width: 768px) {
+        .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .register-header {
+            padding: 30px 20px;
+        }
+
+        .register-body {
+            padding: 30px 20px;
+        }
+
+        .register-header h2 {
+            font-size: 26px;
+        }
+    }
+
+    .floating-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .shape {
+        position: absolute;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+    }
+
+    .shape1 { width: 80px; height: 80px; top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
+    .shape2 { width: 60px; height: 60px; top: 70%; left: 80%; animation: float 8s ease-in-out infinite; }
+    .shape3 { width: 100px; height: 100px; top: 40%; left: 5%; animation: float 7s ease-in-out infinite; }
+    .shape4 { width: 70px; height: 70px; top: 20%; left: 85%; animation: float 9s ease-in-out infinite; }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+    }
+</style>
+
+<div class="floating-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+    <div class="shape shape4"></div>
+</div>
+
+<div class="registration-wrapper">
+    <div class="register-card">
+        <div class="register-header">
+            <div class="register-header-content">
+                <div class="register-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h2>Create Your Account</h2>
+                <p>Join our community and start your journey today</p>
+            </div>
+        </div>
+
+        <div class="register-body">
+            @using (Html.BeginForm("Create", "Register", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group required" >
+                            @Html.LabelFor(m => m.Username)
+                            <div class="input-wrapper">
+                                <i class="fas fa-user input-icon"></i>
+                                @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Enter your username" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email)
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope input-icon"></i>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "your@email.com", type = "email" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password)
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock input-icon"></i>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Create a strong password", id = "password" })
+                            </div>
+                            <div class="password-strength" id="passwordStrength">
+                                <div class="password-strength-bar" id="strengthBar"></div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ConfirmPassword">Confirm Password</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" class="form-control" placeholder="Re-enter your password" id="confirmPassword" />
+                            </div>
+                            <span class="text-danger" id="confirmPasswordError"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Designation)
+                            <div class="input-wrapper">
+                                <i class="fas fa-briefcase input-icon"></i>
+                                @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", placeholder = "e.g., Software Engineer" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Designation, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn-register" id="submitBtn">
+                    <span>Create Account</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            }
+
+            <div class="footer-link">
+                <i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>
+                @Html.ActionLink("Already have an account? Login here", "Index", "Login")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            // Password strength indicator
+            $('#password').on('input', function () {
+                var password = $(this).val();
+                var strength = 0;
+                var strengthBar = $('#strengthBar');
+                var strengthContainer = $('#passwordStrength');
+
+                if (password.length > 0) {
+                    strengthContainer.show();
+
+                    if (password.length >= 8) strength += 25;
+                    if (password.match(/[a-z]+/)) strength += 25;
+                    if (password.match(/[A-Z]+/)) strength += 25;
+                    if (password.match(/[0-9]+/)) strength += 25;
+
+                    strengthBar.css('width', strength + '%');
+
+                    if (strength <= 25) {
+                        strengthBar.css('background', '#e53e3e');
+                    } else if (strength <= 50) {
+                        strengthBar.css('background', '#ed8936');
+                    } else if (strength <= 75) {
+                        strengthBar.css('background', '#ecc94b');
+                    } else {
+                        strengthBar.css('background', '#48bb78');
+                    }
+                } else {
+                    strengthContainer.hide();
+                }
+            });
+
+            // Confirm password validation
+            $('#confirmPassword').on('input', function () {
+                var password = $('#password').val();
+                var confirmPassword = $(this).val();
+                var errorSpan = $('#confirmPasswordError');
+
+                if (confirmPassword.length > 0) {
+                    if (password !== confirmPassword) {
+                        errorSpan.text('Passwords do not match');
+                        $(this).css('border-color', '#e53e3e');
+                    } else {
+                        errorSpan.text('');
+                        $(this).css('border-color', '#48bb78');
+                    }
+                } else {
+                    errorSpan.text('');
+                    $(this).css('border-color', '#e2e8f0');
+                }
+            });
+
+            // Form submission validation
+            $('form').on('submit', function (e) {
+                var password = $('#password').val();
+                var confirmPassword = $('#confirmPassword').val();
+
+                if (password !== confirmPassword) {
+                    e.preventDefault();
+                    $('#confirmPasswordError').text('Passwords do not match');
+                    $('#confirmPassword').focus();
+                    return false;
+                }
+            });
+
+            // Add animation to form inputs
+            $('.form-control').on('focus', function () {
+                $(this).parent().find('.input-icon').addClass('fa-bounce');
+            });
+
+            $('.form-control').on('blur', function () {
+                $(this).parent().find('.input-icon').removeClass('fa-bounce');
+            });
+        });
+    </script>
+}

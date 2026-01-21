@@ -1,0 +1,647 @@
+﻿@model Emp_Task_Management_System.Models.Task
+
+@{
+    ViewBag.Title = "Task Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var priorityClass = "badge-priority-" + (Model.Priority != null ? Model.Priority.ToLower() : "low");
+    var initials = Model.Registration != null && !string.IsNullOrEmpty(Model.Registration.Username)
+        ? string.Join("", Model.Registration.Username.Split(' ').Select(n => n[0])).ToUpper()
+        : "NA";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f5f7fa;
+        color: #2d3748;
+    }
+
+    .details-wrapper {
+        width: 100%;
+        min-height: 100vh;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Header Section */
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+        }
+
+        50% {
+            transform: translateY(-20px) scale(1.05);
+        }
+    }
+
+    .header-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 30px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .header-title-section h1 {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        animation: slideInLeft 0.6s ease;
+    }
+
+    .header-title-section p {
+        font-size: 15px;
+        opacity: 0.9;
+        margin: 0;
+        animation: slideInLeft 0.8s ease;
+    }
+
+    @@keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+        animation: slideInRight 0.6s ease;
+    }
+
+    @@keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .btn-header {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 2px solid rgba(255,255,255,0.3);
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        background: rgba(255,255,255,0.2);
+        color: white;
+    }
+
+        .btn-header:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-header.btn-primary {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+            .btn-header.btn-primary:hover {
+                background: rgba(255,255,255,0.9);
+            }
+
+    /* Main Content */
+    .main-content {
+        max-width: 1000px;
+        margin: -30px auto 0;
+        padding: 0 30px 50px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Details Card */
+    .details-card {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        animation: fadeInUp 0.6s ease;
+        position: relative;
+        border-left: 5px solid;
+    }
+
+        .details-card.priority-high {
+            border-left-color: #e53e3e;
+        }
+
+        .details-card.priority-medium {
+            border-left-color: #ed8936;
+        }
+
+        .details-card.priority-low {
+            border-left-color: #48bb78;
+        }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Task Header */
+    .task-header-section {
+        padding-bottom: 25px;
+        border-bottom: 2px solid #e2e8f0;
+        margin-bottom: 30px;
+    }
+
+    .task-id-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .task-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0 0 15px 0;
+    }
+
+    .task-badges {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .badge-priority-high {
+        background: #fff5f5;
+        color: #e53e3e;
+    }
+
+    .badge-priority-medium {
+        background: #fffaf0;
+        color: #ed8936;
+    }
+
+    .badge-priority-low {
+        background: #f0fff4;
+        color: #48bb78;
+    }
+
+    .badge-status-true {
+        background: #e6fffa;
+        color: #38a169;
+    }
+
+    .badge-status-false {
+        background: #fffaf0;
+        color: #d69e2e;
+    }
+
+    /* Details Grid */
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .detail-item {
+        background: #f7fafc;
+        border-radius: 12px;
+        padding: 20px;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+        .detail-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+    .detail-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #718096;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+        .detail-label i {
+            color: #667eea;
+        }
+
+    .detail-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    /* Description Section */
+    .description-section {
+        background: #f7fafc;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+        border: 2px solid #e2e8f0;
+    }
+
+        .description-section h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 15px 0;
+        }
+
+            .description-section h4 i {
+                color: #667eea;
+                margin-right: 8px;
+            }
+
+        .description-section p {
+            color: #4a5568;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+    /* Assignee Section */
+    .assignee-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .assignee-avatar {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.3);
+        border: 3px solid rgba(255,255,255,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .assignee-info h4 {
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 0.9;
+        margin: 0 0 5px 0;
+    }
+
+    .assignee-info h3 {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 5px 0;
+    }
+
+    .assignee-info p {
+        font-size: 13px;
+        opacity: 0.8;
+        margin: 0;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        padding-top: 25px;
+        border-top: 2px solid #e2e8f0;
+        flex-wrap: wrap;
+    }
+
+    .btn-action {
+        flex: 1;
+        min-width: 150px;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 2px solid;
+    }
+
+    .btn-edit {
+        background: #ebf8ff;
+        color: #3182ce;
+        border-color: #3182ce;
+    }
+
+        .btn-edit:hover {
+            background: #3182ce;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .btn-back {
+        background: #f7fafc;
+        color: #4a5568;
+        border-color: #cbd5e0;
+    }
+
+        .btn-back:hover {
+            background: #edf2f7;
+            border-color: #a0aec0;
+            transform: translateY(-2px);
+        }
+
+    /* Timeline Style for dates */
+    .timeline-dates {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        background: linear-gradient(90deg, #f7fafc 0%, #edf2f7 100%);
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+
+    .timeline-item {
+        flex: 1;
+        text-align: center;
+        position: relative;
+    }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 60%;
+            background: #cbd5e0;
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+    .timeline-icon {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        color: #667eea;
+        font-size: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .timeline-label {
+        font-size: 12px;
+        color: #718096;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .timeline-value {
+        font-size: 15px;
+        font-weight: 700;
+        color: #2d3748;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .page-header {
+            padding: 30px 0;
+        }
+
+        .header-title-section h1 {
+            font-size: 24px;
+        }
+
+        .details-card {
+            padding: 25px 20px;
+        }
+
+        .task-title {
+            font-size: 22px;
+        }
+
+        .details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .timeline-dates {
+            flex-direction: column;
+        }
+
+        .timeline-item::after {
+            display: none;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn-action {
+            width: 100%;
+        }
+
+        .main-content {
+            padding: 0 20px 30px;
+        }
+
+        .assignee-section {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="details-wrapper">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="header-content">
+            <div class="header-top" style="cursor:pointer;"
+            onclick="location.href='@Url.Action("Index","Home")'">
+                <div class="header-title-section">
+                    <h1><i class="fas fa-file-alt"></i> Task Details</h1>
+                    <p>View complete task information and details</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Edit", "Task", new { id = Model.TaskId })" class="btn-header btn-primary">
+                        <i class="fas fa-edit"></i>
+                        Edit Task
+                    </a>
+                    <a href="@Url.Action("Index", "Task")" class="btn-header">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="details-card priority-@(Model.Priority != null ? Model.Priority.ToLower() : "low")">
+            <!-- Task Header -->
+            <div class="task-header-section">
+                <div class="task-id-badge">
+                    <i class="fas fa-hashtag"></i> Task ID: @Model.TaskId
+                </div>
+                <h2 class="task-title">@Model.Title</h2>
+                <div class="task-badges">
+                    <span class="badge @priorityClass">
+                        <i class="fas fa-flag"></i> @Model.Priority Priority
+                    </span>
+                    <span class="badge badge-status-@Model.Status.ToString().ToLower()">
+                        <i class="fas @(Model.Status ? "fa-check-circle" : "fa-clock")"></i> @(Model.Status ? "Completed" : "In Progress")
+                    </span>
+                </div>
+            </div>
+
+            <!-- Timeline Dates -->
+            <div class="timeline-dates">
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="timeline-label">Created On</div>
+                    <div class="timeline-value">@Model.CreatedAt.ToString("MMM dd, yyyy")</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="timeline-label">Due Date</div>
+                    <div class="timeline-value">@Model.DueDate.ToString("MMM dd, yyyy")</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="timeline-label">Days Remaining</div>
+                    <div class="timeline-value">
+                        @{
+                            var daysRemaining = (Model.DueDate - DateTime.Now).Days;
+                        }
+                        @if (daysRemaining > 0)
+                        {
+                            @daysRemaining <text> days</text>
+                        }
+                        else if (daysRemaining == 0)
+                        {
+                            <text>Today</text>
+                        }
+                        else
+                        {
+                            <span style="color: #e53e3e;">Overdue</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="description-section">
+                    <h4><i class="fas fa-align-left"></i> Description</h4>
+                    <p>@Model.Description</p>
+                </div>
+            }
+
+            <!-- Assignee Info -->
+            @if (Model.Registration != null)
+            {
+                <div class="assignee-section">
+                    <div class="assignee-avatar">@initials</div>
+                    <div class="assignee-info">
+                        <h4>Assigned To</h4>
+                        <h3>@Model.Registration.Username</h3>
+                        <p><i class="fas fa-briefcase"></i> @(Model.Registration.Designation ?? "Team Member")</p>
+                    </div>
+                </div>
+            }
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="@Url.Action("Edit", "Task", new { id = Model.TaskId })" class="btn-action btn-edit">
+                    <i class="fas fa-edit"></i> Edit Task
+                </a>
+                <a href="@Url.Action("Index", "Task")" class="btn-action btn-back">
+                    <i class="fas fa-list"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

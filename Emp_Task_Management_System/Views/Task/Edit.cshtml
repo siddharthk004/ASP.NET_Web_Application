@@ -1,0 +1,570 @@
+﻿@model Emp_Task_Management_System.Models.Task
+
+@{
+    ViewBag.Title = "Edit Task";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f5f7fa;
+        color: #2d3748;
+    }
+
+    .edit-wrapper {
+        width: 100%;
+        min-height: 100vh;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Header Section */
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+        }
+
+        50% {
+            transform: translateY(-20px) scale(1.05);
+        }
+    }
+
+    .header-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 30px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .header-title-section h1 {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        animation: slideInLeft 0.6s ease;
+    }
+
+    .header-title-section p {
+        font-size: 15px;
+        opacity: 0.9;
+        margin: 0;
+        animation: slideInLeft 0.8s ease;
+    }
+
+    @@keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .header-actions {
+        animation: slideInRight 0.6s ease;
+    }
+
+    @@keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .btn-header {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 2px solid rgba(255,255,255,0.3);
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        background: rgba(255,255,255,0.2);
+        color: white;
+    }
+
+        .btn-header:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+    /* Main Content */
+    .main-content {
+        max-width: 1000px;
+        margin: -30px auto 0;
+        padding: 0 30px 50px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Form Card */
+    .form-card {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        animation: fadeInUp 0.6s ease;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-card h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0 0 25px 0;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+        .form-card h3 i {
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2d3748;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+        .form-group label i {
+            color: #667eea;
+            margin-right: 5px;
+            width: 20px;
+        }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: #f7fafc;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    select.form-control {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        padding-right: 40px;
+    }
+
+    .text-danger {
+        color: #e53e3e;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .validation-summary-errors {
+        background: #fff5f5;
+        border: 2px solid #feb2b2;
+        color: #c53030;
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+        .validation-summary-errors ul {
+            margin: 10px 0 0 20px;
+            padding: 0;
+        }
+
+    /* Priority Radio Buttons */
+    .priority-options {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .priority-option {
+        flex: 1;
+        min-width: 150px;
+    }
+
+        .priority-option input[type="radio"] {
+            display: none;
+        }
+
+        .priority-option label {
+            display: block;
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .priority-option input[type="radio"]:checked + label {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .priority-option.high input[type="radio"]:checked + label {
+            background: #e53e3e;
+            border-color: #e53e3e;
+        }
+
+        .priority-option.medium input[type="radio"]:checked + label {
+            background: #ed8936;
+            border-color: #ed8936;
+        }
+
+        .priority-option.low input[type="radio"]:checked + label {
+            background: #48bb78;
+            border-color: #48bb78;
+        }
+
+    /* Status Toggle */
+    .status-toggle {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+        .status-toggle input[type="checkbox"] {
+            width: 50px;
+            height: 26px;
+            appearance: none;
+            background: #cbd5e0;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .status-toggle input[type="checkbox"]:checked {
+                background: #48bb78;
+            }
+
+            .status-toggle input[type="checkbox"]::before {
+                content: '';
+                position: absolute;
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                background: white;
+                top: 2px;
+                left: 2px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+
+            .status-toggle input[type="checkbox"]:checked::before {
+                left: 26px;
+            }
+
+        .status-toggle span {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+    /* Form Actions */
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 35px;
+        padding-top: 25px;
+        border-top: 2px solid #e2e8f0;
+    }
+
+    .btn-submit {
+        flex: 1;
+        padding: 14px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-submit i {
+            margin-right: 8px;
+        }
+
+    .btn-cancel {
+        flex: 1;
+        padding: 14px 30px;
+        background: #f7fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        color: #4a5568;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-cancel:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+        }
+
+    /* Task ID Badge */
+    .task-id-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .page-header {
+            padding: 30px 0;
+        }
+
+        .header-title-section h1 {
+            font-size: 24px;
+        }
+
+        .form-card {
+            padding: 25px 20px;
+        }
+
+        .priority-options {
+            flex-direction: column;
+        }
+
+        .priority-option {
+            min-width: 100%;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .main-content {
+            padding: 0 20px 30px;
+        }
+    }
+</style>
+
+<div class="edit-wrapper">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="header-content">
+            <div class="header-top">
+                <div class="header-title-section" style="cursor:pointer;"
+                onclick="location.href='@Url.Action("Index","Home")'">
+                    <h1><i class="fas fa-edit"></i> Edit Task</h1>
+                    <p>Update task information and settings</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Index", "Task")" class="btn-header">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Tasks
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="form-card">
+            <div class="task-id-badge">
+                <i class="fas fa-hashtag"></i> Task ID: @Model.TaskId
+            </div>
+            <h3><i class="fas fa-edit"></i> Task Information</h3>
+
+            @using (Html.BeginForm("Edit", "Task", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m => m.TaskId)
+
+                <div class="form-group">
+                    <label for="Title">
+                        <i class="fas fa-heading"></i> Task Title *
+                    </label>
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Enter task title", required = "required" })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="Description">
+                        <i class="fas fa-align-left"></i> Description
+                    </label>
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter task description", rows = 5 })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-flag"></i> Priority *
+                    </label>
+                    <div class="priority-options">
+                        <div class="priority-option high">
+                            @Html.RadioButtonFor(m => m.Priority, "High", new { id = "PriorityHigh" })
+                            <label for="PriorityHigh"><i class="fas fa-exclamation-circle"></i> High</label>
+                        </div>
+                        <div class="priority-option medium">
+                            @Html.RadioButtonFor(m => m.Priority, "Medium", new { id = "PriorityMedium" })
+                            <label for="PriorityMedium"><i class="fas fa-minus-circle"></i> Medium</label>
+                        </div>
+                        <div class="priority-option low">
+                            @Html.RadioButtonFor(m => m.Priority, "Low", new { id = "PriorityLow" })
+                            <label for="PriorityLow"><i class="fas fa-check-circle"></i> Low</label>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Priority, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-toggle-on"></i> Status
+                    </label>
+                    <div class="status-toggle">
+                        @Html.CheckBoxFor(m => m.Status)
+                        <span>Mark as Completed</span>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="AssignedTo">
+                        <i class="fas fa-user"></i> Assign To *
+                    </label>
+                    @Html.DropDownList("AssignedTo", null, "-- Select Employee --", new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessageFor(m => m.AssignedTo, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="DueDate">
+                        <i class="fas fa-calendar-alt"></i> Due Date *
+                    </label>
+                    @Html.TextBoxFor(m => m.DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                    @Html.ValidationMessageFor(m => m.DueDate, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="CreatedAt">
+                        <i class="fas fa-clock"></i> Created Date *
+                    </label>
+                    @Html.TextBoxFor(m => m.CreatedAt, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.CreatedAt, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Update Task
+                    </button>
+                    <a href="@Url.Action("Index", "Task")" class="btn-cancel">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

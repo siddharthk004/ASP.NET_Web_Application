@@ -1,0 +1,736 @@
+﻿@model IEnumerable<Emp_Task_Management_System.Models.Task>
+
+@{
+    ViewBag.Title = "Task Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f5f7fa;
+        color: #2d3748;
+    }
+
+    .tasks-wrapper {
+        width: 100%;
+        min-height: 100vh;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Header Section */
+    .tasks-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .tasks-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+        }
+
+        50% {
+            transform: translateY(-20px) scale(1.05);
+        }
+    }
+
+    .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 30px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .header-title-section h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        animation: slideInLeft 0.6s ease;
+    }
+
+    .header-title-section p {
+        font-size: 16px;
+        opacity: 0.9;
+        margin: 0;
+        animation: slideInLeft 0.8s ease;
+    }
+
+    @@keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 15px;
+        animation: slideInRight 0.6s ease;
+    }
+
+    @@keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .btn-header {
+        padding: 12px 25px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: white;
+        color: #667eea;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255,255,255,0.3);
+        }
+
+    .btn-secondary {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 2px solid rgba(255,255,255,0.3);
+    }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+    /* Stats Bar */
+    .stats-bar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        animation: slideInUp 0.8s ease;
+    }
+
+    @@keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stat-item {
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(255,255,255,0.25);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .stat-info h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 5px 0;
+    }
+
+    .stat-info p {
+        font-size: 13px;
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    /* Main Content */
+    .main-content {
+        max-width: 1400px;
+        margin: -40px auto 0;
+        padding: 0 30px 50px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        animation: fadeInUp 0.6s ease;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        align-items: end;
+    }
+
+    .filter-item label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 14px;
+    }
+
+    .filter-item select,
+    .filter-item input {
+        width: 100%;
+        padding: 10px 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+        .filter-item select:focus,
+        .filter-item input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+    .btn-filter {
+        padding: 10px 20px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn-filter:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+    /* Tasks Grid */
+    .tasks-grid {
+        display: grid;
+        gap: 20px;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .task-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border-left: 5px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .task-card.priority-high {
+            border-left-color: #e53e3e;
+        }
+
+        .task-card.priority-medium {
+            border-left-color: #ed8936;
+        }
+
+        .task-card.priority-low {
+            border-left-color: #48bb78;
+        }
+
+    .task-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 15px;
+        gap: 15px;
+    }
+
+    .task-title-section {
+        flex: 1;
+    }
+
+    .task-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0 0 8px 0;
+    }
+
+    .task-description {
+        font-size: 14px;
+        color: #718096;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .task-badges {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .badge-priority-high {
+        background: #fff5f5;
+        color: #e53e3e;
+    }
+
+    .badge-priority-medium {
+        background: #fffaf0;
+        color: #ed8936;
+    }
+
+    .badge-priority-low {
+        background: #f0fff4;
+        color: #48bb78;
+    }
+
+    .badge-status {
+        background: #ebf8ff;
+        color: #3182ce;
+    }
+
+    .task-meta {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin: 15px 0;
+        padding: 15px 0;
+        border-top: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #718096;
+    }
+
+        .meta-item i {
+            color: #667eea;
+        }
+
+    .task-assignee {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .assignee-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .assignee-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .assignee-name {
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 14px;
+    }
+
+    .assignee-label {
+        font-size: 11px;
+        color: #a0aec0;
+    }
+
+    .task-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-action {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 2px solid;
+    }
+
+    .btn-edit {
+        background: #ebf8ff;
+        color: #3182ce;
+        border-color: #3182ce;
+    }
+
+        .btn-edit:hover {
+            background: #3182ce;
+            color: white;
+        }
+
+    .btn-details {
+        background: #f7fafc;
+        color: #4a5568;
+        border-color: #cbd5e0;
+    }
+
+        .btn-details:hover {
+            background: #4a5568;
+            color: white;
+        }
+
+    .btn-delete {
+        background: #fff5f5;
+        color: #e53e3e;
+        border-color: #e53e3e;
+    }
+
+        .btn-delete:hover {
+            background: #e53e3e;
+            color: white;
+        }
+
+    /* Empty State */
+    .empty-state {
+        background: white;
+        border-radius: 15px;
+        padding: 60px 30px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .empty-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 40px;
+        color: white;
+    }
+
+    .empty-state h3 {
+        font-size: 24px;
+        color: #2d3748;
+        margin: 0 0 10px 0;
+    }
+
+    .empty-state p {
+        color: #718096;
+        margin: 0 0 25px 0;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .tasks-header {
+            padding: 30px 0;
+        }
+
+        .header-title-section h1 {
+            font-size: 28px;
+        }
+
+        .header-actions {
+            width: 100%;
+        }
+
+        .main-content {
+            padding: 0 20px 30px;
+        }
+
+        .filter-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .task-header {
+            flex-direction: column;
+        }
+
+        .task-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .task-actions {
+            width: 100%;
+        }
+
+        .btn-action {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+
+    /* Loading Animation */
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+    }
+
+    @@keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div class="tasks-wrapper">
+    <!-- Header Section -->
+    <div class="tasks-header">
+        <div class="header-content">
+            <div class="header-top">
+                <div class="header-title-section" style="cursor:pointer;"
+                onclick="location.href='@Url.Action("Index","Home")'">
+                    <h1><i class="fas fa-tasks"></i> Task Management</h1>
+                    <p>Organize, track and manage all your tasks efficiently</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Create", "Task")" class="btn-header btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Create New Task
+                    </a>
+                    <a href="@Url.Action("Index", "Home")" class="btn-header btn-secondary">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-list-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Count()</h3>
+                        <p>Total Tasks</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Count(t => t.Status == false)</h3>
+                        <p>In Progress</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Count(t => t.Status == true)</h3>
+                        <p>Completed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        @if (Model != null && Model.Any())
+        {
+            <!-- Tasks Grid -->
+            <div class="tasks-grid">
+                @foreach (var item in Model)
+                {
+                    var priorityClass = "priority-" + (item.Priority != null ? item.Priority.ToLower() : "low");
+                    var badgePriorityClass = "badge-priority-" + (item.Priority != null ? item.Priority.ToLower() : "low");
+                    var initials = item.Registration != null && !string.IsNullOrEmpty(item.Registration.Username)
+                        ? string.Join("", item.Registration.Username.Split(' ').Select(n => n[0])).ToUpper()
+                        : "NA";
+
+                    <div class="task-card @priorityClass">
+                        <div class="task-header">
+                            <div class="task-title-section">
+                                <h3 class="task-title">@item.Title</h3>
+                                <p class="task-description">
+                                    @if (!string.IsNullOrEmpty(item.Description))
+                                    {
+                                        if (item.Description.Length > 150)
+                                        {
+                                            @item.Description.Substring(0, 150)<text>...</text>
+                                        }
+                                        else
+                                        {
+                                            @item.Description
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <em>No description provided</em>
+                                    }
+                                </p>
+                            </div>
+                            <div class="task-badges">
+                                <span class="badge @badgePriorityClass">
+                                    <i class="fas fa-flag"></i> @item.Priority
+                                </span>
+                                <span class="badge badge-status">
+                                    @item.Status
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="task-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span><strong>Due:</strong> @item.DueDate.ToString("MMM dd, yyyy")</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span><strong>Created:</strong> @item.CreatedAt.ToString("MMM dd, yyyy")</span>
+                            </div>
+                            @if (item.Registration != null)
+                            {
+                                <div class="task-assignee">
+                                    <div class="assignee-avatar">@initials</div>
+                                    <div class="assignee-info">
+                                        <span class="assignee-name">@item.Registration.Username</span>
+                                        <span class="assignee-label">Assigned To</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="task-actions">
+                            <a href="@Url.Action("Edit", "Task", new { id = item.TaskId })" class="btn-action btn-edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="@Url.Action("Details", "Task", new { id = item.TaskId })" class="btn-action btn-details">
+                                <i class="fas fa-eye"></i> Details
+                            </a>
+                            <a href="@Url.Action("Delete", "Task", new { id = item.TaskId })" class="btn-action btn-delete">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>No Tasks Yet</h3>
+                <p>Start by creating your first task to get organized!</p>
+                <a href="@Url.Action("Create", "Task")" class="btn-header btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Create Your First Task
+                </a>
+            </div>
+        }
+    </div>
+</div>
