@@ -1,0 +1,249 @@
+﻿@model Employee_Management.Models.Employee
+
+@{
+    ViewBag.Title = "Delete Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+
+    .delete-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 30px;
+        margin-bottom: 25px;
+        border: 3px solid #fecaca;
+    }
+
+    .warning-box {
+        background: #fef2f2;
+        border-left: 5px solid #ef4444;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+
+        .warning-box h4 {
+            color: #dc2626;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+
+        .warning-box p {
+            color: #7f1d1d;
+            margin: 0;
+        }
+
+        .warning-box ul {
+            color: #7f1d1d;
+            margin: 10px 0 0 20px;
+        }
+
+    .employee-details {
+        background: #f9fafb;
+        padding: 25px;
+        border-radius: 12px;
+        border: 2px solid #e5e7eb;
+    }
+
+        .employee-details h4 {
+            color: #1f2937;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+            font-weight: 600;
+        }
+
+    .detail-section {
+        margin-bottom: 25px;
+    }
+
+        .detail-section h5 {
+            color: #2563eb;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+    .detail-row {
+        display: flex;
+        padding: 10px 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+    .detail-label {
+        font-weight: 600;
+        color: #4b5563;
+        width: 150px;
+        flex-shrink: 0;
+    }
+
+    .detail-value {
+        color: #1f2937;
+        flex-grow: 1;
+    }
+
+    .form-actions {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid #e5e7eb;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+        border-radius: 30px;
+        padding: 12px 40px;
+        font-weight: 600;
+        font-size: 16px;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+            color: white;
+        }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #6b7280, #4b5563);
+        color: white;
+        border-radius: 30px;
+        padding: 12px 40px;
+        font-weight: 600;
+        font-size: 16px;
+        border: none;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #4b5563, #374151);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            color: white;
+            text-decoration: none;
+        }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <h2>🗑️ Delete Employee</h2>
+        <p>Confirm deletion of employee and associated records</p>
+    </div>
+
+    <div class="delete-card">
+        <div class="warning-box">
+            <h4>⚠️ Warning: This action cannot be undone!</h4>
+            <p><strong>Deleting this employee will also permanently delete:</strong></p>
+            <ul>
+                <li>Employee record (ID: @Model.EId)</li>
+                <li>Associated address record</li>
+                <li>Associated role record</li>
+            </ul>
+        </div>
+
+        <div class="employee-details">
+            <h4>Employee Information</h4>
+
+            <!-- Employee Details -->
+            <div class="detail-section">
+                <h5><i class="fa fa-user"></i> Employee Details</h5>
+                <div class="detail-row">
+                    <div class="detail-label">Employee ID:</div>
+                    <div class="detail-value">@Html.DisplayFor(model => model.EId)</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Created At:</div>
+                    <div class="detail-value">@Html.DisplayFor(model => model.CreatedAt)</div>
+                </div>
+            </div>
+
+            <!-- Address Details -->
+            @if (Model.EmpAddress != null)
+            {
+                <div class="detail-section">
+                    <h5><i class="fa fa-map-marker"></i> Address Details (Will be deleted)</h5>
+                    <div class="detail-row">
+                        <div class="detail-label">City:</div>
+                        <div class="detail-value">@Html.DisplayFor(model => model.EmpAddress.City)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">State:</div>
+                        <div class="detail-value">@Html.DisplayFor(model => model.EmpAddress.State)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Pincode:</div>
+                        <div class="detail-value">@Html.DisplayFor(model => model.EmpAddress.Pincode)</div>
+                    </div>
+                </div>
+            }
+
+            <!-- Role Details -->
+            @if (Model.EmpRole != null)
+            {
+                <div class="detail-section">
+                    <h5><i class="fa fa-briefcase"></i> Role Details (Will be deleted)</h5>
+                    <div class="detail-row">
+                        <div class="detail-label">Role:</div>
+                        <div class="detail-value">@Html.DisplayFor(model => model.EmpRole.Role)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">From Date:</div>
+                        <div class="detail-value">@Html.DisplayFor(model => model.EmpRole.FromDate)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">To Date:</div>
+                        <div class="detail-value">@Html.DisplayFor(model => model.EmpRole.ToDate)</div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-delete">
+                    <i class="fa fa-trash"></i> Confirm Delete
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-cancel">
+                    <i class="fa fa-times"></i> Cancel
+                </a>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,265 @@
+﻿@model Employee_Management.ViewModel.EmployeeVM
+
+@{
+    ViewBag.Title = "Create Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .card {
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
+        border: none;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        font-weight: 600;
+        padding: 15px 20px;
+        font-size: 18px;
+    }
+
+    label {
+        font-weight: 600;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 2px solid #e5e7eb;
+    }
+
+    .toggle-section {
+        background: #f9fafb;
+        padding: 15px;
+        border-radius: 12px;
+        border: 2px solid #e5e7eb;
+        margin-bottom: 20px;
+    }
+
+    .toggle-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+        .toggle-label input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+
+    .input-section {
+        display: none;
+    }
+
+    .required-field::after {
+        content: " *";
+        color: red;
+    }
+
+    .form-actions {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .btn-submit {
+        border-radius: 30px;
+        padding: 12px 40px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container">
+
+    <div class="page-header">
+        <div class="header-title-section" style="cursor:pointer;"
+             onclick="location.href='@Url.Action("Index","Home")'">
+            <h2>Create New Employee</h2>
+            <p>Add employee with address and role</p>
+        </div>
+    </div>
+
+        @using (Html.BeginForm("Create", "Employee", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <!-- ADDRESS -->
+            <div class="card">
+                <div class="card-header">Employee Address</div>
+                <div class="card-body">
+
+                    <div class="toggle-section">
+                        <label class="toggle-label">
+                            @Html.CheckBoxFor(m => m.UseExistingAddress, new { id = "useExistingAddress" })
+                            Use existing address
+                        </label>
+                    </div>
+
+                    <!-- Existing Address -->
+                    <div id="existingAddressSection" class="input-section">
+                        <label class="required-field">Select Address</label>
+                        @Html.DropDownListFor(
+                            m => m.SelectedAddressId,
+                            Model.AddressList,
+                            "-- Select Address --",
+                            new { @class = "form-control", id = "addressDropdown" }
+                        )
+                    </div>
+
+                    <!-- New Address -->
+                    <div id="newAddressSection" class="input-section" style="display:block;">
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label class="required-field">City</label>
+                                @Html.TextBoxFor(m => m.City,
+                                    new { @class = "form-control", id = "cityField" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="required-field">State</label>
+                                @Html.TextBoxFor(m => m.State,
+                                    new { @class = "form-control", id = "stateField" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="required-field">Pincode</label>
+                                @Html.TextBoxFor(m => m.Pincode,
+                                    new { @class = "form-control", id = "pincodeField" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ROLE -->
+            <div class="card">
+                <div class="card-header">Employee Role</div>
+                <div class="card-body">
+
+                    <div class="toggle-section">
+                        <label class="toggle-label">
+                            @Html.CheckBoxFor(m => m.UseExistingRole, new { id = "useExistingRole" })
+                            Use existing role
+                        </label>
+                    </div>
+
+                    <!-- Existing Role -->
+                    <div id="existingRoleSection" class="input-section">
+                        <label class="required-field">Select Role</label>
+                        @Html.DropDownListFor(
+                            m => m.SelectedRoleId,
+                            Model.RoleList,
+                            "-- Select Role --",
+                            new { @class = "form-control", id = "roleDropdown" }
+                        )
+                    </div>
+
+                    <!-- New Role -->
+                    <div id="newRoleSection" class="input-section" style="display:block;">
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="required-field">Role Name</label>
+                                @Html.TextBoxFor(m => m.Role,
+                                    new { @class = "form-control", id = "roleField" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="required-field">From Date</label>
+                                @Html.TextBoxFor(m => m.FromDate, "{0:yyyy-MM-dd}",
+                                    new { @class = "form-control", type = "date", id = "fromDateField" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="required-field">To Date</label>
+                                @Html.TextBoxFor(m => m.ToDate, "{0:yyyy-MM-dd}",
+                                    new { @class = "form-control", type = "date", id = "toDateField" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success btn-submit">Save</button>
+                <a href="@Url.Action("Index","Employee")" class="btn btn-secondary btn-submit">Cancel</a>
+            </div>
+        }
+
+    </div>
+
+@section Scripts{
+    <script>
+    $(function () {
+
+        // Address toggle
+        $('#useExistingAddress').change(function () {
+            if (this.checked) {
+                $('#existingAddressSection').slideDown();
+                $('#newAddressSection').slideUp();
+            } else {
+                $('#existingAddressSection').slideUp();
+                $('#newAddressSection').slideDown();
+                $('#addressDropdown').val('');
+            }
+        });
+
+        // Role toggle
+        $('#useExistingRole').change(function () {
+            if (this.checked) {
+                $('#existingRoleSection').slideDown();
+                $('#newRoleSection').slideUp();
+            } else {
+                $('#existingRoleSection').slideUp();
+                $('#newRoleSection').slideDown();
+                $('#roleDropdown').val('');
+            }
+        });
+
+        // Address autofill
+        $('#addressDropdown').change(function () {
+            var id = $(this).val();
+            if (id) {
+                $.get('@Url.Action("GetAddressById","EmpAddress")', { id: id }, function (data) {
+                    $('#newAddressSection').slideDown();
+                    $('#cityField').val(data.City).prop('readonly', true);
+                    $('#stateField').val(data.State).prop('readonly', true);
+                    $('#pincodeField').val(data.Pincode).prop('readonly', true);
+                });
+            } else {
+                $('#cityField,#stateField,#pincodeField').val('').prop('readonly', false);
+            }
+        });
+
+        // Role autofill
+        $('#roleDropdown').change(function () {
+            var id = $(this).val();
+            if (id) {
+                $.get('@Url.Action("GetRoleById","EmpRole")', { id: id }, function (data) {
+                    $('#newRoleSection').slideDown();
+                    $('#roleField').val(data.Role).prop('readonly', true);
+                    $('#fromDateField').val(data.FromDate).prop('readonly', true);
+                    $('#toDateField').val(data.ToDate).prop('readonly', true);
+                });
+            } else {
+                $('#roleField,#fromDateField,#toDateField').val('').prop('readonly', false);
+            }
+        });
+
+    });
+    </script>
+}

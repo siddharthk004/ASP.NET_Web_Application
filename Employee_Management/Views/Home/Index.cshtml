@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Employee Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .dashboard-header {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+        .dashboard-header h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+    .dashboard-card {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        height: 100%;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .dashboard-card i {
+            font-size: 38px;
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-card h5 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+</style>
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+            <div class="header-title-section" style="cursor:pointer;"
+                onclick="location.href='@Url.Action("Index","Home")'">
+                <h2>Welcome @Session["Username"] </h2>
+                <p class="mb-0">Here’s your employee overview & quick actions</p>
+            </div>
+        </div>
+
+        <!-- CARDS -->
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <a href="@Url.Action("Create","Employee")" style="text-decoration:none;">
+                <div class="dashboard-card text-center">
+                    <i class="fas fa-calendar-check"></i>
+                    <h5>Add Employee</h5>
+                    <p>Insert New Employee</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="@Url.Action("Index","Employee")" style="text-decoration:none;">
+                <div class="dashboard-card text-center">
+                    <i class="fas fa-user"></i>
+                    <h5>View Employee</h5>
+                    <p>View and update your employee details</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="@Url.Action("Edit","Employee")" style="text-decoration:none;">
+                <div class="dashboard-card text-center">
+                    <i class="fa-solid fa-building-user"></i>
+                    <h5>Update Employee</h5>
+                    <p>Update Employee Details</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="@Url.Action("Delete","Employee")" style="text-decoration:none;">
+                <div class="dashboard-card text-center">
+                    <i class="fa-solid fa-trash"></i>
+                    <h5>Delete Employee</h5>
+                    <p>Delete Employee Profile</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    </div>
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />

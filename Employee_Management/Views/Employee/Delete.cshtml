@@ -1,0 +1,212 @@
+@model IEnumerable<Employee_Management.Models.Employee>
+
+@{
+    ViewBag.Title = "Delete Employees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+    }
+    .fa-solid {
+        margin-top: .9%;
+        margin-right: .4%;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-weight: 700;
+    }
+
+        .page-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+
+    .card {
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        background: white;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+        font-weight: 600;
+        border-radius: 16px 16px 0 0;
+        padding: 20px;
+        font-size: 18px;
+    }
+
+    .table-responsive {
+        padding: 20px;
+    }
+
+    table thead {
+        background-color: #1f2937;
+        color: white;
+    }
+
+    table tbody tr:hover {
+        background-color: #fef2f2;
+    }
+
+    .btn-delete-icon {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        border: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+        .btn-delete-icon:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.5);
+            color: white;
+        }
+
+    .btn-back {
+        background: linear-gradient(135deg, #6b7280, #4b5563);
+        color: white;
+        border-radius: 30px;
+        padding: 12px 30px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background: linear-gradient(135deg, #4b5563, #374151);
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+
+    .employee-badge {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 40px;
+        color: #6b7280;
+    }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <div class="header-title-section" style="cursor:pointer;"
+             onclick="location.href='@Url.Action("Index","Home")'">
+                <h2> Delete Employees</h2>
+                <p>Select an employee to delete from the list below</p>
+        </div>
+    </div>
+
+        <a href="@Url.Action("Index")" class="btn btn-back">
+            <i class="fa fa-arrow-left"></i> Back to Employee List
+        </a>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-users"></i> Employee List - Select to Delete
+            </div>
+            <div class="table-responsive">
+                @if (Model != null && Model.Any())
+                {
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Address</th>
+                                <th>Role</th>
+                                <th>Created At</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var emp in Model)
+                            {
+                                <tr>
+                                    <td><span class="employee-badge">ID: @emp.EId</span></td>
+                                    <td>
+                                        @if (emp.EmpAddress != null)
+                                        {
+                                            <div>
+                                                <i class="fa fa-map-marker text-primary"></i>
+                                                <strong>@emp.EmpAddress.City</strong>, @emp.EmpAddress.State
+                                                <br />
+                                                <small class="text-muted">Pincode: @emp.EmpAddress.Pincode</small>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No address</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (emp.EmpRole != null)
+                                        {
+                                            <div>
+                                                <i class="fa fa-briefcase text-success"></i>
+                                                <strong>@emp.EmpRole.Role</strong>
+                                                <br />
+                                                <small class="text-muted">
+                                                    @emp.EmpRole.FromDate.ToString("dd-MMM-yyyy") to @emp.EmpRole.ToDate.ToString("dd-MMM-yyyy")
+                                                </small>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No role</span>
+                                        }
+                                    </td>
+                                    <td>@emp.CreatedAt.ToString("dd-MMM-yyyy")</td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("DeleteConfirm", new { id = emp.EId })"
+                                           class="btn-delete-icon"
+                                           title="Delete Employee ID: @emp.EId">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="no-data">
+                        <i class="fa fa-users" style="font-size: 48px; opacity: 0.3;"></i>
+                        <h4>No Employees Found</h4>
+                        <p>There are no employees in the system.</p>
+                        <a href="@Url.Action("Create")" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Add New Employee
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>

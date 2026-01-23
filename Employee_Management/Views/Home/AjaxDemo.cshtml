@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "AJAX Demo";
+}
+
+<h2>AJAX Employee Info</h2>
+
+<button class="btn btn-primary" onclick="loadEmployee()">
+    Load Employee (AJAX)
+</button>
+<hr />
+<table border="1" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Location</th>
+            <th>Company</th>
+        </tr>
+    </thead>
+    <tbody id="empBody">
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadEmployee() {
+        $.ajax({
+            url: 'https://694d6626ad0f8c8e6e20978d.mockapi.io/api/v1/auth/employee',
+            type: 'GET',
+            success: function (data) {
+
+                let rows = '';
+
+                $.each(data, function (index, emp) {
+                    rows += `
+                    <tr>
+                        <td>${emp.id}</td>
+                        <td>${emp.name}</td>
+                        <td>${emp.Designation}</td>
+                        <td>${emp.Location}</td>
+                        <td>${emp.Company}</td>
+                    </tr>
+                `;
+                });
+
+                $('#empBody').html(rows);
+            },
+            error: function () {
+                alert("Error loading data");
+            }
+        });
+    }
+</script>
+

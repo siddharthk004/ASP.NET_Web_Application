@@ -1,0 +1,214 @@
+﻿@model IEnumerable<Employee_Management.Models.Employee>
+
+@{
+    ViewBag.Title = "Employee List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .fa-solid {
+        margin-top: 8%;
+    }
+
+    .btn {
+        padding-right: 3%;
+    }
+    
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    table thead {
+        background-color: #1f2937;
+        color: white;
+    }
+
+    .btn-sm {
+        border-radius: 20px;
+        padding: 4px 12px;
+    }
+</style>
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <div class="header-title-section" style="cursor:pointer;"
+             onclick="location.href='@Url.Action("Index","Home")'">
+            <h3 class="mb-1">Employee Directory</h3>
+            <p class="mb-0">Manage and view all employee records</p>
+        </div>
+    </div>
+
+        <!-- TABLE -->
+        <div class="card p-3">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Address</th>
+                            <th>Role</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var emp in Model)
+                            {
+                                <!-- EMPLOYEE ROW -->
+                                <tr>
+                                    <td>@emp.EId</td>
+
+                                    <td>
+                                        <button class="btn btn-sm d-flex"
+                                                onclick="toggleAddress(@emp.EId,this)">
+                                            View Address
+                                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                                        </button>
+                                    </td>
+
+                                    <td>
+                                        <button class="btn btn-sm d-flex"
+                                                onclick="toggleRole(@emp.EId,this)">
+                                            View Role
+                                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                                        </button>
+                                    </td>
+
+                                    <td>@emp.CreatedAt.ToString("dd-MMM-yyyy")</td>
+
+                                </tr>
+
+                                <!-- ADDRESS DROPDOWN -->
+                                <tr id="addressRow-@emp.EId" style="display:none;">
+                                    <td colspan="5">
+                                        <div class="card p-3 mb-2">
+                                            <h6>Employee Address</h6>
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>City</th>
+                                                        <th>State</th>
+                                                        <th>Pincode</th>
+                                                        <th>Create Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>@emp.EmpAddress.City</td>
+                                                        <td>@emp.EmpAddress.State</td>
+                                                        <td>@emp.EmpAddress.Pincode</td>
+                                                        <td>@emp.EmpAddress.CreatedAt</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ROLE DROPDOWN -->
+                                <tr id="roleRow-@emp.EId" style="display:none;">
+                                    <td colspan="6">
+                                        <div class="card p-3 mb-2">
+                                            <h6>Employee Role</h6>
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Role</th>
+                                                        <th>From Date</th>
+                                                        <th>To Date</th>
+                                                        <th>Create Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>@emp.EmpRole.Role</td>
+                                                        <td>@emp.EmpRole.FromDate.ToString("dd-MMM-yyyy")</td>
+                                                        <td>@emp.EmpRole.ToDate.ToString("dd-MMM-yyyy")</td>
+                                                        <td>@emp.EmpRole.CreatedAt.ToString("dd-MMM-yyyy")</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">
+                                    No employees found
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+<!-- jQuery (required) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function toggleAddress(empId, btn) {
+        // hide role row
+        $("#roleRow-" + empId).hide();
+        resetAllIcons();
+
+        const row = $("#addressRow-" + empId);
+        const icon = $(btn).find(".toggle-icon");
+
+        row.toggle();
+
+        if (row.is(":visible")) {
+            icon.removeClass("fa-angle-down").addClass("fa-angle-up");
+        } else {
+            icon.removeClass("fa-angle-up").addClass("fa-angle-down");
+        }
+    }
+
+    function toggleRole(empId, btn) {
+        // hide address row
+        $("#addressRow-" + empId).hide();
+        resetAllIcons();
+
+        const row = $("#roleRow-" + empId);
+        const icon = $(btn).find(".toggle-icon");
+
+        row.toggle();
+
+        if (row.is(":visible")) {
+            icon.removeClass("fa-angle-down").addClass("fa-angle-up");
+        } else {
+            icon.removeClass("fa-angle-up").addClass("fa-angle-down");
+        }
+    }
+
+    // reset all arrows
+    function resetAllIcons() {
+        $(".toggle-icon")
+            .removeClass("fa-angle-up")
+            .addClass("fa-angle-down");
+    }
+
+</script>

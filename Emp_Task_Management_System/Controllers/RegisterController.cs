@@ -22,7 +22,7 @@ namespace Emp_Task_Management_System.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Username,Password,Email,Designation,IsActive")] Registration credential)
+        public ActionResult Create(Registration credential)
         {
             if (ModelState.IsValid)
             {

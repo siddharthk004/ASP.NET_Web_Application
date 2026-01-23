@@ -377,6 +377,16 @@
         color: #3182ce;
     }
 
+    .badge-status-true {
+        background: #f0fff4;
+        color: #48bb78;
+    }
+
+    .badge-status-false {
+        background: #fffcc2;
+        color: #c7c928;
+    }
+    
     .task-meta {
         display: flex;
         align-items: center;
@@ -675,8 +685,8 @@
                                 <span class="badge @badgePriorityClass">
                                     <i class="fas fa-flag"></i> @item.Priority
                                 </span>
-                                <span class="badge badge-status">
-                                    @item.Status
+                                <span class="badge badge-status-@item.Status.ToString().ToLower()">
+                                    <i class="fas @(item.Status ? "fa-check-circle" : "fa-clock")"></i> @(item.Status ? "Completed" : "In Progress")
                                 </span>
                             </div>
                         </div>

@@ -1,0 +1,372 @@
+﻿@model Employee_Management.ViewModel.EmployeeVM
+
+@{
+    ViewBag.Title = "Edit Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+
+    .card {
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
+        border: none;
+        background: white;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        font-weight: 600;
+        border-radius: 16px 16px 0 0;
+        padding: 15px 20px;
+        font-size: 18px;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 2px solid #e5e7eb;
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-control[readonly] {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+            cursor: not-allowed;
+        }
+
+    .toggle-section {
+        background: #fef3c7;
+        padding: 15px;
+        border-radius: 12px;
+        border: 2px solid #fbbf24;
+        margin-bottom: 20px;
+    }
+
+    .toggle-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 600;
+        color: #92400e;
+    }
+
+        .toggle-label input {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+    .input-section {
+        display: none;
+    }
+
+    .current-data-badge {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 8px 15px;
+        border-radius: 8px;
+        display: inline-block;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .required-field::after {
+        content: " *";
+        color: #ef4444;
+    }
+
+    .form-actions {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid #e5e7eb;
+    }
+
+    .btn-submit {
+        border-radius: 30px;
+        padding: 12px 40px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #6b7280, #4b5563);
+    }
+
+    .employee-id-display {
+        background: #f3f4f6;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 2px solid #e5e7eb;
+    }
+
+        .employee-id-display h5 {
+            margin: 0;
+            color: #1f2937;
+            font-weight: 700;
+        }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <div class="header-title-section" style="cursor:pointer;"
+             onclick="location.href='@Url.Action("Index","Home")'">
+            <h2>✏️ Edit Employee</h2>
+            <p>Update employee details, address, and role</p>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("EditForm", "Employee", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.EId)
+
+        <!-- EMPLOYEE ID DISPLAY -->
+        <div class="employee-id-display">
+            <h5>Employee ID: @Model.EId</h5>
+        </div>
+
+        <!-- ADDRESS SECTION -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-map-marker"></i> Employee Address
+            </div>
+            <div class="card-body">
+                <div class="current-data-badge">
+                    <i class="fa fa-info-circle"></i> Current: @Model.City, @Model.State - @Model.Pincode
+                </div>
+
+                <div class="toggle-section">
+                    <label class="toggle-label">
+                        @Html.CheckBoxFor(m => m.UseExistingAddress, new { id = "useExistingAddress" })
+                        Switch to a different existing address
+                    </label>
+                </div>
+
+                <!-- Select Existing Address -->
+                <div id="existingAddressSection" class="input-section">
+                    <div class="form-group">
+                        <label class="required-field">Select Address</label>
+                        @Html.DropDownListFor(m => m.SelectedAddressId, Model.AddressList, "-- Select an Address --", new { @class = "form-control", id = "addressDropdown" })
+                    </div>
+                </div>
+
+                <!-- Edit Current or New Address -->
+                <div id="newAddressSection" class="input-section" style="display:block;">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label class="required-field">City</label>
+                                @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "Enter City", id = "cityField" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label class="required-field">State</label>
+                                @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "Enter State", id = "stateField" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label class="required-field">Pincode</label>
+                                @Html.TextBoxFor(m => m.Pincode, new { @class = "form-control", placeholder = "Enter Pincode", id = "pincodeField" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROLE SECTION -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-briefcase"></i> Employee Role
+            </div>
+            <div class="card-body">
+                <div class="current-data-badge">
+                    <i class="fa fa-info-circle"></i> Current: @Model.Role (@Model.FromDate.ToString("dd/MM/yyyy") - @Model.ToDate.ToString("dd/MM/yyyy"))
+                </div>
+
+                <div class="toggle-section">
+                    <label class="toggle-label">
+                        @Html.CheckBoxFor(m => m.UseExistingRole, new { id = "useExistingRole" })
+                        Switch to a different existing role
+                    </label>
+                </div>
+
+                <!-- Select Existing Role -->
+                <div id="existingRoleSection" class="input-section">
+                    <div class="form-group">
+                        <label class="required-field">Select Role</label>
+                        @Html.DropDownListFor(m => m.SelectedRoleId, Model.RoleList, "-- Select a Role --", new { @class = "form-control", id = "roleDropdown" })
+                    </div>
+                </div>
+
+                <!-- Edit Current or New Role -->
+                <div id="newRoleSection" class="input-section" style="display:block;">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="required-field">Role Name</label>
+                                @Html.TextBoxFor(m => m.Role, new { @class = "form-control", placeholder = "e.g., Software Engineer", id = "roleField" })
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-group">
+                                <label class="required-field">From Date</label>
+                                @Html.TextBoxFor(m => m.FromDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", id = "fromDateField" })
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-group">
+                                <label class="required-field">To Date</label>
+                                @Html.TextBoxFor(m => m.ToDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", id = "toDateField" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBMIT BUTTONS -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-warning btn-submit">
+                <i class="fa fa-save"></i> Update Employee
+            </button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary btn-submit">
+                <i class="fa fa-times"></i> Cancel
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Toggle Address Section
+            $('#useExistingAddress').change(function () {
+                if (this.checked) {
+                    $('#existingAddressSection').slideDown();
+                    $('#newAddressSection').slideUp();
+                } else {
+                    $('#existingAddressSection').slideUp();
+                    $('#newAddressSection').slideDown();
+                    $('#addressDropdown').val('');
+                }
+            });
+
+            // Toggle Role Section
+            $('#useExistingRole').change(function () {
+                if (this.checked) {
+                    $('#existingRoleSection').slideDown();
+                    $('#newRoleSection').slideUp();
+                } else {
+                    $('#existingRoleSection').slideUp();
+                    $('#newRoleSection').slideDown();
+                    $('#roleDropdown').val('');
+                }
+            });
+
+            // Auto-fill Address fields when address is selected from dropdown
+            $('#addressDropdown').change(function () {
+                var selectedId = $(this).val();
+                if (selectedId) {
+                    $.ajax({
+                        url: '@Url.Action("GetAddressById", "EmpAddress")',
+                        type: 'GET',
+                        data: { id: selectedId },
+                        success: function (data) {
+                            if (data) {
+                                $('#newAddressSection').slideDown();
+                                $('#cityField').val(data.City).prop('readonly', true);
+                                $('#stateField').val(data.State).prop('readonly', true);
+                                $('#pincodeField').val(data.Pincode).prop('readonly', true);
+                            }
+                        }
+                    });
+                } else {
+                    $('#cityField').prop('readonly', false);
+                    $('#stateField').prop('readonly', false);
+                    $('#pincodeField').prop('readonly', false);
+                }
+            });
+
+            // Auto-fill Role fields when role is selected from dropdown
+            $('#roleDropdown').change(function () {
+                var selectedId = $(this).val();
+                if (selectedId) {
+                    $.ajax({
+                        url: '@Url.Action("GetRoleById", "EmpRole")',
+                        type: 'GET',
+                        data: { id: selectedId },
+                        success: function (data) {
+                            if (data) {
+                                $('#newRoleSection').slideDown();
+                                $('#roleField').val(data.Role).prop('readonly', true);
+                                $('#fromDateField').val(data.FromDate).prop('readonly', true);
+                                $('#toDateField').val(data.ToDate).prop('readonly', true);
+                            }
+                        }
+                    });
+                } else {
+                    $('#roleField').prop('readonly', false);
+                    $('#fromDateField').prop('readonly', false);
+                    $('#toDateField').prop('readonly', false);
+                }
+            });
+        });
+    </script>
+}
