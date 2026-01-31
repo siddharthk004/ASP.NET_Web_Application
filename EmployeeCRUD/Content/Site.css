@@ -1,0 +1,129 @@
+﻿.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.header-tag {
+    padding: 10px;
+    width: 100%;
+    background-color: darkgreen;
+    color: white;
+}
+
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.main-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left:55%;
+    margin-bottom: 15px;
+}
+.main-bar1 {
+    padding: 5px;
+}
+.main-bar2 {
+    padding-right: 20px;
+}
+.search-box {
+    width: 300px;
+    height: 40px;
+}
+
+.dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px 22px;
+    font-size: 14px;
+    border: thin;
+    cursor: pointer;
+    border-radius: 10px;
+    border-color: black;
+}
+.dropbtn2 {
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    font-size: 14px;
+    border: 1px solid;
+    border-color: green;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 6px 25px;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 140px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+    .dropdown-content a {
+        color: black;
+        padding: 10px 12px;
+        text-decoration: none;
+        display: block;
+    }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.table {
+    border: 1px solid #8bc34a;
+    border-collapse: collapse;
+}
+
+    .table thead.table-header th {
+        background-color: #e8f5e9; 
+        border: 1px solid #8bc34a;
+        color: #2e7d32;
+        padding: 8px;
+    }
+
+    .table tbody td {
+        border: 1px solid #c5e1a5;
+        padding: 8px;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f8e9;
+    }
+
+.fa-pen-to-square {
+    color: forestgreen;
+}
+.fa-eye {
+    color: blue;
+}
+.fa-trash {
+    color: red;
+}
+.btn4 {
+    border-radius: 10px;
+    border: thin;
+    background-color: transparent;
+}

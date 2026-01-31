@@ -1,0 +1,221 @@
+﻿@model IEnumerable<EmployeeCRUD.Models.Employee>
+
+@{
+    ViewBag.Title = "Employee List";
+}
+
+<h2 class="header-tag">Employee List Display</h2>
+
+<form method="get" action="@Url.Action("Index","Employee")">
+    <div class="main-bar d-flex align-items-center">
+
+        <div class="d-flex align-items-center">
+            <input class="main-bar1 search-box searchtxt"
+                   type="text"
+                   name="searchtxt"
+                   value="@Request["searchtxt"]"
+                   placeholder="Search .." />
+        </div>
+
+        <div class="main-bar2">
+            <select class="dropbtn2 FilterSelect" name="top">
+                <option>None</option>
+                <option value="1" @(Request["top"] == "1" ? "selected" : "")>1</option>
+                <option value="3" @(Request["top"] == "3" ? "selected" : "")>3</option>
+                <option value="10" @(Request["top"] == "10" ? "selected" : "")>10</option>
+                <option value="50" @(Request["top"] == "50" ? "selected" : "")>50</option>
+            </select>
+        </div>
+
+        <div class="main-bar1">
+            <button class="dropbtn" type="submit">Search</button>
+        </div>
+
+        <div class="main-bar1">
+            <button class="dropbtn" type="button" onclick="location.href='@Url.Action("Index","Employee")'">
+                Refresh
+            </button>
+        </div>
+
+        <div class="main-bar1">
+            <button class="dropbtn" onclick="OpenPopUp()">
+                Add New
+            </button>
+        </div>
+
+        <div class="main-bar1">
+            <button class="dropbtn" type="button" onclick="AddNew(null,'n')">
+                Add New
+            </button>
+        </div>
+
+    </div>
+</form>
+
+<table class="table">
+    <thead class="table-header">
+        <tr>
+            <th>
+                @{
+                    var newDir = ViewBag.SortDir == "asc" ? "desc" : "asc";
+                    var icon = ViewBag.SortDir == "asc" ? "fa-down-long" : "fa-up-long";}
+
+                <a href="@Url.Action("Index", new {top = Request["top"],searchtxt = Request["searchtxt"],sortBy = "Eid",sortDir = newDir})"
+                   style="text-decoration:none; color:inherit;">
+                    Id
+                    <i class="fa-solid @icon"></i>
+                </a>
+            </th>
+            <th>
+                @{
+                    newDir = ViewBag.SortDir == "asc" ? "desc" : "asc";
+                    icon = ViewBag.SortDir == "asc" ? "fa-down-long" : "fa-up-long";}
+
+                <a href="@Url.Action("Index", new {top = Request["top"],searchtxt = Request["searchtxt"],sortBy = "Ename",sortDir = newDir})"
+                   style="text-decoration:none; color:inherit;">
+                    Name
+                    <i class="fa-solid @icon"></i>
+                </a>
+            </th>
+
+            <th>@Html.DisplayNameFor(m => m.Etype)</th>
+            <th>@Html.DisplayNameFor(m => m.Eaddr)</th>
+            <th>@Html.DisplayNameFor(m => m.Emob)</th>
+            <th>@Html.DisplayNameFor(m => m.Edesign)</th>
+            <th>@Html.DisplayNameFor(m => m.IsActive)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Eid</td>
+                <td>@item.Ename</td>
+                <td>@item.Etype</td>
+                <td>@item.Eaddr</td>
+                <td>@item.Emob</td>
+                <td>@item.Edesign</td>
+                <td class="text-center">
+                    @if (item.IsActive)
+                    {
+                        <i class="fa-solid fa-check text-success" title="Active"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-square-xmark text-danger" title="Inactive"></i>
+                    }
+                </td>
+                <td>
+                    <button class="btn4" href="javascript:void(0)" onclick="OpenPopUpEdit(@item.Eid)">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button> |
+                    <button class="btn4" href="javascript:void(0)" onclick="OpenPopUpView(@item.Eid)">
+                        <i class="fa-solid fa-eye"></i>
+                    </button> |
+                    <button class="btn4" type="button" onclick="OpenPopUpDelete(@item.Eid)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="employeeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" id="employeeModalBody">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function OpenPopUp() {
+            window.open(
+                '/Employee/Created',
+                'EmployeePopup',
+                'width=650,height=500,top=300,left=600,resizable=yes,scrollbars=yes'
+            );
+        }
+        function OpenPopUpView(id) {
+        var url = '@Url.Action("Details", "Employee")' + '?id=' + id;
+            window.open(
+                url,
+                'EmployeePopup',
+                'width=650,height=500,top=300,left=600,resizable=yes,scrollbars=yes'
+            );
+        }
+        function OpenPopUpEdit(id) {
+        var url = '@Url.Action("Edit", "Employee")' + '?id=' + id;
+            window.open(
+                url,
+                'EmployeePopup',
+                'width=650,height=500,top=300,left=600,resizable=yes,scrollbars=yes'
+            );
+        }
+        function OpenPopUpDelete(id) {
+            if (!confirm('Are you sure you want to delete this employee?'))
+                return;
+
+            var url = '@Url.Action("Delete", "Employee")' + '?id=' + id;
+
+            window.location.href = url;   
+        }
+
+    $('.searchtxt, .FilterSelect').on('change', function () {
+        this.form.submit();
+    });
+
+    function AddNew(id, mode) {
+
+        var title = '';
+        if (mode === 'n') title = 'Create New Employee';
+        else if (mode === 'e') title = 'Edit Employee';
+        else if (mode === 'v') title = 'Employee Details';
+
+        $('#modalTitle').text(title);
+
+        $.ajax({
+            url: '@Url.Action("PopUP", "Employee")',
+            type: 'GET',
+            data: { id: id, mode: mode },
+            success: function (html) {
+                $('#employeeModalBody').html(html);
+                $('#employeeModal').modal('show');
+            },
+            error: function () {
+            }
+        });
+    }
+        $(document).on('submit', '#employeeForm', function (e) {
+            e.preventDefault();   
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (res) {
+                    if (res.success) {
+                        $('#employeeModal').modal('hide');
+                        location.reload();
+                    } else {
+                        $('#employeeModalBody').html(res);
+                    }
+                }
+            });
+        });
+
+    </script>
+}

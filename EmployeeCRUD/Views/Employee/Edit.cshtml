@@ -1,0 +1,172 @@
+﻿@model EmployeeCRUD.Models.Employee
+
+@{
+    ViewBag.Title = "Edit Employee";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .popup-container {
+        border-radius: 12px;
+        padding: 25px;
+        max-width: 800px;
+    }
+
+    .popup-header h2 {
+        margin: 0 0 20px;
+        color: #2c3e50;
+    }
+
+    .form-section {
+        margin-top: 15px;
+    }
+
+    .d-flex {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .left-side, .right-side {
+        width: 50%;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    .checkbox-wrapper {
+        margin-top: 32px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .btn-save {
+        background: #198754;
+        color: #fff;
+        border-radius: 25px;
+        padding: 10px 22px;
+        border: none;
+    }
+
+    .btn-cancel {
+        background: #dc3545;
+        color: #fff;
+        border-radius: 25px;
+        padding: 10px 22px;
+        border: none;
+    }
+
+        .btn-save:hover,
+        .btn-cancel:hover {
+            opacity: 0.9;
+        }
+
+    .validation-summary {
+        color: red;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="popup-container">
+    <div class="popup-header">
+        <h2>
+            <i class="fas fa-user-edit"></i>
+            Edit Employee
+        </h2>
+    </div>
+
+    @using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new { id = "employeeForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Eid)
+
+        <div class="form-section">
+
+            @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
+
+            <div class="d-flex">
+                <div class="form-group left-side">
+                    @Html.LabelFor(m => m.Ename)
+                    @Html.TextBoxFor(m => m.Ename, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group right-side">
+                    @Html.LabelFor(m => m.Etype)
+                    @Html.TextBoxFor(m => m.Etype, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <div class="form-group left-side">
+                    @Html.LabelFor(m => m.Eaddr)
+                    @Html.TextBoxFor(m => m.Eaddr, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group right-side">
+                    @Html.LabelFor(m => m.Emob)
+                    @Html.TextBoxFor(m => m.Emob, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <div class="form-group left-side">
+                    @Html.LabelFor(m => m.Edesign)
+                    @Html.TextBoxFor(m => m.Edesign, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group right-side active-status">
+                    <div class="checkbox-wrapper">
+                        @Html.CheckBoxFor(m => m.IsActive)
+                        @Html.LabelFor(m => m.IsActive)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn-save"> 
+                <i class="fas fa-save"></i> Update
+            </button>
+            <button type="button" class="btn-cancel" onclick="window.close()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $('#employeeForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: this.action,
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (res) {
+                    if (res && res.success) {
+                        if (window.opener && !window.opener.closed) {
+                            window.opener.location.reload();
+                        }
+                        window.close();
+                    } else {
+                        alert('Update failed');
+                    }
+                },
+                error: function () {
+                    alert('Server error');
+                }
+            });
+        });
+    </script>
+}
