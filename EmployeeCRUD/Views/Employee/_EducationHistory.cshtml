@@ -1,0 +1,81 @@
+@model EmployeeVM
+
+<div>
+    <table class="table-emp employment-table-emp">
+        <thead class="table-head-emp">
+            <tr>
+                <th>Actions</th>
+                <th>College</th>
+                <th>Course</th>
+                <th>Start Date</th>
+                <th>Completed Date</th>
+                <th>Grade</th>
+                <th>Intership</th>
+                <th>Stream</th>
+                <th>Type</th>
+                <th>Active</th>
+                <th>Created By</th>
+                <th>Created Date</th>
+                <th>Updated By</th>
+                <th>Updated Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.EducationHistory != null && Model.EducationHistory.Any())
+            {
+                foreach (var emp in Model.EducationHistory)
+                {
+                    <tr>
+                        <td>#</td>
+                        <td>@emp.College</td>
+                        <td>@emp.Course</td>
+                        <td>@emp.StartDate</td>
+                        <td>@emp.CompletedDate</td>
+                        <td>@emp.Grade</td>
+                        <td>@emp.IsInternship</td>
+                        <td>@emp.Stream</td>
+                        <td>@emp.EducationType</td>
+                        <td>@emp.IsActive</td>
+                        <td>@emp.CreatedBy</td>
+                        <td>@emp.CreatedDate</td>
+                        <td>@emp.UpdatedBy</td>
+                        <td>@emp.UpdatedDate</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .table-emp {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: .5px 2px;
+        background-color: transparent;
+        text-align: center;
+    }
+
+    .employment-table-emp {
+        font-size: 13px;
+    }
+
+    .table-head-emp {
+        background-color: #2466d1;
+        color: white;
+    }
+
+        .table-head-emp th {
+            padding: 8px 10px;
+            font-weight: 600;
+            text-align: left;
+            border: 1px solid white;
+        }
+
+    .employment-table-emp td {
+        padding: 8px 10px;
+        color: #555;
+        border: 1px solid white;
+        background-color: #f9f9f9;
+    }
+</style>

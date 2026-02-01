@@ -1,0 +1,197 @@
+﻿@using EmployeeCRUD.Controllers
+@model EmployeeVM
+<div>
+
+    <div class="main-bar1">
+        <button class="dropbtn" onclick="OpenPopUp(@ViewBag.id)">
+            Add New
+        </button>
+    </div>
+    <table class="table-emp employment-table-emp">
+        <thead class="table-head-emp">
+            <tr>
+                <th>Actions</th>
+                <th>Employer</th>
+                <th>Designation</th>
+                <th>Date of Joining</th>
+                <th>Date of Exit</th>
+                <th>Type</th>
+                <th>Active</th>
+                <th>Reason</th>
+                <th>Role Performed</th>
+                <th>Created By</th>
+                <th>Created Date</th>
+                <th>Updated By</th>
+                <th>Updated Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.EmploymentHistory != null && Model.EmploymentHistory.Any())
+            {
+                foreach (var emp in Model.EmploymentHistory)
+                {
+                    <tr>
+                        <td>
+                            <button class="btn4"
+                                    type="button"
+                                    onclick="OpenPopUpEdit(@emp.EmploymentHistoryId)">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            |
+                            <button class="btn4"
+                                    type="button"
+                                    onclick="OpenPopUpDelete(@emp.EmploymentHistoryId, this)">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </td>
+                        <td>@(emp.EmployerName ?? "-")</td>
+                        <td>@(emp.Designation ?? "-")</td>
+                        <td>@(emp.DateOfJoining.ToString("yyyy-MM-dd") ?? "-")</td>
+                        <td>@(emp.DateOfExit != null ? emp.DateOfExit.Value.ToString("yyyy-MM-dd") : "-")</td>
+                        <td>
+                            @{
+                                if (string.IsNullOrEmpty(emp.EmploymentType))
+                                {
+                                    <text>-</text>
+                                }
+                                else
+                                {
+                                    int typeValue;
+                                    if (int.TryParse(emp.EmploymentType, out typeValue) && Enum.IsDefined(typeof(EmployeeController.EmployeeType), typeValue))
+                                    {
+                                        var enumValue = (EmployeeController.EmployeeType)typeValue;
+                                        var displayText = enumValue.ToString().Replace("_", " ");
+                                        @displayText
+                                    }
+                                    else
+                                    {
+                                        @emp.EmploymentType
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>@(emp.IsActive == true ? "Yes" : "No")</td>
+                        <td>@(emp.ExitReason ?? "-")</td>
+                        <td>@(emp.RolePerformed ?? "-")</td>
+                        <td>@(emp.CreatedBy ?? "-")</td>
+                        <td>@(emp.CreatedDate != null ? emp.CreatedDate.Value.ToString("yyyy-MM-dd") : "-")</td>
+                        <td>@(emp.UpdatedBy ?? "-")</td>
+                        <td>@(emp.UpdatedDate != null ? emp.UpdatedDate.Value.ToString("yyyy-MM-dd") : "-")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="13" style="text-align: center; padding: 20px; color: #888;">No employment history records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function OpenPopUp(employeeId) {
+        console.log(employeeId);
+        if (!employeeId || employeeId === 0) {
+            alert('Invalid employee ID');
+            return;
+        }
+
+        var url = '/Employee/AddEmploymentHistory?employeeId=' + employeeId;
+        window.open(
+            url,
+            'EmployeePopup',
+            'width=650,height=650,top=130,left=600,resizable=yes,scrollbars=yes'
+        );
+    }
+
+    window.refreshEmploymentHistory = function() {
+        var employeeId = @ViewBag.id;
+        if (typeof loadTab === 'function') {
+            loadTab('EmploymentHistory', employeeId);
+        } else {
+            location.reload();
+        }
+    }
+
+    function OpenPopUpDelete(historyId, btn) {
+        if (!confirm('Are you sure you want to delete this employment history?'))
+            return;
+        $.ajax({
+            url: '@Url.Action("DeleteEmployeeHistory", "Employee")',
+            type: 'POST',
+            data: { id: historyId },
+            success: function (res) {
+                if (res.success) {
+                    // ✅ remove only this row
+                    $(btn).closest('tr').fadeOut(300, function () {
+                        $(this).remove();
+                    });
+                } else {
+                    alert(res.message);
+                }
+            },
+            error: function () {
+                alert('Error deleting record');
+            }
+        });
+    }
+
+    function OpenPopUpEdit(historyId) {
+        if (!historyId || historyId === 0) {
+            alert('Invalid record');
+            return;
+        }
+
+        var url = '/Employee/EditEmploymentHistory?id=' + historyId;
+
+        window.open(
+            url,
+            'EditEmploymentHistory',
+            'width=650,height=650,top=130,left=600,resizable=yes,scrollbars=yes'
+        );
+    }
+</script>
+
+<style>
+    .table-emp {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: .5px 2px;
+        background-color: transparent;
+        text-align: center;
+    }
+
+    .employment-table-emp {
+        font-size: 13px;
+    }
+
+    .table-head-emp {
+        background-color: #2466d1;
+        color: white;
+    }
+
+        .table-head-emp th {
+            padding: 8px 10px;
+            font-weight: 600;
+            text-align: left;
+            border: 1px solid white;
+        }
+
+    .employment-table-emp td {
+        padding: 8px 10px;
+        color: #555;
+        border: 1px solid white;
+        background-color: #f9f9f9;
+    }
+
+    .fa-pen-to-square {
+        color: forestgreen;
+    }
+
+    .fa-trash {
+        color: red;
+    }
+</style>

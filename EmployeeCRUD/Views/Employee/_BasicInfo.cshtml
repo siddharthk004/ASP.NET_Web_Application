@@ -1,0 +1,101 @@
+﻿@model EmployeeVM
+
+<style>
+    .basic-info {
+        width: 100%;
+        display: flex;
+        gap: 20px;
+        font-size: 13px;
+        color: #333;
+    }
+
+    .basic-info1 {
+        width: 20%;
+    }
+
+    .basic-info2 {
+        width: 30%;
+    }
+
+    .basic-info3 {
+        width: 50%;
+    }
+
+    .info-row {
+        margin-bottom: 6px;
+        line-height: 1.4;
+    }
+
+    .info-label {
+        color: #888;
+        font-weight: 400;
+    }
+
+    .info-value {
+        color: #222;
+        font-weight: 600;
+    }
+
+    .no-data-message {
+        text-align: center;
+        padding: 40px;
+        color: #888;
+    }
+
+    .add-btn {
+        background-color: #2466d1;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    .add-btn:hover {
+        background-color: #1a4da8;
+    }
+</style>
+
+    <div class="basic-info">
+        <div class="basic-info1">
+            <div class="info-row"><span class="info-label">Name:</span> <span class="info-value">@(Model.Employee.Ename ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Mobile:</span> <span class="info-value">@(Model.Employee.Emob ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">DOJ:</span> <span class="info-value">@(Model.BasicInfo.DOJ != null ? Model.BasicInfo.DOJ.Value.ToString("yyyy-MM-dd") : "-")</span></div>
+            <div class="info-row"><span class="info-label">Hurricane POC Email:</span> <span class="info-value">@(Model.BasicInfo.HurricanePOCEmail ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Zone Manager:</span> <span class="info-value">@(Model.BasicInfo.ZoneManagerId != null ? Model.BasicInfo.ZoneManagerId.ToString() : "-")</span></div>
+            <div class="info-row"><span class="info-label">Manager:</span> <span class="info-value">@(Model.BasicInfo.ManagerName ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Nick Name:</span> <span class="info-value">@(Model.BasicInfo.NickName ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Pay Type:</span> <span class="info-value">@(Model.BasicInfo.PayType ?? "-")</span></div>
+        </div>
+
+        <div class="basic-info2">
+            <div class="info-row"><span class="info-label">Gender:</span> <span class="info-value">@(Model.BasicInfo.Gender ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Designation:</span> <span class="info-value">@(Model.Employee.Edesign ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Email:</span> <span class="info-value">@(Model.BasicInfo.PersonalEmail ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Hurricane POC Phone:</span> <span class="info-value">@(Model.BasicInfo.HurricanePOCPhone ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Cost Center:</span> <span class="info-value">@(Model.BasicInfo.CostCenter ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Competency:</span> <span class="info-value">@(Model.BasicInfo.Competency ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Office Email:</span> <span class="info-value">@(Model.BasicInfo.OfficeEmail ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Permanent Address:</span> <span class="info-value">@(Model.Employee.Eaddr ?? "-")</span></div>
+        </div>
+
+        <div class="basic-info3">
+            <div class="info-row"><span class="info-label">DOB:</span> <span class="info-value">@(Model.BasicInfo.DOB != null ? Model.BasicInfo.DOB.Value.ToString("yyyy-MM-dd") : "-")</span></div>
+            <div class="info-row"><span class="info-label">Department:</span> <span class="info-value">@(Model.BasicInfo.Department ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Employee Type:</span> <span class="info-value">@(Model.Employee.Etype ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Hurricane Zone:</span> <span class="info-value">@(Model.BasicInfo.HurricaneZone ?? "-")</span></div>
+            <div class="info-row">
+                <span class="info-label">Cost Center Address:</span>
+                <span class="info-value">
+                    @(Model.BasicInfo.CostCenterAddress ?? "-")
+                </span>
+            </div>
+            <div class="info-row"><span class="info-label">LinkedIn:</span> <span class="info-value">@(Model.BasicInfo.LinkedInUrl ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Paid Off Days / Yr:</span> <span class="info-value">@(Model.BasicInfo.PaidOffDaysPerYear != null ? Model.BasicInfo.PaidOffDaysPerYear.Value.ToString() : "-")</span></div>
+            <div class="info-row"><span class="info-label">Skills:</span> <span class="info-value">@(Model.BasicInfo.Skills ?? "-")</span></div>
+        </div>
+    </div>
+
+

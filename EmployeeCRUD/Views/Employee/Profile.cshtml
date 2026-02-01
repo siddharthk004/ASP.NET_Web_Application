@@ -1,0 +1,98 @@
+﻿@model EmployeeCRUD.Models.Employee
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Profile.cshtml";
+}
+
+<div>
+    <div class="top-color" onclick="location.href='@Url.Action("Index","Employee")'">
+        <h4 class="p-3">
+            Home
+            <hr />
+        </h4>
+    </div>
+
+    <div class="top-tab d-flex">
+        <div class="emp-img">
+            <img class="emp-img-size" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="profile" />
+        </div>
+        <div class="emp-detail">
+            <h2 class="emp-detail-1">@Model.Ename</h2>
+            <div class="emp-detail-2 d-flex">
+                <div>
+                    <h6>Gender : Male</h6>
+                    <h6>Cost Center : Pune</h6>
+                    <h6>Work Shift Time : 9AM - 6PM</h6>
+                </div>
+                <div class="px-lg-5">
+                    <h6>Emp Code : Emp105043</h6>
+                    <h6>CitizenShip : Indian</h6>
+                    <h6>Work Time Zone : GMT+5:30</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-profile">
+        <div class="tab-item active" data-tab="BasicInfo">Basic Info</div>
+        <div class="tab-item" data-tab="EmploymentHistory">Employment History</div>
+        <div class="tab-item" data-tab="Assessments">Assessments</div>
+        <div class="tab-item" data-tab="EducationHistory">Education History</div>
+        <div class="tab-item" data-tab="Licenses">Licenses</div>
+        <div class="tab-item" data-tab="Trainings">Trainings</div>
+        <div class="tab-item" data-tab="Leaves">Leaves</div>
+        <div class="tab-item" data-tab="LeaveBalance">Leave Balance</div>
+        <div class="tab-item" data-tab="Remuneration">Remuneration</div>
+        <div class="tab-item" data-tab="References">References</div>
+        <div class="tab-item" data-tab="Pensions">Pensions</div>
+        <div class="tab-item" data-tab="PaySlips">Pay Slips</div>
+        <div class="tab-item" data-tab="Loans">Loans</div>
+        <div class="tab-item" data-tab="Insurances">Insurances</div>
+        <div class="tab-item" data-tab="Family">Family</div>
+        <div class="tab-item" data-tab="EmergencyContact">Emergency Contact</div>
+        <div class="tab-item" data-tab="DisciplinaryLogs">Disciplinary Logs</div>
+        <div class="tab-item" data-tab="ConcessionPasses">Concession Passes</div>
+        <div class="tab-item" data-tab="Banks">Banks</div>
+        <div class="tab-item" data-tab="TimeZone">Time-Zone</div>
+    </div>
+
+    <div id="tabContent" class="tab-content-area">
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+        var empId = @Model.Eid;
+
+            loadTab('BasicInfo', empId);
+
+            $('.tab-item').click(function () {
+                $('.tab-item').removeClass('active');
+                $(this).addClass('active');
+
+                var tabName = $(this).data('tab');
+                loadTab(tabName, empId);
+            });
+
+            function loadTab(tabName, empId) {
+                $.ajax({
+                    url: '/Employee/ProfileTab',
+                    type: 'GET',
+                    data: { tab: tabName, id : empId },
+                    success: function (html) {
+                        $('#tabContent').html(html);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error loading tab:', error);
+                        $('#tabContent').html('<div style="padding: 20px; text-align: center; color: red;"><i class="fas fa-exclamation-triangle"></i> Error loading data. Please try again.</div>');
+                    }
+                });
+            }
+        });
+    </script>
+}

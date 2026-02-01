@@ -1,0 +1,78 @@
+﻿@model EmployeeCRUD.Models.Employee
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div>
+    <h4>Employee</h4>
+    <hr />
+
+    <dl class="dl-horizontal">
+
+        <div class="d-flex">
+            <dt class="left-side">
+                @Html.DisplayNameFor(model => model.Ename)
+            </dt>
+            <dd class="right-side">
+                @Html.DisplayFor(model => model.Ename)
+            </dd>
+
+            <dt class="left-side">
+                @Html.DisplayNameFor(model => model.Etype)
+            </dt>
+            <dd class="right-side">
+                @Html.DisplayFor(model => model.Etype)
+            </dd>
+        </div>
+
+        <div class="d-flex">
+            <dt class="left-side">
+                @Html.DisplayNameFor(model => model.Eaddr)
+            </dt>
+            <dd class="right-side">
+                @Html.DisplayFor(model => model.Eaddr)
+            </dd>
+
+            <dt class="left-side">
+                @Html.DisplayNameFor(model => model.Emob)
+            </dt>
+            <dd class="right-side">
+                @Html.DisplayFor(model => model.Emob)
+            </dd>
+        </div>
+
+        <div class="d-flex">
+            <dt class="left-side">
+                @Html.DisplayNameFor(model => model.Edesign)
+            </dt>
+            <dd class="right-side">
+                @Html.DisplayFor(model => model.Edesign)
+            </dd>
+
+            <dt class="left-side">
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+            <dd class="right-side active-status">
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>
+        </div>
+
+    </dl>
+</div>
+
+<style>
+    .d-flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    dt, dd {
+        width: 50%;
+        padding: 6px 10px;
+    }
+
+    dt {
+        font-weight: 600;
+    }
+</style>

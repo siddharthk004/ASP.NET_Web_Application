@@ -1,0 +1,75 @@
+@Model EmployeeVM
+<div>
+    <table class="table-emp employment-table-emp">
+        <thead class="table-head-emp">
+            <tr>
+                <th>Actions</th>
+                <th>Employer</th>
+                <th>Designation</th>
+                <th>Date of Joining</th>
+                <th>Date of Exit</th>
+                <th>Type</th>
+                <th>Active</th>
+                <th>Reason</th>
+                <th>Role Performed</th>
+                <th>Created By</th>
+                <th>Created Date</th>
+                <th>Updated By</th>
+                <th>Updated Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model.EmploymentHistories)
+            {
+                <tr>
+                    <td>Edit</td>
+                    <td>Sanmol Software</td>
+                    <td>Senior Developer</td>
+                    <td>2022-01-10</td>
+                    <td>-</td>
+                    <td>Permanent</td>
+                    <td>Yes</td>
+                    <td>-</td>
+                    <td>Development</td>
+                    <td>Admin</td>
+                    <td>2022-01-10</td>
+                    <td>Admin</td>
+                    <td>2024-03-12</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .table-emp {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: .5px 2px;
+        background-color: transparent;
+        text-align: center;
+    }
+
+    .employment-table-emp {
+        font-size: 13px;
+    }
+
+    .table-head-emp {
+        background-color: #2466d1;
+        color: white;
+    }
+
+        .table-head-emp th {
+            padding: 8px 10px;
+            font-weight: 600;
+            text-align: left;
+            border: 1px solid white;
+        }
+
+    .employment-table-emp td {
+        padding: 8px 10px;
+        color: #555;
+        border: 1px solid white;
+        background-color: #f9f9f9;
+    }
+</style>

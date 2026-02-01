@@ -1,0 +1,2117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SanmolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Assessment">
+          <Key>
+            <PropertyRef Name="AssessmentId" />
+          </Key>
+          <Property Name="AssessmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReqNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssessmentName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="EmployeeName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="AssessmentType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssessmentSubType" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalQuestions" Type="int" Nullable="false" />
+          <Property Name="UserProgress" Type="int" />
+          <Property Name="ReviewerProgress" Type="int" />
+          <Property Name="ManagerProgress" Type="int" />
+          <Property Name="HRProgress" Type="int" />
+          <Property Name="Status" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="BasicInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Eid" Type="int" Nullable="false" />
+          <Property Name="DOB" Type="date" />
+          <Property Name="DOJ" Type="date" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" />
+          <Property Name="NickName" Type="varchar" MaxLength="100" />
+          <Property Name="PayType" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeeType" Type="varchar" MaxLength="50" />
+          <Property Name="Department" Type="varchar" MaxLength="100" />
+          <Property Name="Designation" Type="varchar" MaxLength="100" />
+          <Property Name="PersonalEmail" Type="varchar" MaxLength="150" />
+          <Property Name="OfficeEmail" Type="varchar" MaxLength="150" />
+          <Property Name="HurricanePOCEmail" Type="varchar" MaxLength="150" />
+          <Property Name="HurricanePOCPhone" Type="varchar" MaxLength="20" />
+          <Property Name="ManagerName" Type="varchar" MaxLength="150" />
+          <Property Name="ZoneManagerId" Type="int" />
+          <Property Name="CostCenter" Type="varchar" MaxLength="100" />
+          <Property Name="CostCenterAddress" Type="varchar" MaxLength="300" />
+          <Property Name="HurricaneZone" Type="varchar" MaxLength="100" />
+          <Property Name="Competency" Type="varchar" MaxLength="150" />
+          <Property Name="LinkedInUrl" Type="varchar" MaxLength="200" />
+          <Property Name="PaidOffDaysPerYear" Type="int" />
+          <Property Name="Skills" Type="varchar" MaxLength="300" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="Cid" Type="int" Nullable="false" />
+          <Property Name="CEmpCnt" Type="int" Nullable="false" />
+          <Property Name="CWorkDay" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Eid" />
+          </Key>
+          <Property Name="Eid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ename" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Etype" Type="nvarchar" MaxLength="50" />
+          <Property Name="Eaddr" Type="nvarchar" MaxLength="200" />
+          <Property Name="Emob" Type="nvarchar" MaxLength="15" />
+          <Property Name="Edesign" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeBankDetails">
+          <Key>
+            <PropertyRef Name="BankId" />
+          </Key>
+          <Property Name="BankId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="AccNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccType" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="BankAddress" Type="nvarchar" MaxLength="250" />
+          <Property Name="IBAN" Type="nvarchar" MaxLength="50" />
+          <Property Name="IFSC" Type="nvarchar" MaxLength="20" />
+          <Property Name="MICR" Type="nvarchar" MaxLength="20" />
+          <Property Name="SwiftCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeConcessionPass">
+          <Key>
+            <PropertyRef Name="PassId" />
+          </Key>
+          <Property Name="PassId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="PassNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IssueDate" Type="date" Nullable="false" />
+          <Property Name="ValidFromDate" Type="date" Nullable="false" />
+          <Property Name="ExpiryDate" Type="date" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="250" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeDisciplinaryLog">
+          <Key>
+            <PropertyRef Name="DisciplinaryLogId" />
+          </Key>
+          <Property Name="DisciplinaryLogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="IncidentDate" Type="date" Nullable="false" />
+          <Property Name="Incident" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Brief" Type="nvarchar" MaxLength="1000" />
+          <Property Name="HRNotes" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ManagerNotes" Type="nvarchar" MaxLength="1000" />
+          <Property Name="EmployeeComments" Type="nvarchar" MaxLength="1000" />
+          <Property Name="EmployeeSigned" Type="bit" />
+          <Property Name="ReviewedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeEducationHistory">
+          <Key>
+            <PropertyRef Name="EducationId" />
+          </Key>
+          <Property Name="EducationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="College" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Course" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="CompletedDate" Type="date" />
+          <Property Name="Grade" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsInternship" Type="bit" />
+          <Property Name="Stream" Type="nvarchar" MaxLength="100" />
+          <Property Name="EducationType" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeEmergencyContact">
+          <Key>
+            <PropertyRef Name="EmergencyContactId" />
+          </Key>
+          <Property Name="EmergencyContactId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="ContactName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Relationship" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="150" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeEmploymentHistory">
+          <Key>
+            <PropertyRef Name="EmploymentHistoryId" />
+          </Key>
+          <Property Name="EmploymentHistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="EmployerName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Designation" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="DateOfJoining" Type="date" Nullable="false" />
+          <Property Name="DateOfExit" Type="date" />
+          <Property Name="EmploymentType" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="ExitReason" Type="nvarchar" MaxLength="250" />
+          <Property Name="RolePerformed" Type="nvarchar" MaxLength="250" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeFamily">
+          <Key>
+            <PropertyRef Name="FamilyId" />
+          </Key>
+          <Property Name="FamilyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="MemberName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="DateOfBirth" Type="date" />
+          <Property Name="Age" Type="int" />
+          <Property Name="Relationship" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsBIP" Type="bit" />
+          <Property Name="IsNominee" Type="bit" />
+          <Property Name="IsWPDependent" Type="bit" />
+          <Property Name="Occupation" Type="nvarchar" MaxLength="150" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Address" Type="nvarchar" MaxLength="300" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="LastUpdated" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="EmployeeInsurance">
+          <Key>
+            <PropertyRef Name="InsuranceId" />
+          </Key>
+          <Property Name="InsuranceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="MemberId" Type="nvarchar" MaxLength="50" />
+          <Property Name="InsuranceName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Cost" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="RenewDate" Type="date" />
+          <Property Name="PaySchedule" Type="nvarchar" MaxLength="50" />
+          <Property Name="InsurancePlan" Type="nvarchar" MaxLength="150" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="300" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeLeaveBalance">
+          <Key>
+            <PropertyRef Name="LeaveBalanceId" />
+          </Key>
+          <Property Name="LeaveBalanceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="FinancialYear" Type="int" Nullable="false" />
+          <Property Name="LeaveType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="30" />
+          <Property Name="BalanceForwardCnt" Type="int" />
+          <Property Name="LeaveCnt" Type="int" />
+          <Property Name="LeavePaidCnt" Type="int" />
+          <Property Name="LeaveWithoutPaidCnt" Type="int" />
+          <Property Name="BalanceLeave" Type="int" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeLeaves">
+          <Key>
+            <PropertyRef Name="LeaveId" />
+          </Key>
+          <Property Name="LeaveId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="LeaveType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FromDate" Type="date" Nullable="false" />
+          <Property Name="ToDate" Type="date" Nullable="false" />
+          <Property Name="IsHalfDayStart" Type="bit" />
+          <Property Name="IsHalfDayEnd" Type="bit" />
+          <Property Name="TotalLeavesPaid" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="500" />
+          <Property Name="Status" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="AddressDuringLeave" Type="nvarchar" MaxLength="500" />
+          <Property Name="BackupDuringLeave" Type="nvarchar" MaxLength="200" />
+          <Property Name="PhoneDuringLeave" Type="nvarchar" MaxLength="20" />
+          <Property Name="ApprovedBy" Type="int" />
+          <Property Name="ApprovedByHR" Type="int" />
+          <Property Name="HRNotes" Type="nvarchar" MaxLength="500" />
+          <Property Name="ManagerNotes" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeLicenses">
+          <Key>
+            <PropertyRef Name="LicenseId" />
+          </Key>
+          <Property Name="LicenseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="LicenseType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IssueDate" Type="date" Nullable="false" />
+          <Property Name="ExpiryDate" Type="date" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeLoans">
+          <Key>
+            <PropertyRef Name="LoanId" />
+          </Key>
+          <Property Name="LoanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="LoanType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RequestedAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ApplicationDate" Type="date" Nullable="false" />
+          <Property Name="ExpectedDate" Type="date" />
+          <Property Name="Priority" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeePaySlips">
+          <Key>
+            <PropertyRef Name="PaySlipId" />
+          </Key>
+          <Property Name="PaySlipId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="SalaryProcessDate" Type="date" Nullable="false" />
+          <Property Name="BasicSalary" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="GrossSalary" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalDeduction" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="NetSalary" Type="decimal" Precision="19" Scale="2" StoreGeneratedPattern="Computed" />
+          <Property Name="FromDate" Type="date" Nullable="false" />
+          <Property Name="ToDate" Type="date" Nullable="false" />
+          <Property Name="ActualDays" Type="int" Nullable="false" />
+          <Property Name="ActualHours" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="PaidLeaves" Type="int" />
+          <Property Name="PaidLeaveHours" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="LeaveWithoutPayHours" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeePensions">
+          <Key>
+            <PropertyRef Name="PensionId" />
+          </Key>
+          <Property Name="PensionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UAN" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="AccountOpenDate" Type="date" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeReferences">
+          <Key>
+            <PropertyRef Name="ReferenceId" />
+          </Key>
+          <Property Name="ReferenceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="ReferenceName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Relation" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="300" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar" MaxLength="150" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsVerified" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeRemuneration">
+          <Key>
+            <PropertyRef Name="RemunerationId" />
+          </Key>
+          <Property Name="RemunerationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="Department" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Designation" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="100" />
+          <Property Name="SalaryPerAnnum" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PayRatePerHour" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeTimeZone">
+          <Key>
+            <PropertyRef Name="TimeZoneId" />
+          </Key>
+          <Property Name="TimeZoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="ClockName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TimeZone" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeTraining">
+          <Key>
+            <PropertyRef Name="TrainingId" />
+          </Key>
+          <Property Name="TrainingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="TrainingName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Stream" Type="nvarchar" MaxLength="100" />
+          <Property Name="Institute" Type="nvarchar" MaxLength="200" />
+          <Property Name="TrainingType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Grade" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsInternship" Type="bit" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="CompletedDate" Type="date" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="login">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="registration">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" />
+          <Property Name="contact" Type="nvarchar" MaxLength="15" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" />
+          <Property Name="role" Type="nvarchar" MaxLength="50" />
+          <Property Name="password" Type="nvarchar" MaxLength="255" />
+          <Property Name="Cpassword" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_Assessment_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Assessment" Type="Self.Assessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="Assessment">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BasicInfo_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="BasicInfo" Type="Self.BasicInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="BasicInfo">
+              <PropertyRef Name="Eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeBankDetails_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeBankDetails" Type="Self.EmployeeBankDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeBankDetails">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeConcessionPass_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeConcessionPass" Type="Self.EmployeeConcessionPass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeConcessionPass">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeDisciplinaryLog_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeDisciplinaryLog" Type="Self.EmployeeDisciplinaryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeDisciplinaryLog">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeEducationHistory_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeEducationHistory" Type="Self.EmployeeEducationHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEducationHistory">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeEmergencyContact_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeEmergencyContact" Type="Self.EmployeeEmergencyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEmergencyContact">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeFamily_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeFamily" Type="Self.EmployeeFamily" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeFamily">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeInsurance_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeInsurance" Type="Self.EmployeeInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeInsurance">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeLicenses_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeLicenses" Type="Self.EmployeeLicenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLicenses">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeLoans_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeLoans" Type="Self.EmployeeLoans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLoans">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePaySlips_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeePaySlips" Type="Self.EmployeePaySlips" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeePaySlips">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePensions_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeePensions" Type="Self.EmployeePensions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeePensions">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReferences_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeReferences" Type="Self.EmployeeReferences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeReferences">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeRemuneration_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeRemuneration" Type="Self.EmployeeRemuneration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeRemuneration">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTimeZone_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeTimeZone" Type="Self.EmployeeTimeZone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeTimeZone">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTraining_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeTraining" Type="Self.EmployeeTraining" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeTraining">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmploymentHistory_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeEmploymentHistory" Type="Self.EmployeeEmploymentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEmploymentHistory">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaveBalance_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeLeaveBalance" Type="Self.EmployeeLeaveBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLeaveBalance">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leaves_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeLeaves" Type="Self.EmployeeLeaves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLeaves">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SanmolModelStoreContainer">
+          <EntitySet Name="Assessment" EntityType="Self.Assessment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BasicInfo" EntityType="Self.BasicInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeBankDetails" EntityType="Self.EmployeeBankDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeConcessionPass" EntityType="Self.EmployeeConcessionPass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeDisciplinaryLog" EntityType="Self.EmployeeDisciplinaryLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeEducationHistory" EntityType="Self.EmployeeEducationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeEmergencyContact" EntityType="Self.EmployeeEmergencyContact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeEmploymentHistory" EntityType="Self.EmployeeEmploymentHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeFamily" EntityType="Self.EmployeeFamily" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeInsurance" EntityType="Self.EmployeeInsurance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeLeaveBalance" EntityType="Self.EmployeeLeaveBalance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeLeaves" EntityType="Self.EmployeeLeaves" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeLicenses" EntityType="Self.EmployeeLicenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeLoans" EntityType="Self.EmployeeLoans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeePaySlips" EntityType="Self.EmployeePaySlips" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeePensions" EntityType="Self.EmployeePensions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeReferences" EntityType="Self.EmployeeReferences" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeRemuneration" EntityType="Self.EmployeeRemuneration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeTimeZone" EntityType="Self.EmployeeTimeZone" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeTraining" EntityType="Self.EmployeeTraining" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="login" EntityType="Self.login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="registration" EntityType="Self.registration" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Assessment_Employee" Association="Self.FK_Assessment_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Assessment" EntitySet="Assessment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BasicInfo_Employee" Association="Self.FK_BasicInfo_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="BasicInfo" EntitySet="BasicInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeBankDetails_Employee" Association="Self.FK_EmployeeBankDetails_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeBankDetails" EntitySet="EmployeeBankDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeConcessionPass_Employee" Association="Self.FK_EmployeeConcessionPass_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeConcessionPass" EntitySet="EmployeeConcessionPass" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeDisciplinaryLog_Employee" Association="Self.FK_EmployeeDisciplinaryLog_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeDisciplinaryLog" EntitySet="EmployeeDisciplinaryLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeEducationHistory_Employee" Association="Self.FK_EmployeeEducationHistory_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeEducationHistory" EntitySet="EmployeeEducationHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeEmergencyContact_Employee" Association="Self.FK_EmployeeEmergencyContact_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeEmergencyContact" EntitySet="EmployeeEmergencyContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeFamily_Employee" Association="Self.FK_EmployeeFamily_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeFamily" EntitySet="EmployeeFamily" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeInsurance_Employee" Association="Self.FK_EmployeeInsurance_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeInsurance" EntitySet="EmployeeInsurance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeLicenses_Employee" Association="Self.FK_EmployeeLicenses_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeLicenses" EntitySet="EmployeeLicenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeLoans_Employee" Association="Self.FK_EmployeeLoans_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeLoans" EntitySet="EmployeeLoans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePaySlips_Employee" Association="Self.FK_EmployeePaySlips_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeePaySlips" EntitySet="EmployeePaySlips" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePensions_Employee" Association="Self.FK_EmployeePensions_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeePensions" EntitySet="EmployeePensions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReferences_Employee" Association="Self.FK_EmployeeReferences_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeReferences" EntitySet="EmployeeReferences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeRemuneration_Employee" Association="Self.FK_EmployeeRemuneration_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeRemuneration" EntitySet="EmployeeRemuneration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTimeZone_Employee" Association="Self.FK_EmployeeTimeZone_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeTimeZone" EntitySet="EmployeeTimeZone" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTraining_Employee" Association="Self.FK_EmployeeTraining_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeTraining" EntitySet="EmployeeTraining" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmploymentHistory_Employee" Association="Self.FK_EmploymentHistory_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeEmploymentHistory" EntitySet="EmployeeEmploymentHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaveBalance_Employee" Association="Self.FK_LeaveBalance_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeLeaveBalance" EntitySet="EmployeeLeaveBalance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leaves_Employee" Association="Self.FK_Leaves_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeLeaves" EntitySet="EmployeeLeaves" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SanmolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SanmolEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="SanmolModel.Employee" />
+          <EntitySet Name="Assessments" EntityType="SanmolModel.Assessment" />
+          <EntitySet Name="BasicInfoes" EntityType="SanmolModel.BasicInfo" />
+          <EntitySet Name="Companies" EntityType="SanmolModel.Company" />
+          <EntitySet Name="EmployeeBankDetails" EntityType="SanmolModel.EmployeeBankDetail" />
+          <EntitySet Name="EmployeeConcessionPasses" EntityType="SanmolModel.EmployeeConcessionPass" />
+          <EntitySet Name="EmployeeDisciplinaryLogs" EntityType="SanmolModel.EmployeeDisciplinaryLog" />
+          <EntitySet Name="EmployeeEducationHistories" EntityType="SanmolModel.EmployeeEducationHistory" />
+          <EntitySet Name="EmployeeEmergencyContacts" EntityType="SanmolModel.EmployeeEmergencyContact" />
+          <EntitySet Name="EmployeeEmploymentHistories" EntityType="SanmolModel.EmployeeEmploymentHistory" />
+          <EntitySet Name="EmployeeFamilies" EntityType="SanmolModel.EmployeeFamily" />
+          <EntitySet Name="EmployeeInsurances" EntityType="SanmolModel.EmployeeInsurance" />
+          <EntitySet Name="EmployeeLeaveBalances" EntityType="SanmolModel.EmployeeLeaveBalance" />
+          <EntitySet Name="EmployeeLeaves" EntityType="SanmolModel.EmployeeLeaf" />
+          <EntitySet Name="EmployeeLicenses" EntityType="SanmolModel.EmployeeLicens" />
+          <EntitySet Name="EmployeeLoans" EntityType="SanmolModel.EmployeeLoan" />
+          <EntitySet Name="EmployeePaySlips" EntityType="SanmolModel.EmployeePaySlip" />
+          <EntitySet Name="EmployeePensions" EntityType="SanmolModel.EmployeePension" />
+          <EntitySet Name="EmployeeReferences" EntityType="SanmolModel.EmployeeReference" />
+          <EntitySet Name="EmployeeRemunerations" EntityType="SanmolModel.EmployeeRemuneration" />
+          <EntitySet Name="EmployeeTimeZones" EntityType="SanmolModel.EmployeeTimeZone" />
+          <EntitySet Name="EmployeeTrainings" EntityType="SanmolModel.EmployeeTraining" />
+          <EntitySet Name="logins" EntityType="SanmolModel.login" />
+          <EntitySet Name="registrations" EntityType="SanmolModel.registration" />
+          <AssociationSet Name="FK_Assessment_Employee" Association="SanmolModel.FK_Assessment_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Assessment" EntitySet="Assessments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BasicInfo_Employee" Association="SanmolModel.FK_BasicInfo_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="BasicInfo" EntitySet="BasicInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeBankDetails_Employee" Association="SanmolModel.FK_EmployeeBankDetails_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeBankDetail" EntitySet="EmployeeBankDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeConcessionPass_Employee" Association="SanmolModel.FK_EmployeeConcessionPass_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeConcessionPass" EntitySet="EmployeeConcessionPasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeDisciplinaryLog_Employee" Association="SanmolModel.FK_EmployeeDisciplinaryLog_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeDisciplinaryLog" EntitySet="EmployeeDisciplinaryLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeEducationHistory_Employee" Association="SanmolModel.FK_EmployeeEducationHistory_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeEducationHistory" EntitySet="EmployeeEducationHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeEmergencyContact_Employee" Association="SanmolModel.FK_EmployeeEmergencyContact_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeEmergencyContact" EntitySet="EmployeeEmergencyContacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeFamily_Employee" Association="SanmolModel.FK_EmployeeFamily_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeFamily" EntitySet="EmployeeFamilies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeInsurance_Employee" Association="SanmolModel.FK_EmployeeInsurance_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeInsurance" EntitySet="EmployeeInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeLicenses_Employee" Association="SanmolModel.FK_EmployeeLicenses_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeLicens" EntitySet="EmployeeLicenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeLoans_Employee" Association="SanmolModel.FK_EmployeeLoans_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeLoan" EntitySet="EmployeeLoans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePaySlips_Employee" Association="SanmolModel.FK_EmployeePaySlips_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeePaySlip" EntitySet="EmployeePaySlips" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePensions_Employee" Association="SanmolModel.FK_EmployeePensions_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeePension" EntitySet="EmployeePensions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReferences_Employee" Association="SanmolModel.FK_EmployeeReferences_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeReference" EntitySet="EmployeeReferences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeRemuneration_Employee" Association="SanmolModel.FK_EmployeeRemuneration_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeRemuneration" EntitySet="EmployeeRemunerations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTimeZone_Employee" Association="SanmolModel.FK_EmployeeTimeZone_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeTimeZone" EntitySet="EmployeeTimeZones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTraining_Employee" Association="SanmolModel.FK_EmployeeTraining_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeTraining" EntitySet="EmployeeTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmploymentHistory_Employee" Association="SanmolModel.FK_EmploymentHistory_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeEmploymentHistory" EntitySet="EmployeeEmploymentHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaveBalance_Employee" Association="SanmolModel.FK_LeaveBalance_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeLeaveBalance" EntitySet="EmployeeLeaveBalances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leaves_Employee" Association="SanmolModel.FK_Leaves_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeLeaf" EntitySet="EmployeeLeaves" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Eid" />
+          </Key>
+          <Property Name="Eid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ename" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Etype" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Eaddr" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Emob" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Edesign" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Assessments" Relationship="SanmolModel.FK_Assessment_Employee" FromRole="Employee" ToRole="Assessment" />
+          <NavigationProperty Name="BasicInfoes" Relationship="SanmolModel.FK_BasicInfo_Employee" FromRole="Employee" ToRole="BasicInfo" />
+          <NavigationProperty Name="EmployeeBankDetails" Relationship="SanmolModel.FK_EmployeeBankDetails_Employee" FromRole="Employee" ToRole="EmployeeBankDetail" />
+          <NavigationProperty Name="EmployeeConcessionPasses" Relationship="SanmolModel.FK_EmployeeConcessionPass_Employee" FromRole="Employee" ToRole="EmployeeConcessionPass" />
+          <NavigationProperty Name="EmployeeDisciplinaryLogs" Relationship="SanmolModel.FK_EmployeeDisciplinaryLog_Employee" FromRole="Employee" ToRole="EmployeeDisciplinaryLog" />
+          <NavigationProperty Name="EmployeeEducationHistories" Relationship="SanmolModel.FK_EmployeeEducationHistory_Employee" FromRole="Employee" ToRole="EmployeeEducationHistory" />
+          <NavigationProperty Name="EmployeeEmergencyContacts" Relationship="SanmolModel.FK_EmployeeEmergencyContact_Employee" FromRole="Employee" ToRole="EmployeeEmergencyContact" />
+          <NavigationProperty Name="EmployeeFamilies" Relationship="SanmolModel.FK_EmployeeFamily_Employee" FromRole="Employee" ToRole="EmployeeFamily" />
+          <NavigationProperty Name="EmployeeInsurances" Relationship="SanmolModel.FK_EmployeeInsurance_Employee" FromRole="Employee" ToRole="EmployeeInsurance" />
+          <NavigationProperty Name="EmployeeLicenses" Relationship="SanmolModel.FK_EmployeeLicenses_Employee" FromRole="Employee" ToRole="EmployeeLicens" />
+          <NavigationProperty Name="EmployeeLoans" Relationship="SanmolModel.FK_EmployeeLoans_Employee" FromRole="Employee" ToRole="EmployeeLoan" />
+          <NavigationProperty Name="EmployeePaySlips" Relationship="SanmolModel.FK_EmployeePaySlips_Employee" FromRole="Employee" ToRole="EmployeePaySlip" />
+          <NavigationProperty Name="EmployeePensions" Relationship="SanmolModel.FK_EmployeePensions_Employee" FromRole="Employee" ToRole="EmployeePension" />
+          <NavigationProperty Name="EmployeeReferences" Relationship="SanmolModel.FK_EmployeeReferences_Employee" FromRole="Employee" ToRole="EmployeeReference" />
+          <NavigationProperty Name="EmployeeRemunerations" Relationship="SanmolModel.FK_EmployeeRemuneration_Employee" FromRole="Employee" ToRole="EmployeeRemuneration" />
+          <NavigationProperty Name="EmployeeTimeZones" Relationship="SanmolModel.FK_EmployeeTimeZone_Employee" FromRole="Employee" ToRole="EmployeeTimeZone" />
+          <NavigationProperty Name="EmployeeTrainings" Relationship="SanmolModel.FK_EmployeeTraining_Employee" FromRole="Employee" ToRole="EmployeeTraining" />
+          <NavigationProperty Name="EmployeeEmploymentHistories" Relationship="SanmolModel.FK_EmploymentHistory_Employee" FromRole="Employee" ToRole="EmployeeEmploymentHistory" />
+          <NavigationProperty Name="EmployeeLeaveBalances" Relationship="SanmolModel.FK_LeaveBalance_Employee" FromRole="Employee" ToRole="EmployeeLeaveBalance" />
+          <NavigationProperty Name="EmployeeLeaves" Relationship="SanmolModel.FK_Leaves_Employee" FromRole="Employee" ToRole="EmployeeLeaf" />
+        </EntityType>
+        <EntityType Name="Assessment">
+          <Key>
+            <PropertyRef Name="AssessmentId" />
+          </Key>
+          <Property Name="AssessmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReqNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssessmentName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="AssessmentType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssessmentSubType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalQuestions" Type="Int32" Nullable="false" />
+          <Property Name="UserProgress" Type="Int32" />
+          <Property Name="ReviewerProgress" Type="Int32" />
+          <Property Name="ManagerProgress" Type="Int32" />
+          <Property Name="HRProgress" Type="Int32" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_Assessment_Employee" FromRole="Assessment" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="BasicInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Eid" Type="Int32" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="DOJ" Type="DateTime" Precision="0" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NickName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PayType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Department" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PersonalEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="OfficeEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="HurricanePOCEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="HurricanePOCPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ManagerName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ZoneManagerId" Type="Int32" />
+          <Property Name="CostCenter" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CostCenterAddress" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="HurricaneZone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Competency" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="LinkedInUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PaidOffDaysPerYear" Type="Int32" />
+          <Property Name="Skills" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_BasicInfo_Employee" FromRole="BasicInfo" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="Cid" Type="Int32" Nullable="false" />
+          <Property Name="CEmpCnt" Type="Int32" Nullable="false" />
+          <Property Name="CWorkDay" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeBankDetail">
+          <Key>
+            <PropertyRef Name="BankId" />
+          </Key>
+          <Property Name="BankId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="AccNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccType" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BankName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="BankAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IBAN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IFSC" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MICR" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SwiftCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeBankDetails_Employee" FromRole="EmployeeBankDetail" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeConcessionPass">
+          <Key>
+            <PropertyRef Name="PassId" />
+          </Key>
+          <Property Name="PassId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="PassNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IssueDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ValidFromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ExpiryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Reason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeConcessionPass_Employee" FromRole="EmployeeConcessionPass" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeDisciplinaryLog">
+          <Key>
+            <PropertyRef Name="DisciplinaryLogId" />
+          </Key>
+          <Property Name="DisciplinaryLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="IncidentDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Incident" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Brief" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="HRNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ManagerNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeComments" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeSigned" Type="Boolean" />
+          <Property Name="ReviewedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeDisciplinaryLog_Employee" FromRole="EmployeeDisciplinaryLog" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeEducationHistory">
+          <Key>
+            <PropertyRef Name="EducationId" />
+          </Key>
+          <Property Name="EducationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="College" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Course" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CompletedDate" Type="DateTime" Precision="0" />
+          <Property Name="Grade" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsInternship" Type="Boolean" />
+          <Property Name="Stream" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EducationType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeEducationHistory_Employee" FromRole="EmployeeEducationHistory" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeEmergencyContact">
+          <Key>
+            <PropertyRef Name="EmergencyContactId" />
+          </Key>
+          <Property Name="EmergencyContactId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="ContactName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Relationship" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeEmergencyContact_Employee" FromRole="EmployeeEmergencyContact" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeEmploymentHistory">
+          <Key>
+            <PropertyRef Name="EmploymentHistoryId" />
+          </Key>
+          <Property Name="EmploymentHistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="EmployerName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Designation" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfJoining" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateOfExit" Type="DateTime" Precision="0" />
+          <Property Name="EmploymentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="ExitReason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RolePerformed" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmploymentHistory_Employee" FromRole="EmployeeEmploymentHistory" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeFamily">
+          <Key>
+            <PropertyRef Name="FamilyId" />
+          </Key>
+          <Property Name="FamilyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="MemberName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="Relationship" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsBIP" Type="Boolean" />
+          <Property Name="IsNominee" Type="Boolean" />
+          <Property Name="IsWPDependent" Type="Boolean" />
+          <Property Name="Occupation" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeFamily_Employee" FromRole="EmployeeFamily" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeInsurance">
+          <Key>
+            <PropertyRef Name="InsuranceId" />
+          </Key>
+          <Property Name="InsuranceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="MemberId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RenewDate" Type="DateTime" Precision="0" />
+          <Property Name="PaySchedule" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InsurancePlan" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeInsurance_Employee" FromRole="EmployeeInsurance" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeLeaveBalance">
+          <Key>
+            <PropertyRef Name="LeaveBalanceId" />
+          </Key>
+          <Property Name="LeaveBalanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="FinancialYear" Type="Int32" Nullable="false" />
+          <Property Name="LeaveType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BalanceForwardCnt" Type="Int32" />
+          <Property Name="LeaveCnt" Type="Int32" />
+          <Property Name="LeavePaidCnt" Type="Int32" />
+          <Property Name="LeaveWithoutPaidCnt" Type="Int32" />
+          <Property Name="BalanceLeave" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_LeaveBalance_Employee" FromRole="EmployeeLeaveBalance" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeLeaf">
+          <Key>
+            <PropertyRef Name="LeaveId" />
+          </Key>
+          <Property Name="LeaveId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="LeaveType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsHalfDayStart" Type="Boolean" />
+          <Property Name="IsHalfDayEnd" Type="Boolean" />
+          <Property Name="TotalLeavesPaid" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="AddressDuringLeave" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BackupDuringLeave" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneDuringLeave" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ApprovedBy" Type="Int32" />
+          <Property Name="ApprovedByHR" Type="Int32" />
+          <Property Name="HRNotes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ManagerNotes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_Leaves_Employee" FromRole="EmployeeLeaf" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeLicens">
+          <Key>
+            <PropertyRef Name="LicenseId" />
+          </Key>
+          <Property Name="LicenseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="LicenseType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IssueDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeLicenses_Employee" FromRole="EmployeeLicens" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeLoan">
+          <Key>
+            <PropertyRef Name="LoanId" />
+          </Key>
+          <Property Name="LoanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="LoanType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RequestedAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ApplicationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ExpectedDate" Type="DateTime" Precision="0" />
+          <Property Name="Priority" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeLoans_Employee" FromRole="EmployeeLoan" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeePaySlip">
+          <Key>
+            <PropertyRef Name="PaySlipId" />
+          </Key>
+          <Property Name="PaySlipId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="SalaryProcessDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BasicSalary" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="GrossSalary" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalDeduction" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="NetSalary" Type="Decimal" Precision="19" Scale="2" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ActualDays" Type="Int32" Nullable="false" />
+          <Property Name="ActualHours" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
+          <Property Name="PaidLeaves" Type="Int32" />
+          <Property Name="PaidLeaveHours" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="LeaveWithoutPayHours" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeePaySlips_Employee" FromRole="EmployeePaySlip" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeePension">
+          <Key>
+            <PropertyRef Name="PensionId" />
+          </Key>
+          <Property Name="PensionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="AccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UAN" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="AccountOpenDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeePensions_Employee" FromRole="EmployeePension" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeReference">
+          <Key>
+            <PropertyRef Name="ReferenceId" />
+          </Key>
+          <Property Name="ReferenceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="ReferenceName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Relation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeReferences_Employee" FromRole="EmployeeReference" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeRemuneration">
+          <Key>
+            <PropertyRef Name="RemunerationId" />
+          </Key>
+          <Property Name="RemunerationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Department" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Designation" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SalaryPerAnnum" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PayRatePerHour" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeRemuneration_Employee" FromRole="EmployeeRemuneration" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeTimeZone">
+          <Key>
+            <PropertyRef Name="TimeZoneId" />
+          </Key>
+          <Property Name="TimeZoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="ClockName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TimeZone" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeTimeZone_Employee" FromRole="EmployeeTimeZone" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeTraining">
+          <Key>
+            <PropertyRef Name="TrainingId" />
+          </Key>
+          <Property Name="TrainingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="TrainingName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Stream" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Institute" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TrainingType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Grade" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsInternship" Type="Boolean" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="CompletedDate" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeTraining_Employee" FromRole="EmployeeTraining" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="login">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="registration">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="contact" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Cpassword" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Assessment_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.Assessment" Role="Assessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="Assessment">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BasicInfo_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.BasicInfo" Role="BasicInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="BasicInfo">
+              <PropertyRef Name="Eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeBankDetails_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeBankDetail" Role="EmployeeBankDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeBankDetail">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeConcessionPass_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeConcessionPass" Role="EmployeeConcessionPass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeConcessionPass">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeDisciplinaryLog_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeDisciplinaryLog" Role="EmployeeDisciplinaryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeDisciplinaryLog">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeEducationHistory_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeEducationHistory" Role="EmployeeEducationHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEducationHistory">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeEmergencyContact_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeEmergencyContact" Role="EmployeeEmergencyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEmergencyContact">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeFamily_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeFamily" Role="EmployeeFamily" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeFamily">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeInsurance_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeInsurance" Role="EmployeeInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeInsurance">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeLicenses_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeLicens" Role="EmployeeLicens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLicens">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeLoans_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeLoan" Role="EmployeeLoan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLoan">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePaySlips_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeePaySlip" Role="EmployeePaySlip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeePaySlip">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePensions_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeePension" Role="EmployeePension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeePension">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReferences_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeReference" Role="EmployeeReference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeReference">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeRemuneration_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeRemuneration" Role="EmployeeRemuneration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeRemuneration">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTimeZone_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeTimeZone" Role="EmployeeTimeZone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeTimeZone">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTraining_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeTraining" Role="EmployeeTraining" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeTraining">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmploymentHistory_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeEmploymentHistory" Role="EmployeeEmploymentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEmploymentHistory">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaveBalance_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeLeaveBalance" Role="EmployeeLeaveBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLeaveBalance">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leaves_Employee">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeLeaf" Role="EmployeeLeaf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLeaf">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SanmolModelStoreContainer" CdmEntityContainer="SanmolEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="SanmolModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Edesign" ColumnName="Edesign" />
+                <ScalarProperty Name="Emob" ColumnName="Emob" />
+                <ScalarProperty Name="Eaddr" ColumnName="Eaddr" />
+                <ScalarProperty Name="Etype" ColumnName="Etype" />
+                <ScalarProperty Name="Ename" ColumnName="Ename" />
+                <ScalarProperty Name="Eid" ColumnName="Eid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Assessments">
+            <EntityTypeMapping TypeName="SanmolModel.Assessment">
+              <MappingFragment StoreEntitySet="Assessment">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="HRProgress" ColumnName="HRProgress" />
+                <ScalarProperty Name="ManagerProgress" ColumnName="ManagerProgress" />
+                <ScalarProperty Name="ReviewerProgress" ColumnName="ReviewerProgress" />
+                <ScalarProperty Name="UserProgress" ColumnName="UserProgress" />
+                <ScalarProperty Name="TotalQuestions" ColumnName="TotalQuestions" />
+                <ScalarProperty Name="AssessmentSubType" ColumnName="AssessmentSubType" />
+                <ScalarProperty Name="AssessmentType" ColumnName="AssessmentType" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="AssessmentName" ColumnName="AssessmentName" />
+                <ScalarProperty Name="ReqNo" ColumnName="ReqNo" />
+                <ScalarProperty Name="AssessmentId" ColumnName="AssessmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BasicInfoes">
+            <EntityTypeMapping TypeName="SanmolModel.BasicInfo">
+              <MappingFragment StoreEntitySet="BasicInfo">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Skills" ColumnName="Skills" />
+                <ScalarProperty Name="PaidOffDaysPerYear" ColumnName="PaidOffDaysPerYear" />
+                <ScalarProperty Name="LinkedInUrl" ColumnName="LinkedInUrl" />
+                <ScalarProperty Name="Competency" ColumnName="Competency" />
+                <ScalarProperty Name="HurricaneZone" ColumnName="HurricaneZone" />
+                <ScalarProperty Name="CostCenterAddress" ColumnName="CostCenterAddress" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="ZoneManagerId" ColumnName="ZoneManagerId" />
+                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
+                <ScalarProperty Name="HurricanePOCPhone" ColumnName="HurricanePOCPhone" />
+                <ScalarProperty Name="HurricanePOCEmail" ColumnName="HurricanePOCEmail" />
+                <ScalarProperty Name="OfficeEmail" ColumnName="OfficeEmail" />
+                <ScalarProperty Name="PersonalEmail" ColumnName="PersonalEmail" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="EmployeeType" ColumnName="EmployeeType" />
+                <ScalarProperty Name="PayType" ColumnName="PayType" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DOJ" ColumnName="DOJ" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Eid" ColumnName="Eid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="SanmolModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CWorkDay" ColumnName="CWorkDay" />
+                <ScalarProperty Name="CEmpCnt" ColumnName="CEmpCnt" />
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeBankDetails">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeBankDetail">
+              <MappingFragment StoreEntitySet="EmployeeBankDetails">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="SwiftCode" ColumnName="SwiftCode" />
+                <ScalarProperty Name="MICR" ColumnName="MICR" />
+                <ScalarProperty Name="IFSC" ColumnName="IFSC" />
+                <ScalarProperty Name="IBAN" ColumnName="IBAN" />
+                <ScalarProperty Name="BankAddress" ColumnName="BankAddress" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="AccType" ColumnName="AccType" />
+                <ScalarProperty Name="AccNo" ColumnName="AccNo" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="BankId" ColumnName="BankId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeConcessionPasses">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeConcessionPass">
+              <MappingFragment StoreEntitySet="EmployeeConcessionPass">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="ValidFromDate" ColumnName="ValidFromDate" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="PassNumber" ColumnName="PassNumber" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PassId" ColumnName="PassId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeDisciplinaryLogs">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeDisciplinaryLog">
+              <MappingFragment StoreEntitySet="EmployeeDisciplinaryLog">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ReviewedBy" ColumnName="ReviewedBy" />
+                <ScalarProperty Name="EmployeeSigned" ColumnName="EmployeeSigned" />
+                <ScalarProperty Name="EmployeeComments" ColumnName="EmployeeComments" />
+                <ScalarProperty Name="ManagerNotes" ColumnName="ManagerNotes" />
+                <ScalarProperty Name="HRNotes" ColumnName="HRNotes" />
+                <ScalarProperty Name="Brief" ColumnName="Brief" />
+                <ScalarProperty Name="Incident" ColumnName="Incident" />
+                <ScalarProperty Name="IncidentDate" ColumnName="IncidentDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="DisciplinaryLogId" ColumnName="DisciplinaryLogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeEducationHistories">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeEducationHistory">
+              <MappingFragment StoreEntitySet="EmployeeEducationHistory">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="EducationType" ColumnName="EducationType" />
+                <ScalarProperty Name="Stream" ColumnName="Stream" />
+                <ScalarProperty Name="IsInternship" ColumnName="IsInternship" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="CompletedDate" ColumnName="CompletedDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Course" ColumnName="Course" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EducationId" ColumnName="EducationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeEmergencyContacts">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeEmergencyContact">
+              <MappingFragment StoreEntitySet="EmployeeEmergencyContact">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Relationship" ColumnName="Relationship" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmergencyContactId" ColumnName="EmergencyContactId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeEmploymentHistories">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeEmploymentHistory">
+              <MappingFragment StoreEntitySet="EmployeeEmploymentHistory">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="RolePerformed" ColumnName="RolePerformed" />
+                <ScalarProperty Name="ExitReason" ColumnName="ExitReason" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="EmploymentType" ColumnName="EmploymentType" />
+                <ScalarProperty Name="DateOfExit" ColumnName="DateOfExit" />
+                <ScalarProperty Name="DateOfJoining" ColumnName="DateOfJoining" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="EmployerName" ColumnName="EmployerName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmploymentHistoryId" ColumnName="EmploymentHistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeFamilies">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeFamily">
+              <MappingFragment StoreEntitySet="EmployeeFamily">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+                <ScalarProperty Name="IsWPDependent" ColumnName="IsWPDependent" />
+                <ScalarProperty Name="IsNominee" ColumnName="IsNominee" />
+                <ScalarProperty Name="IsBIP" ColumnName="IsBIP" />
+                <ScalarProperty Name="Relationship" ColumnName="Relationship" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="FamilyId" ColumnName="FamilyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeInsurances">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeInsurance">
+              <MappingFragment StoreEntitySet="EmployeeInsurance">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="InsurancePlan" ColumnName="InsurancePlan" />
+                <ScalarProperty Name="PaySchedule" ColumnName="PaySchedule" />
+                <ScalarProperty Name="RenewDate" ColumnName="RenewDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="InsuranceName" ColumnName="InsuranceName" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="InsuranceId" ColumnName="InsuranceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeLeaveBalances">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeLeaveBalance">
+              <MappingFragment StoreEntitySet="EmployeeLeaveBalance">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="BalanceLeave" ColumnName="BalanceLeave" />
+                <ScalarProperty Name="LeaveWithoutPaidCnt" ColumnName="LeaveWithoutPaidCnt" />
+                <ScalarProperty Name="LeavePaidCnt" ColumnName="LeavePaidCnt" />
+                <ScalarProperty Name="LeaveCnt" ColumnName="LeaveCnt" />
+                <ScalarProperty Name="BalanceForwardCnt" ColumnName="BalanceForwardCnt" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LeaveType" ColumnName="LeaveType" />
+                <ScalarProperty Name="FinancialYear" ColumnName="FinancialYear" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LeaveBalanceId" ColumnName="LeaveBalanceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeLeaves">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeLeaf">
+              <MappingFragment StoreEntitySet="EmployeeLeaves">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ManagerNotes" ColumnName="ManagerNotes" />
+                <ScalarProperty Name="HRNotes" ColumnName="HRNotes" />
+                <ScalarProperty Name="ApprovedByHR" ColumnName="ApprovedByHR" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+                <ScalarProperty Name="PhoneDuringLeave" ColumnName="PhoneDuringLeave" />
+                <ScalarProperty Name="BackupDuringLeave" ColumnName="BackupDuringLeave" />
+                <ScalarProperty Name="AddressDuringLeave" ColumnName="AddressDuringLeave" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="TotalLeavesPaid" ColumnName="TotalLeavesPaid" />
+                <ScalarProperty Name="IsHalfDayEnd" ColumnName="IsHalfDayEnd" />
+                <ScalarProperty Name="IsHalfDayStart" ColumnName="IsHalfDayStart" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="LeaveType" ColumnName="LeaveType" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LeaveId" ColumnName="LeaveId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeLicenses">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeLicens">
+              <MappingFragment StoreEntitySet="EmployeeLicenses">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="LicenseType" ColumnName="LicenseType" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LicenseId" ColumnName="LicenseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeLoans">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeLoan">
+              <MappingFragment StoreEntitySet="EmployeeLoans">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+                <ScalarProperty Name="ApplicationDate" ColumnName="ApplicationDate" />
+                <ScalarProperty Name="RequestedAmount" ColumnName="RequestedAmount" />
+                <ScalarProperty Name="LoanType" ColumnName="LoanType" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LoanId" ColumnName="LoanId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeePaySlips">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeePaySlip">
+              <MappingFragment StoreEntitySet="EmployeePaySlips">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="LeaveWithoutPayHours" ColumnName="LeaveWithoutPayHours" />
+                <ScalarProperty Name="PaidLeaveHours" ColumnName="PaidLeaveHours" />
+                <ScalarProperty Name="PaidLeaves" ColumnName="PaidLeaves" />
+                <ScalarProperty Name="ActualHours" ColumnName="ActualHours" />
+                <ScalarProperty Name="ActualDays" ColumnName="ActualDays" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="NetSalary" ColumnName="NetSalary" />
+                <ScalarProperty Name="TotalDeduction" ColumnName="TotalDeduction" />
+                <ScalarProperty Name="GrossSalary" ColumnName="GrossSalary" />
+                <ScalarProperty Name="BasicSalary" ColumnName="BasicSalary" />
+                <ScalarProperty Name="SalaryProcessDate" ColumnName="SalaryProcessDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PaySlipId" ColumnName="PaySlipId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeePensions">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeePension">
+              <MappingFragment StoreEntitySet="EmployeePensions">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AccountOpenDate" ColumnName="AccountOpenDate" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="UAN" ColumnName="UAN" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PensionId" ColumnName="PensionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeReferences">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeReference">
+              <MappingFragment StoreEntitySet="EmployeeReferences">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Relation" ColumnName="Relation" />
+                <ScalarProperty Name="ReferenceName" ColumnName="ReferenceName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="ReferenceId" ColumnName="ReferenceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeRemunerations">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeRemuneration">
+              <MappingFragment StoreEntitySet="EmployeeRemuneration">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="PayRatePerHour" ColumnName="PayRatePerHour" />
+                <ScalarProperty Name="SalaryPerAnnum" ColumnName="SalaryPerAnnum" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="RemunerationId" ColumnName="RemunerationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeTimeZones">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeTimeZone">
+              <MappingFragment StoreEntitySet="EmployeeTimeZone">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ClockName" ColumnName="ClockName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="TimeZoneId" ColumnName="TimeZoneId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeTrainings">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeTraining">
+              <MappingFragment StoreEntitySet="EmployeeTraining">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CompletedDate" ColumnName="CompletedDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="IsInternship" ColumnName="IsInternship" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="TrainingType" ColumnName="TrainingType" />
+                <ScalarProperty Name="Institute" ColumnName="Institute" />
+                <ScalarProperty Name="Stream" ColumnName="Stream" />
+                <ScalarProperty Name="TrainingName" ColumnName="TrainingName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="logins">
+            <EntityTypeMapping TypeName="SanmolModel.login">
+              <MappingFragment StoreEntitySet="login">
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="registrations">
+            <EntityTypeMapping TypeName="SanmolModel.registration">
+              <MappingFragment StoreEntitySet="registration">
+                <ScalarProperty Name="Cpassword" ColumnName="Cpassword" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

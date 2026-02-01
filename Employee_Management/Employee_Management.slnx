@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../EmployeeCRUD/EmployeeCRUD.csproj" Id="9348f382-7179-4380-a403-33b92ea0757c" />
   <Project Path="Employee_Management.csproj" Id="5aafce94-730d-46b1-bd05-076a709c6ff3" />
 </Solution>
