@@ -1,0 +1,65 @@
+﻿@model EmployeeVM
+@using EmployeeCRUD.Controllers
+
+
+@if (Model.EmploymentHistory != null && Model.EmploymentHistory.Any())
+{
+    foreach (var emp in Model.EmploymentHistory)
+    {
+        <tr>
+            <td>
+                <button class="btn4"
+                        type="button"
+                        onclick="OpenPopUpEdit(@emp.EmploymentHistoryId)">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                |
+                <button class="btn4"
+                        type="button"
+                        onclick="OpenPopUpDelete(@emp.EmploymentHistoryId, this)">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+
+            </td>
+            <td>@(emp.EmployerName ?? "-")</td>
+            <td>@(emp.Designation ?? "-")</td>
+            <td>@(emp.DateOfJoining.ToString("yyyy-MM-dd") ?? "-")</td>
+            <td>@(emp.DateOfExit != null ? emp.DateOfExit.Value.ToString("yyyy-MM-dd") : "-")</td>
+            <td>
+                @{
+                    if (string.IsNullOrEmpty(emp.EmploymentType))
+                    {
+                        <text>-</text>
+                    }
+                    else
+                    {
+                        int typeValue;
+                        if (int.TryParse(emp.EmploymentType, out typeValue) && Enum.IsDefined(typeof(EmployeeController.EmployeeType), typeValue))
+                        {
+                            var enumValue = (EmployeeController.EmployeeType)typeValue;
+                            var displayText = enumValue.ToString().Replace("_", " ");
+                            @displayText
+                        }
+                        else
+                        {
+                            @emp.EmploymentType
+                        }
+                    }
+                }
+            </td>
+            <td>@(emp.IsActive == true ? "Yes" : "No")</td>
+            <td>@(emp.ExitReason ?? "-")</td>
+            <td>@(emp.RolePerformed ?? "-")</td>
+            <td>@(emp.CreatedBy ?? "-")</td>
+            <td>@(emp.CreatedDate != null ? emp.CreatedDate.Value.ToString("yyyy-MM-dd") : "-")</td>
+            <td>@(emp.UpdatedBy ?? "-")</td>
+            <td>@(emp.UpdatedDate != null ? emp.UpdatedDate.Value.ToString("yyyy-MM-dd") : "-")</td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="13" style="text-align: center; padding: 20px; color: #888;">No employment history records found.</td>
+    </tr>
+}

@@ -375,8 +375,8 @@ namespace EmployeeCRUD.Controllers
         }
 
 
-
         #region EmployeeHistory
+        
         [HttpGet]
         public ActionResult AddEmploymentHistory(int employeeId)
         {
@@ -418,14 +418,10 @@ namespace EmployeeCRUD.Controllers
         [HttpPost]
         public ActionResult DeleteEmployeeHistory(int id)
         {
-            var history = db.EmployeeEmploymentHistories
-                            .FirstOrDefault(x => x.EmploymentHistoryId == id);
+            bool result = DeleteEntity<EmployeeEmploymentHistory>(x => x.EmploymentHistoryId == id);
 
-            if (history == null)
+            if (!result)
                 return Json(new { success = false, message = "Record not found" });
-
-            db.EmployeeEmploymentHistories.Remove(history);
-            db.SaveChanges();
 
             return Json(new { success = true });
         }
@@ -485,11 +481,51 @@ namespace EmployeeCRUD.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpGet]
+        public ActionResult SearchEmploymentHistory(int employeeId, string search)
+        {
+            var employee = db.Employees.FirstOrDefault(x => x.Eid == employeeId);
+            if (employee == null)
+                return HttpNotFound();
+
+            var history = db.EmployeeEmploymentHistories
+                .Where(x => x.EmployeeId == employeeId);
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                history = history.Where(x =>
+                    x.EmployerName.Contains(search) ||
+                    x.Designation.Contains(search) ||
+                    x.RolePerformed.Contains(search)
+                );
+            }
+
+            var vm = new EmployeeVM
+            {
+                Employee = employee,
+                EmploymentHistory = history
+                    .OrderByDescending(x => x.DateOfJoining) // ✅ keep sorting
+                    .ToList()
+            };
+
+            return PartialView("_EmploymentHistoryRows", vm);
+        }
+
         #endregion EmployeeHistory
-        
-        
+
         #endregion Profile View
 
+        public bool DeleteEntity<TEntity>(Func<TEntity, bool> predicate) where TEntity : class
+        {
+            var entity = db.Set<TEntity>().FirstOrDefault(predicate);
+            if (entity == null)
+                return false;
+
+            db.Set<TEntity>().Remove(entity);
+            db.SaveChanges();
+            return true;
+        }
 
         protected override void Dispose(bool disposing)
         { 

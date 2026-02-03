@@ -335,6 +335,7 @@
     <Content Include="Views\Employee\_Banks.cshtml" />
     <Content Include="Views\Employee\EditEmploymentHistoryForm.cshtml" />
     <Content Include="Views\Employee\AddBasicInfoForm.cshtml" />
+    <Content Include="Views\Employee\_EmploymentHistoryRows.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
