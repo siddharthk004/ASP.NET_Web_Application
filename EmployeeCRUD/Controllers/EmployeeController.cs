@@ -30,6 +30,7 @@ namespace EmployeeCRUD.Controllers
         public ActionResult Index(int top = 10,string searchtxt = null,string sortBy = "Ename",string sortDir = "asc",int page = 1,int pageSize = 10)
         {
             IQueryable<Employee> query = db.Employees;
+            //IQueryable<Employee> query = db.Employees.Where(x => x.IsActive);
 
             if (!string.IsNullOrWhiteSpace(searchtxt))
             {
@@ -155,7 +156,8 @@ namespace EmployeeCRUD.Controllers
             var employee = db.Employees.Find(id);
             if (employee != null)
             {
-                db.Employees.Remove(employee);
+                employee.IsActive = false;
+                //db.Employees.Remove(employee);
                 db.SaveChanges();
             }
             return RedirectToAction("Index");
@@ -163,88 +165,272 @@ namespace EmployeeCRUD.Controllers
 
         public ActionResult Created()
         {
+
+            ViewBag.EmploymentTypes = db.EmployeeTypeMasters
+                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Name
+                })
+                .ToList();
+
+            ViewBag.Roles = db.Roles
+                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Name
+                })
+                .ToList();
             return PartialView("Created", new Employee());
+        }
+
+        [HttpPost]
+        public JsonResult CheckUsernameAvailability(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                return Json(new { available = false, message = "Username is required" });
+
+            // Check in logins table
+            var existsInLogins = db.Logins.Any(l => l.UserName.ToLower() == username.ToLower());
+
+            bool isAvailable = !existsInLogins;
+
+            return Json(new
+            {
+                available = isAvailable,
+                message = isAvailable ? "Username is available" : "Username already exists"
+            });
+        }
+      
+        [HttpGet]
+        public JsonResult IsUsernameAvailable(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                return Json(true, JsonRequestBehavior.AllowGet);
+
+            bool exists = db.Logins.Any(x => x.UserName == username);
+
+            // true = valid, false = already exists
+            return Json(!exists, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Edit(int? id = null)
         {
             var emp = db.Employees.Find(id);
             if (emp == null) return HttpNotFound();
+
+            // Populate dropdown data
+            ViewBag.EmploymentTypes = db.EmployeeTypeMasters
+                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Name,
+                    Selected = x.Name == emp.Etype
+                })
+                .ToList();
+
+            // Get login info by Employee ID (not by username)
+            var userLogin = db.Logins.FirstOrDefault(l => l.Eid == id);
+            var mail = db.BasicInfoes.FirstOrDefault(l => l.Eid == id);
+
+            ViewBag.UserRole = userLogin != null ? userLogin.Role : "Not Assigned";
+            ViewBag.UserNameVB = userLogin != null ? userLogin.UserName : emp.Ename;  // Fallback to emp.Ename
+            ViewBag.Mail = mail != null ? mail.PersonalEmail : "";
+
             return View("Edit", emp);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Employee model)
+        public ActionResult Edit(Employee model, string username, string password, string email)
         {
             if (!ModelState.IsValid)
-                return View("Edit", model);
+                return Json(new { success = false, message = "Invalid data" });
 
-            try
-            {
-                var emp = db.Employees.Find(model.Eid);
-                if (emp == null)
-                {
-                    return Json(new { success = false, message = "Employee not found" });
-                }
-
-                emp.Ename = model.Ename;
-                emp.Etype = model.Etype;
-                emp.Eaddr = model.Eaddr;
-                emp.Emob = model.Emob;
-                emp.Edesign = model.Edesign;
-                emp.IsActive = model.IsActive;
-
-                db.SaveChanges();
-
-                return Json(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public ActionResult Save(Employee model)
-        {
-            if (!ModelState.IsValid)
-                return PartialView("Create", model);
-
-            if (model.Eid == 0)
+            using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    db.Employees.Add(model);
+                    // 1. Update Employee
+                    var emp = db.Employees.Find(model.Eid);
+                    if (emp == null)
+                    {
+                        return Json(new { success = false, message = "Employee not found" });
+                    }
+
+                    emp.Ename = model.Ename;
+                    emp.Etype = model.Etype;
+                    emp.Eaddr = model.Eaddr ?? "";
+                    emp.Emob = model.Emob ?? "";
+                    emp.Edesign = model.Edesign ?? "";
+                    emp.IsActive = model.IsActive;
+
+                    // 2. Update Password if provided
+                    if (!string.IsNullOrWhiteSpace(password))
+                    {
+                        var login = db.Logins.FirstOrDefault(l => l.Eid == model.Eid);
+                        if (login != null)
+                        {
+                            login.Password = password; // TODO: Hash this!
+                        }
+                    }
+
+                    // 3. Update Email if changed
+                    if (!string.IsNullOrWhiteSpace(email))
+                    {
+                        var basicInfo = db.BasicInfoes.FirstOrDefault(b => b.Eid == model.Eid);
+                        if (basicInfo != null)
+                        {
+                            basicInfo.PersonalEmail = email;
+                        }
+                        else
+                        {
+                            // Create BasicInfo if doesn't exist
+                            db.BasicInfoes.Add(new BasicInfo
+                            {
+                                Eid = model.Eid,
+                                PersonalEmail = email,
+                                CreatedDate = DateTime.Now
+                            });
+                        }
+                    }
+
                     db.SaveChanges();
+                    transaction.Commit();
+
+                    return Json(new { success = true });
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    System.Diagnostics.Debug.WriteLine($"Edit Error: {ex.Message}");
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+        }
+        
+        
+        [HttpPost]
+        public ActionResult Save(Employee model, string username, string password, String role, string email)
+        {
+            // Debug logging
+            System.Diagnostics.Debug.WriteLine($"Save called - Username: {username}, Password: {password}, Role: {role}, Email: {email}");
+            System.Diagnostics.Debug.WriteLine($"Model - Ename: {model.Ename}, Etype: {model.Etype}, IsActive: {model.IsActive}");
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, message = "Invalid data: " + string.Join(", ", errors) });
+            }
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    // 1. Validate required fields
+                    if (string.IsNullOrWhiteSpace(username))
+                        return Json(new { success = false, message = "Username is required" });
+
+                    if (string.IsNullOrWhiteSpace(password))
+                        return Json(new { success = false, message = "Password is required" });
+
+                    if (string.IsNullOrWhiteSpace(role))
+                        return Json(new { success = false, message = "Role is required" });
+
+                    // 2. Check username uniqueness
+                    bool usernameExists = db.Logins.Any(x => x.UserName.ToLower() == username.ToLower());
+                    if (usernameExists)
+                    {
+                        return Json(new { success = false, message = "Username already exists" });
+                    }
+
+                    // 3. Save Employee
+                    var employee = new Employee
+                    {
+                        Ename = model.Ename, 
+                        Etype = model.Etype,
+                        Eaddr = model.Eaddr ?? "", 
+                        Emob = model.Emob ?? "",
+                        Edesign = model.Edesign ?? "",
+                        IsActive = model.IsActive
+                    };
+
+                    db.Employees.Add(employee);
+                    db.SaveChanges(); 
+
+                    int employeeId = employee.Eid;
+
+                    // 4. Save Login
+                    var login = new Login
+                    {
+                        UserName = username,
+                        Password = password,  
+                        Role = role,
+                        Eid = employeeId
+                    };
+
+                    db.Logins.Add(login);
+                    db.SaveChanges();
+
+                    // 5. Save Basic Info (Email) - Only if email provided
+                    if (!string.IsNullOrWhiteSpace(email))
+                    {
+                        var basicInfo = new BasicInfo
+                        {
+                            Eid = employeeId,
+                            PersonalEmail = email,
+                            CreatedDate = DateTime.Now
+                        };
+
+                        db.BasicInfoes.Add(basicInfo);
+                        db.SaveChanges();
+                    }
+
+                    // 6. Commit all
+                    transaction.Commit();
+
                     return Json(new { success = true });
                 }
                 catch (System.Data.Entity.Validation.DbEntityValidationException ex)
                 {
-                    foreach (var validationErrors in ex.EntityValidationErrors)
+                    transaction.Rollback();
+
+                    // Get detailed validation errors
+                    var errorMessages = new List<string>();
+                    foreach (var validationError in ex.EntityValidationErrors)
                     {
-                        foreach (var validationError in validationErrors.ValidationErrors)
+                        var entityName = validationError.Entry.Entity.GetType().Name;
+                        foreach (var error in validationError.ValidationErrors)
                         {
-                            System.Diagnostics.Debug.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                            errorMessages.Add($"{entityName}.{error.PropertyName}: {error.ErrorMessage}");
+                            System.Diagnostics.Debug.WriteLine($"Validation Error - {entityName}.{error.PropertyName}: {error.ErrorMessage}");
                         }
                     }
-                    throw;
+
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Validation failed: " + string.Join("; ", errorMessages)
+                    });
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
+
+                    return Json(new
+                    {
+                        success = false,
+                        message = ex.Message + (ex.InnerException != null ? " - " + ex.InnerException.Message : "")
+                    });
                 }
             }
-            else
-            {
-                var emp = db.Employees.First(x => x.Eid == model.Eid);
-                emp.Ename = model.Ename;
-                emp.Etype = model.Etype;
-                emp.Eaddr = model.Eaddr;
-                emp.Emob = model.Emob;
-                emp.Edesign = model.Edesign;
-                emp.IsActive = model.IsActive;
-
-                db.SaveChanges();
-                return Json(new { success = true });
-            }
         }
+
         #endregion
 
 
@@ -380,8 +566,16 @@ namespace EmployeeCRUD.Controllers
         [HttpGet]
         public ActionResult AddEmploymentHistory(int employeeId)
         {
+            ViewBag.EmploymentTypes = db.EmployeeTypeMasters
+                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Name
+                })
+                .ToList();
 
-            ViewBag.EmploymentTypes = Enum.GetValues(typeof(EmployeeType))
+            ViewBag.EmployeeTypes = Enum.GetValues(typeof(EmployeeType))
                                   .Cast<EmployeeType>()
                                   .Select(e => new SelectListItem
                                   {
@@ -438,14 +632,24 @@ namespace EmployeeCRUD.Controllers
             if (history == null)
                 return HttpNotFound();
 
+            #region enum
+            //ViewBag.EmploymentTypes = Enum.GetValues(typeof(EmployeeType))
+            //                      .Cast<EmployeeType>()
+            //                      .Select(e => new SelectListItem
+            //                      {
+            //                          Text = e.ToString(),
+            //                          Value = ((int)e).ToString()
+            //                      }).ToList();
+            #endregion
 
-            ViewBag.EmploymentTypes = Enum.GetValues(typeof(EmployeeType))
-                                  .Cast<EmployeeType>()
-                                  .Select(e => new SelectListItem
-                                  {
-                                      Text = e.ToString(),
-                                      Value = ((int)e).ToString()
-                                  }).ToList();
+            ViewBag.EmploymentTypes = db.EmployeeTypeMasters
+                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Name
+                })
+                .ToList();
             return PartialView("EditEmploymentHistoryForm", history);
         }
 
@@ -513,6 +717,24 @@ namespace EmployeeCRUD.Controllers
         }
 
         #endregion EmployeeHistory
+
+        #region View Permissions
+
+        [HttpGet]
+        public ActionResult ViewPermissions(int employeeId, string role)
+        {
+            var employee = db.Employees.Find(employeeId);
+            if (employee == null)
+                return HttpNotFound();
+
+            ViewBag.EmployeeName = employee.Ename;
+            ViewBag.EmployeeId = employeeId;
+            ViewBag.UserRoles = role;
+            
+            return View();
+        }
+
+        #endregion View Permissions
 
         #endregion Profile View
 

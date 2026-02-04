@@ -27,8 +27,6 @@
         <EntityTypeShape EntityType="SanmolModel.EmployeeRemuneration" Width="1.5" PointX="11.75" PointY="10.125" />
         <EntityTypeShape EntityType="SanmolModel.EmployeeTimeZone" Width="1.5" PointX="5.75" PointY="35" />
         <EntityTypeShape EntityType="SanmolModel.EmployeeTraining" Width="1.5" PointX="3.875" PointY="32.5" />
-        <EntityTypeShape EntityType="SanmolModel.login" Width="1.5" PointX="2.375" PointY="2.25" />
-        <EntityTypeShape EntityType="SanmolModel.registration" Width="1.5" PointX="0.625" PointY="0.5" />
         <AssociationConnector Association="SanmolModel.FK_Assessment_Employee" />
         <AssociationConnector Association="SanmolModel.FK_BasicInfo_Employee" />
         <AssociationConnector Association="SanmolModel.FK_EmployeeBankDetails_Employee" />
@@ -50,6 +48,10 @@
         <AssociationConnector Association="SanmolModel.FK_EmploymentHistory_Employee" />
         <AssociationConnector Association="SanmolModel.FK_LeaveBalance_Employee" />
         <AssociationConnector Association="SanmolModel.FK_Leaves_Employee" />
+        <EntityTypeShape EntityType="SanmolModel.EmployeeTypeMaster" Width="1.5" PointX="4.125" PointY="0.5" />
+        <EntityTypeShape EntityType="SanmolModel.Role" Width="1.5" PointX="7.5" PointY="0.5" />
+        <EntityTypeShape EntityType="SanmolModel.Login" Width="1.5" PointX="10.5" PointY="22" />
+        <AssociationConnector Association="SanmolModel.FK__Login__Eid__489AC854" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

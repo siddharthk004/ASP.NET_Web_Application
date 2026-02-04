@@ -1,80 +1,257 @@
-﻿@model EmployeeCRUD.Models.Employee
+@model EmployeeCRUD.Models.Employee
 
 @{
     ViewBag.Title = "Edit Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <style>
     body {
-        font-family: 'Segoe UI', sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+        padding: 20px;
     }
 
     .popup-container {
+        background: white;
         border-radius: 12px;
-        padding: 25px;
-        max-width: 800px;
+        padding: 30px;
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
-    .popup-header h2 {
-        margin: 0 0 20px;
-        color: #2c3e50;
+    .popup-header {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
     }
+
+        .popup-header h2 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+            .popup-header h2 i {
+                color: #007bff;
+                margin-right: 10px;
+            }
 
     .form-section {
-        margin-top: 15px;
+        margin-top: 20px;
     }
 
-    .d-flex {
+    .form-row {
         display: flex;
         gap: 20px;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 
-    .left-side, .right-side {
-        width: 50%;
+    .form-group {
+        flex: 1;
+    }
+
+        .form-group label {
+            display: block;
+            color: #495057;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+    .required::after {
+        content: " *";
+        color: #dc3545;
     }
 
     .form-control {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid #e0e0e0;
         border-radius: 8px;
-        padding: 10px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+
+        .form-control.error {
+            border-color: #dc3545;
+        }
+
+    .password-wrapper {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+        font-size: 16px;
+        padding: 5px;
+    }
+
+        .password-toggle:hover {
+            color: #007bff;
+        }
+
+    select.form-control {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23495057' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 35px;
     }
 
     .checkbox-wrapper {
-        margin-top: 32px;
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 8px;
     }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: #495057;
+        }
+
+    .role-display {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 12px;
+        background: #f8f9fa;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+        .role-badge i {
+            font-size: 16px;
+        }
+
+    .btn-permissions {
+        padding: 8px 16px;
+        background: #17a2b8;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .btn-permissions:hover {
+            background: #138496;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(23,162,184,0.3);
+        }
+
+        .btn-permissions i {
+            font-size: 14px;
+        }
+
+    .validation-summary {
+        background: #fee;
+        border: 1px solid #fcc;
+        color: #c33;
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+    }
+
+        .error-message.show {
+            display: block;
+        }
 
     .button-group {
         display: flex;
         justify-content: center;
         gap: 15px;
-        margin-top: 25px;
+        margin-top: 30px;
+        padding-top: 10px;
     }
 
-    .btn-save {
-        background: #198754;
-        color: #fff;
-        border-radius: 25px;
-        padding: 10px 22px;
+    .btn {
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
         border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
 
-    .btn-cancel {
-        background: #dc3545;
-        color: #fff;
-        border-radius: 25px;
-        padding: 10px 22px;
-        border: none;
-    }
-
-        .btn-save:hover,
-        .btn-cancel:hover {
-            opacity: 0.9;
+        .btn i {
+            font-size: 16px;
         }
 
-    .validation-summary {
-        color: red;
-        margin-bottom: 10px;
+    .btn-update {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
     }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,123,255,0.4);
+        }
+
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+    }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
 </style>
 
 <div class="popup-container">
@@ -94,50 +271,133 @@
 
             @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
 
-            <div class="d-flex">
-                <div class="form-group left-side">
-                    @Html.LabelFor(m => m.Ename)
-                    @Html.TextBoxFor(m => m.Ename, new { @class = "form-control" })
+            <!-- Row 1: Username & Password -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">Username</label>
+                    <input type="text"
+                           name="username"
+                           id="username"
+                           class="form-control"
+                           readonly
+                           style="background-color: #e9ecef; cursor: not-allowed;"
+                           value="@ViewBag.UserNameVB" />
+                    <small style="color: #6c757d; margin-top: 5px; display: block;">
+                        <i class="fas fa-lock"></i> Username cannot be changed
+                    </small>
                 </div>
 
-                <div class="form-group right-side">
-                    @Html.LabelFor(m => m.Etype)
-                    @Html.TextBoxFor(m => m.Etype, new { @class = "form-control" })
+                <div class="form-group">
+                    <label>Change Password</label>
+                    <div class="password-wrapper">
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               class="form-control"
+                               placeholder="Leave blank to keep current password" />
+                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                    </div>
+                    <small style="color: #6c757d;">Leave empty to keep existing password</small>
                 </div>
             </div>
 
-            <div class="d-flex">
-                <div class="form-group left-side">
-                    @Html.LabelFor(m => m.Eaddr)
-                    @Html.TextBoxFor(m => m.Eaddr, new { @class = "form-control" })
+            <!-- Row 2: Employee Name & Employee Type -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">Employee Full Name</label>
+                    @Html.TextBoxFor(m => m.Ename, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Enter full name",
+                        required = "required",
+                        id = "empName"
+                    })
+                    <span class="error-message" id="empName-error">Employee name is required</span>
                 </div>
 
-                <div class="form-group right-side">
-                    @Html.LabelFor(m => m.Emob)
-                    @Html.TextBoxFor(m => m.Emob, new { @class = "form-control" })
+                <div class="form-group">
+                    <label class="required">Employee Type</label>
+                    @Html.DropDownListFor(m => m.Etype, ViewBag.EmploymentTypes as List<SelectListItem>, "-- Select Type --", new { @class = "form-control", id = "empType", required = "required" })
+                    <span class="error-message" id="empType-error">Employee type is required</span>
                 </div>
             </div>
 
-            <div class="d-flex">
-                <div class="form-group left-side">
-                    @Html.LabelFor(m => m.Edesign)
-                    @Html.TextBoxFor(m => m.Edesign, new { @class = "form-control" })
+            <!-- Row 3: Address & Mobile -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Address</label>
+                    @Html.TextBoxFor(m => m.Eaddr, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Enter address"
+                    })
                 </div>
 
-                <div class="form-group right-side active-status">
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    @Html.TextBoxFor(m => m.Emob, new
+                    {
+                        @class = "form-control",
+                        placeholder = "10-digit mobile number",
+                        type = "tel",
+                        pattern = "[0-9]{10}",
+                        maxlength = "10"
+                    })
+                </div>
+            </div>
+
+            <!-- Row 4: Designation & Email -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Designation</label>
+                    @Html.TextBoxFor(m => m.Edesign, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Job designation"
+                    })
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email"
+                           name="email"
+                           id="email"
+                           class="form-control"
+                           placeholder="Enter email address"
+                           value="@ViewBag.Mail" />
+                </div>
+            </div>
+
+            <!-- Row 5: Role & Active Status -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Role</label>
+                    <div class="role-display">
+                        <span class="">
+                            @(ViewBag.UserRole ?? "Not Assigned")
+                        </span>
+                        <button type="button" class="btn-permissions" onclick="viewPermissions()">
+                            <i class="fas fa-key"></i> View Permissions
+                        </button>
+                    </div>
+                    <small style="color: #6c757d; margin-top: 5px; display: block;">Contact administrator to change role</small>
+                </div>
+
+                @*<div class="form-group">
+                    <label style="visibility: hidden;">Status</label>
                     <div class="checkbox-wrapper">
                         @Html.CheckBoxFor(m => m.IsActive)
-                        @Html.LabelFor(m => m.IsActive)
+                        @Html.LabelFor(m => m.IsActive, "Active Status")
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
 
         <div class="button-group">
-            <button type="submit" class="btn-save"> 
-                <i class="fas fa-save"></i> Update
+            <button type="submit" class="btn btn-update">
+                <i class="fas fa-save"></i> Update Employee
             </button>
-            <button type="button" class="btn-cancel" onclick="window.close()">
+            <button type="button" class="btn btn-cancel" onclick="window.close()">
                 <i class="fas fa-times"></i> Cancel
             </button>
         </div>
@@ -146,27 +406,90 @@
 
 @section Scripts {
     <script>
-        $('#employeeForm').on('submit', function (e) {
-            e.preventDefault();
+        $(document).ready(function () {
+            // Password visibility toggle
+            $('#togglePassword').click(function () {
+                const passwordField = $('#password');
+                const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+                passwordField.attr('type', type);
 
-            $.ajax({
-                url: this.action,
-                type: 'POST',
-                data: $(this).serialize(),
-                success: function (res) {
-                    if (res && res.success) {
-                        if (window.opener && !window.opener.closed) {
-                            window.opener.location.reload();
-                        }
-                        window.close();
-                    } else {
-                        alert('Update failed');
-                    }
-                },
-                error: function () {
-                    alert('Server error');
+                // Toggle icon
+                $(this).toggleClass('fa-eye fa-eye-slash');
+            });
+
+            // Form submission
+            $('#employeeForm').on('submit', function (e) {
+                e.preventDefault();
+
+                // Clear previous errors
+                $('.error-message').removeClass('show');
+                $('.form-control').removeClass('error');
+
+                // Validate
+                var isValid = true;
+
+                // Username validation removed (readonly field)
+
+                if (!$('#empName').val().trim()) {
+                    $('#empName').addClass('error');
+                    $('#empName-error').addClass('show');
+                    isValid = false;
                 }
+
+                if (!$('#empType').val()) {
+                    $('#empType').addClass('error');
+                    $('#empType-error').addClass('show');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    return;
+                }
+
+                // Show loading state
+                $('.btn-update').html('<i class="fas fa-spinner fa-spin"></i> Updating...').prop('disabled', true);
+
+                $.ajax({
+                    url: this.action,
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (res) {
+                        if (res && res.success === true) {
+                            if (window.opener && !window.opener.closed) {
+                                window.opener.location.reload();
+                            }
+                            window.close();
+                        } else {
+                            alert('Error updating employee: ' + (res.message || 'Unknown error'));
+                            $('.btn-update').html('<i class="fas fa-save"></i> Update Employee').prop('disabled', false);
+                        }
+                    },
+                    error: function () {
+                        alert('Failed to update employee. Please try again.');
+                        $('.btn-update').html('<i class="fas fa-save"></i> Update Employee').prop('disabled', false);
+                    }
+                });
+            });
+
+            // Remove error on input
+            $('.form-control').on('input change', function () {
+                $(this).removeClass('error');
+                $(this).siblings('.error-message').removeClass('show');
             });
         });
+
+        // View Permissions function
+        function viewPermissions() {
+            var employeeId = @Model.Eid;
+            var userRole = '@(ViewBag.UserRole ?? "")';
+
+            // Open permissions modal/popup
+            var url = '/Employee/ViewPermissions?employeeId=' + employeeId + '&role=' + encodeURIComponent(userRole);
+            window.open(
+                url,
+                'PermissionsPopup',
+                'width=790,height=575,top=110,left=510,resizable=yes,scrollbars=yes'
+            );
+        }
     </script>
 }

@@ -1,4 +1,4 @@
-@model EmployeeCRUD.Models.EmployeeEmploymentHistory
+﻿@model EmployeeCRUD.Models.EmployeeEmploymentHistory
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -137,7 +137,6 @@
 
     .modal-footer {
         padding: 15px 25px;
-        border-top: 1px solid #dee2e6;
         text-align: right;
     }
 
@@ -171,6 +170,12 @@
         .btn-primary:hover {
             background-color: #0056b3;
         }
+
+    .disabled-input {
+        background-color: #f1f1f1;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
 </style>
 
 <div class="modal-container">
@@ -193,9 +198,10 @@
 
                 <div class="form-group">
                     <label>Type</label>
-                    @Html.DropDownListFor(m => m.EmploymentType, (IEnumerable<SelectListItem>)ViewBag.EmploymentTypes, "Select Type", new { @class = "form-control", id = "type" })
+                    @Html.DropDownListFor(m => m.EmploymentType, ViewBag.EmploymentTypes as List<SelectListItem>, "-- Select Employment Type --", new { @class = "form-control", id = "type" })
                     <span class="error-message" id="type-error">type is required</span>
                 </div>
+
             </div>
 
             <div class="form-row">
@@ -210,24 +216,35 @@
                     @Html.TextBoxFor(m => m.DateOfJoining, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", placeholder = "Choose a date", id = "dateJoining" })
                 </div>
             </div>
-
             <div class="form-row">
                 <div class="form-group">
-                    <label>Date of Ending</label>
-                    @Html.TextBoxFor(m => m.DateOfExit, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", placeholder = "Choose a date" })
+                    <label>
+                        <input type="checkbox" id="currentlyWorking" />
+                        Currently Working
+                    </label>
                 </div>
+
+                <div class="form-group">
+                    <label>Date of Ending</label>
+                    @Html.TextBoxFor(m => m.DateOfExit, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", id = "dateExit" })
+                    <span class="error-message" id="dateExit-error">
+                        Date of exit is required and must be after joining date
+                    </span>
+                </div>
+            </div>
+            <div class="form-row">
 
                 <div class="form-group">
                     <label>Roles Performed</label>
-                    @Html.TextAreaFor(m => m.RolePerformed, new { @class = "form-control", placeholder = "Roles Performed", rows = "3" })
+                    @Html.TextAreaFor(m => m.RolePerformed, new { @class = "form-control", placeholder = "Roles Performed", rows = "2" })
                 </div>
-            </div>
-
-            <div class="form-row">
                 <div class="form-group">
                     <label>Reason for Leaving</label>
                     @Html.TextAreaFor(m => m.ExitReason, new { @class = "form-control", placeholder = "Reason for Leaving", rows = "3" })
                 </div>
+            </div>
+
+            <div class="form-row">
 
                 <div class="form-group">
                     <label>Active</label>
@@ -244,8 +261,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" onclick="window.close()">Close</button>
             <button type="submit" class="btn btn-primary">Save</button>
@@ -256,38 +271,81 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            $('#currentlyWorking').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#dateExit')
+                        .val('')
+                        .prop('disabled', true)
+                        .addClass('disabled-input')
+                        .removeClass('error');
+
+                    $('#dateExit-error').removeClass('show');
+                } else {
+                    $('#dateExit')
+                        .prop('disabled', false)
+                        .removeClass('disabled-input');
+                }
+            });
+
             $('#historyForm').on('submit', function (e) {
                 e.preventDefault();
 
-                // Clear previous errors
+                // Clear previous errors FIRST
                 $('.error-message').removeClass('show');
                 $('.form-control').removeClass('error');
 
-                // Validate
+                // Declare validation flag
                 var isValid = true;
 
+                // Get values
+                var isCurrentlyWorking = $('#currentlyWorking').is(':checked');
+                var joinDate = $('#dateJoining').val();
+                var exitDate = $('#dateExit').val();
+
+                // Validate Employer
                 if (!$('#employer').val().trim()) {
                     $('#employer').addClass('error');
                     $('#employer-error').addClass('show');
                     isValid = false;
                 }
 
+                // Validate Type
                 if (!$('#type').val()) {
                     $('#type').addClass('error');
                     $('#type-error').addClass('show');
                     isValid = false;
                 }
 
+                // Validate Designation
                 if (!$('#designation').val().trim()) {
                     $('#designation').addClass('error');
                     $('#designation-error').addClass('show');
                     isValid = false;
                 }
 
+                // Validate Exit Date (only if NOT currently working)
+                if (!isCurrentlyWorking) {
+                    if (!exitDate) {
+                        $('#dateExit').addClass('error');
+                        $('#dateExit-error').text('Date of exit is required when not currently working');
+                        $('#dateExit-error').addClass('show');
+                        isValid = false;
+                    }
+                    // Exit date must be after joining date
+                    else if (joinDate && new Date(exitDate) <= new Date(joinDate)) {
+                        $('#dateExit').addClass('error');
+                        $('#dateExit-error').text('Date of exit must be after joining date');
+                        $('#dateExit-error').addClass('show');
+                        isValid = false;
+                    }
+                }
+
+                // Stop if validation failed
                 if (!isValid) {
                     return;
                 }
 
+                // Submit via AJAX
                 $.ajax({
                     url: this.action,
                     type: 'POST',
@@ -303,7 +361,7 @@
                             }
                             window.close();
                         } else {
-                            alert('Error saving employment history');
+                            alert('Error saving employment history: ' + (res.message || 'Unknown error'));
                         }
                     },
                     error: function () {

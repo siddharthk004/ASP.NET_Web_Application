@@ -424,27 +424,46 @@
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="UpdatedDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="login">
+        <EntityType Name="EmployeeTypeMaster">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="registration">
+        <EntityType Name="Login">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="100" />
-          <Property Name="contact" Type="nvarchar" MaxLength="15" />
-          <Property Name="email" Type="nvarchar" MaxLength="100" />
-          <Property Name="role" Type="nvarchar" MaxLength="50" />
-          <Property Name="password" Type="nvarchar" MaxLength="255" />
-          <Property Name="Cpassword" Type="nvarchar" MaxLength="255" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Eid" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CanCreate" Type="bit" Nullable="false" />
+          <Property Name="CanRead" Type="bit" Nullable="false" />
+          <Property Name="CanUpdate" Type="bit" Nullable="false" />
+          <Property Name="CanDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Login__Eid__489AC854">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="Eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Assessment_Employee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
           <End Role="Assessment" Type="Self.Assessment" Multiplicity="*" />
@@ -708,8 +727,13 @@
           <EntitySet Name="EmployeeRemuneration" EntityType="Self.EmployeeRemuneration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeTimeZone" EntityType="Self.EmployeeTimeZone" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeTraining" EntityType="Self.EmployeeTraining" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="login" EntityType="Self.login" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="registration" EntityType="Self.registration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeTypeMaster" EntityType="Self.EmployeeTypeMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Login__Eid__489AC854" Association="Self.FK__Login__Eid__489AC854">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
           <AssociationSet Name="FK_Assessment_Employee" Association="Self.FK_Assessment_Employee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Assessment" EntitySet="Assessment" />
@@ -818,8 +842,6 @@
           <EntitySet Name="EmployeeRemunerations" EntityType="SanmolModel.EmployeeRemuneration" />
           <EntitySet Name="EmployeeTimeZones" EntityType="SanmolModel.EmployeeTimeZone" />
           <EntitySet Name="EmployeeTrainings" EntityType="SanmolModel.EmployeeTraining" />
-          <EntitySet Name="logins" EntityType="SanmolModel.login" />
-          <EntitySet Name="registrations" EntityType="SanmolModel.registration" />
           <AssociationSet Name="FK_Assessment_Employee" Association="SanmolModel.FK_Assessment_Employee">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Assessment" EntitySet="Assessments" />
@@ -900,6 +922,13 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="EmployeeLeaf" EntitySet="EmployeeLeaves" />
           </AssociationSet>
+          <EntitySet Name="EmployeeTypeMasters" EntityType="SanmolModel.EmployeeTypeMaster" />
+          <EntitySet Name="Roles" EntityType="SanmolModel.Role" />
+          <EntitySet Name="Logins" EntityType="SanmolModel.Login" />
+          <AssociationSet Name="FK__Login__Eid__489AC854" Association="SanmolModel.FK__Login__Eid__489AC854">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Login1" EntitySet="Logins" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Employee">
           <Key>
@@ -932,6 +961,7 @@
           <NavigationProperty Name="EmployeeEmploymentHistories" Relationship="SanmolModel.FK_EmploymentHistory_Employee" FromRole="Employee" ToRole="EmployeeEmploymentHistory" />
           <NavigationProperty Name="EmployeeLeaveBalances" Relationship="SanmolModel.FK_LeaveBalance_Employee" FromRole="Employee" ToRole="EmployeeLeaveBalance" />
           <NavigationProperty Name="EmployeeLeaves" Relationship="SanmolModel.FK_Leaves_Employee" FromRole="Employee" ToRole="EmployeeLeaf" />
+          <NavigationProperty Name="Logins" Relationship="SanmolModel.FK__Login__Eid__489AC854" FromRole="Employee" ToRole="Login1" />
         </EntityType>
         <EntityType Name="Assessment">
           <Key>
@@ -1360,27 +1390,6 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Employee" Relationship="SanmolModel.FK_EmployeeTraining_Employee" FromRole="EmployeeTraining" ToRole="Employee" />
         </EntityType>
-        <EntityType Name="login">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="registration">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="contact" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Cpassword" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
         <Association Name="FK_Assessment_Employee">
           <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
           <End Type="SanmolModel.Assessment" Role="Assessment" Multiplicity="*" />
@@ -1618,6 +1627,47 @@
             </Principal>
             <Dependent Role="EmployeeLeaf">
               <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmployeeTypeMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CanCreate" Type="Boolean" Nullable="false" />
+          <Property Name="CanRead" Type="Boolean" Nullable="false" />
+          <Property Name="CanUpdate" Type="Boolean" Nullable="false" />
+          <Property Name="CanDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Eid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="SanmolModel.FK__Login__Eid__489AC854" FromRole="Login1" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK__Login__Eid__489AC854">
+          <End Type="SanmolModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="SanmolModel.Login" Role="Login1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="Login1">
+              <PropertyRef Name="Eid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2068,26 +2118,34 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="logins">
-            <EntityTypeMapping TypeName="SanmolModel.login">
-              <MappingFragment StoreEntitySet="login">
-                <ScalarProperty Name="role" ColumnName="role" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
+          <EntitySetMapping Name="EmployeeTypeMasters">
+            <EntityTypeMapping TypeName="SanmolModel.EmployeeTypeMaster">
+              <MappingFragment StoreEntitySet="EmployeeTypeMaster">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="registrations">
-            <EntityTypeMapping TypeName="SanmolModel.registration">
-              <MappingFragment StoreEntitySet="registration">
-                <ScalarProperty Name="Cpassword" ColumnName="Cpassword" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="role" ColumnName="role" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="contact" ColumnName="contact" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SanmolModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="CanDelete" ColumnName="CanDelete" />
+                <ScalarProperty Name="CanUpdate" ColumnName="CanUpdate" />
+                <ScalarProperty Name="CanRead" ColumnName="CanRead" />
+                <ScalarProperty Name="CanCreate" ColumnName="CanCreate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="SanmolModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="Eid" ColumnName="Eid" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

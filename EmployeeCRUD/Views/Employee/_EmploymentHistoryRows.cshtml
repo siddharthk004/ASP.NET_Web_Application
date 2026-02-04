@@ -1,7 +1,6 @@
 ﻿@model EmployeeVM
 @using EmployeeCRUD.Controllers
 
-
 @if (Model.EmploymentHistory != null && Model.EmploymentHistory.Any())
 {
     foreach (var emp in Model.EmploymentHistory)
@@ -47,7 +46,16 @@
                     }
                 }
             </td>
-            <td>@(emp.IsActive == true ? "Yes" : "No")</td>
+            <td class="text-center">
+            @if(emp.IsActive == true)
+                {
+                    <i class="fa-solid fa-check text-success" title="Active"></i>
+                }
+            else
+                {
+                    <i class="fa-solid fa-square-xmark text-danger" title="Inactive"></i>
+                }
+            </td>
             <td>@(emp.ExitReason ?? "-")</td>
             <td>@(emp.RolePerformed ?? "-")</td>
             <td>@(emp.CreatedBy ?? "-")</td>

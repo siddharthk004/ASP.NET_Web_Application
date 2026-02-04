@@ -1,0 +1,239 @@
+﻿@{
+    ViewBag.Title = "Login - Employee Management";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.3);
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 60px 40px;
+        }
+
+            .login-left h1 {
+                font-size: 32px;
+                margin-bottom: 15px;
+            }
+
+            .login-left p {
+                opacity: .9;
+            }
+
+        .login-right {
+            flex: 1;
+            padding: 60px 50px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+            .input-wrapper i {
+                position: absolute;
+                left: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #999;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #667eea;
+            }
+
+            .form-control.error {
+                border-color: #dc3545;
+            }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+            .error-message.show {
+                display: block;
+            }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+            .btn-login:disabled {
+                opacity: .8;
+                cursor: not-allowed;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <!-- Left Side -->
+        <div class="login-left">
+            <div class="login-left-content">
+                <h1>Employee Management System</h1>
+                <p>Streamline your workforce management with our comprehensive employee management solution.</p> <div class="features">
+                    <div class="feature-item"> <i class="fas fa-check-circle"></i> <span>Manage Employee Records</span> </div> <div class="feature-item">
+                        <i class="fas fa-check-circle"></i> <span>Track Employment History</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Secure & Reliable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="login-right">
+            <div class="login-header">
+                <h2>Welcome Back</h2>
+                <p>Please login to continue</p>
+            </div>
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="error-message show">
+                    <i class="fas fa-exclamation-circle"></i>
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
+            @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { id = "loginForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Enter Username" name="username" class="form-control" />
+                    </div>
+                    <span class="error-message" id="username-error">Username is required</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Enter Password" name="password" class="form-control" />
+                    </div>
+                    <span class="error-message" id="password-error">Password is required</span>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            }
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $('#loginForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $('.error-message').removeClass('show');
+            $('.form-control').removeClass('error');
+
+            let isValid = true;
+
+            if (!$('#username').val().trim()) {
+                $('#username').addClass('error');
+                $('#username-error').addClass('show');
+                isValid = false;
+            }
+
+            if (!$('#password').val().trim()) {
+                $('#password').addClass('error');
+                $('#password-error').addClass('show');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            $('#loginBtn')
+                .prop('disabled', true)
+                .html('<i class="fas fa-spinner fa-spin"></i> Logging in...');
+
+            this.submit();
+        });
+
+        $('.form-control').on('input', function () {
+            $(this).removeClass('error');
+            $('#' + this.id + '-error').removeClass('show');
+        });
+    </script>
+</body>
+</html>

@@ -47,7 +47,8 @@ namespace EmployeeCRUD.Models
         public DbSet<EmployeeRemuneration> EmployeeRemunerations { get; set; }
         public DbSet<EmployeeTimeZone> EmployeeTimeZones { get; set; }
         public DbSet<EmployeeTraining> EmployeeTrainings { get; set; }
-        public DbSet<login> logins { get; set; }
-        public DbSet<registration> registrations { get; set; }
+        public DbSet<EmployeeTypeMaster> EmployeeTypeMasters { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Login> Logins { get; set; }
     }
 }

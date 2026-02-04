@@ -36,6 +36,7 @@ namespace EmployeeCRUD.Models
             this.EmployeeEmploymentHistories = new HashSet<EmployeeEmploymentHistory>();
             this.EmployeeLeaveBalances = new HashSet<EmployeeLeaveBalance>();
             this.EmployeeLeaves = new HashSet<EmployeeLeaf>();
+            this.Logins = new HashSet<Login>();
         }
     
         public int Eid { get; set; }
@@ -66,5 +67,6 @@ namespace EmployeeCRUD.Models
         public virtual ICollection<EmployeeEmploymentHistory> EmployeeEmploymentHistories { get; set; }
         public virtual ICollection<EmployeeLeaveBalance> EmployeeLeaveBalances { get; set; }
         public virtual ICollection<EmployeeLeaf> EmployeeLeaves { get; set; }
+        public virtual ICollection<Login> Logins { get; set; }
     }
 }

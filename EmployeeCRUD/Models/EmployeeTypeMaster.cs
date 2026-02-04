@@ -12,14 +12,9 @@ namespace EmployeeCRUD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class registration
+    public partial class EmployeeTypeMaster
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string contact { get; set; }
-        public string email { get; set; }
-        public string role { get; set; }
-        public string password { get; set; }
-        public string Cpassword { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -30,10 +30,5 @@ namespace EmployeeCRUD.Models
         public Nullable<System.DateTime> UpdatedDate { get; set; }
     
         public virtual Employee Employee { get; set; }
-
-        public static implicit operator List<object>(EmployeeEmploymentHistory v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
