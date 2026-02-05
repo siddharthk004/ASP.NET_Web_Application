@@ -12,24 +12,22 @@ namespace EmployeeCRUD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Login
+    public partial class UserRoleTypePermission
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Login()
-        {
-            this.EEmployees = new HashSet<EEmployee>();
-        }
-    
-        public int LoginId { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        public int Id { get; set; }
+        public int Eid { get; set; }
         public int RoleId { get; set; }
+        public int TypeId { get; set; }
+        public bool CanCreate { get; set; }
+        public bool CanRead { get; set; }
+        public bool CanUpdate { get; set; }
+        public bool CanDelete { get; set; }
         public bool IsActive { get; set; }
         public System.DateTime CreatedAt { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EEmployee> EEmployees { get; set; }
+        public virtual EEmployee EEmployee { get; set; }
+        public virtual EmployeeTypeMaster EmployeeTypeMaster { get; set; }
         public virtual Role Role { get; set; }
     }
 }

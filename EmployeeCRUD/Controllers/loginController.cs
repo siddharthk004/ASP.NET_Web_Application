@@ -10,13 +10,17 @@ using EmployeeCRUD.Models;
 
 namespace EmployeeCRUD.Controllers
 {
-    public class loginController : Controller
+    public class loginController : BaseController
     {
         private SanmolEntities db = new SanmolEntities();
 
-        // GET: Login Page
+        // GET: Login
         public ActionResult Index()
         {
+            // If already logged in → redirect
+            if (Session["LoginId"] != null)
+                return RedirectToAction("Index", "Employee");
+
             return View();
         }
 
@@ -25,49 +29,51 @@ namespace EmployeeCRUD.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            // 1️⃣ Basic validation
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 ViewBag.ErrorMessage = "Please enter both username and password";
                 return View();
             }
 
-            var user = db.Logins.FirstOrDefault(u => u.UserName == username && u.Password == password);
+            // 2️⃣ Check login credentials
+            var user = db.Logins.FirstOrDefault(x =>
+                x.UserName == username &&
+                x.Password == password &&
+                x.IsActive == true);
 
-            if (user != null)
-            {
-                // Store user info in session
-                Session["UserId"] = user.Id;
-                Session["EmpId"] = user.Eid;
-                Session["UserName"] = user.UserName;
-                Session["Password"] = user.Password;
-                Session["UserRole"] = user.Role;
-
-                // Redirect to Employee Index page
-                return RedirectToAction("Index", "Employee");
-            }
-            else
+            if (user == null)
             {
                 ViewBag.ErrorMessage = "Invalid username or password";
                 return View();
             }
+
+            // 3️⃣ Check employee status using Eid (FK)
+            var employee = db.EEmployees.FirstOrDefault(e => e.LoginId == user.LoginId);
+
+            if (employee == null || employee.IsActive == false)
+            {
+                ViewBag.ErrorMessage = "Employee is inactive. Contact administrator.";
+                return View();
+            }
+
+            // 4️⃣ Store SESSION (ONLY REQUIRED DATA)
+            Session["LoginId"] = user.LoginId;
+            Session["EmpId"] = employee.Eid;
+            Session["UserName"] = user.UserName;
+            Session["RoleId"] = user.RoleId;
+
+            return RedirectToAction("Index", "Employee");
         }
 
-        // GET: Logout
+        // LOGOUT
         public ActionResult Logout()
         {
             Session.Clear();
             Session.Abandon();
-            return RedirectToAction("Index", "login");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return RedirectToAction("Index", "Login");
         }
     }
+
 }
 

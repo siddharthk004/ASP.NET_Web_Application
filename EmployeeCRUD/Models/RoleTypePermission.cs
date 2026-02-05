@@ -12,19 +12,19 @@ namespace EmployeeCRUD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class EmployeeTimeZone
+    public partial class RoleTypePermission
     {
-        public int TimeZoneId { get; set; }
-        public int EmployeeId { get; set; }
-        public string ClockName { get; set; }
-        public string Country { get; set; }
-        public string TimeZone { get; set; }
+        public int Id { get; set; }
+        public int RoleId { get; set; }
+        public int TypeId { get; set; }
+        public Nullable<bool> CanCreate { get; set; }
+        public Nullable<bool> CanRead { get; set; }
+        public Nullable<bool> CanUpdate { get; set; }
+        public Nullable<bool> CanDelete { get; set; }
         public Nullable<bool> IsActive { get; set; }
-        public string CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public string UpdatedBy { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public int Eid { get; set; }
     
-        public virtual Employee Employee { get; set; }
+        public virtual EmployeeTypeMaster EmployeeTypeMaster { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

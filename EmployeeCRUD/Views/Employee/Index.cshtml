@@ -1,53 +1,259 @@
-﻿@model IEnumerable<EmployeeCRUD.Models.Employee>
+﻿@model IEnumerable<EmployeeCRUD.Models.EEmployee>
+@using EmployeeCRUD.Models
+
 
 @{
     ViewBag.Title = "Employee List";
 }
 <h2 class="header-tag">Employee List Display</h2>
 
+@if (ViewBag.DebugInfo != null && ViewBag.CurrentRoleId != 1)
+{
+    <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 8px; font-family: monospace; font-size: 13px;">
+        <strong style="font-size: 16px;">🔍 Debug Information</strong>
+        <hr style="margin: 10px 0; border-top: 1px solid #ffc107;" />
+        <div><strong>📊 Database Stats:</strong></div>
+        <div style="margin-left: 20px;">
+            • Total Employees in EEmployees Table: <strong>@ViewBag.TotalEmployeesInDb</strong><br />
+            • Distribution by Type: <strong>@ViewBag.EmployeeTypeDistribution</strong>
+        </div>
+        <div style="margin-top: 10px;"><strong>🔐 Role Configuration:</strong></div>
+        <div style="margin-left: 20px;">
+            @ViewBag.DebugInfo
+        </div>
+        <div style="margin-top: 10px;"><strong>📋 Final Result:</strong></div>
+        <div style="margin-left: 20px;">
+            Total Records After All Filters: <strong style="color: @(ViewBag.TotalRecords > 0 ? "green" : "red"); font-size: 16px;">@ViewBag.TotalRecords</strong>
+        </div>
+        
+        @if (ViewBag.TotalEmployeesInDb == 0)
+        {
+            <div style="margin-top: 15px; padding: 10px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;">
+                <strong>⚠️ Problem Found:</strong> The <code>EEmployees</code> table is empty! You need to add employees first.
+            </div>
+        }
+        else if (ViewBag.TotalRecords == 0 && ViewBag.TotalEmployeesInDb > 0)
+        {
+            <div style="margin-top: 15px; padding: 10px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;">
+                <strong>⚠️ Problem Found:</strong> Employees exist but none match your filter criteria.<br />
+                <strong>Possible reasons:</strong>
+                <ul style="margin: 5px 0;">
+                    <li>Employee TypeId values don't match the allowed types [1-6]</li>
+                    <li>All employees are filtered by Active/Inactive status</li>
+                </ul>
+            </div>
+        }
+    </div>
+}
+
+<style>
+    .toolbar-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .toolbar-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .search-group {
+        display: flex;
+        gap: 12px;
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 10px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        min-width: 200px;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .filter-select {
+        padding: 10px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        background: white;
+        transition: all 0.3s ease;
+        min-width: 80px;
+    }
+
+    .filter-select:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .toolbar-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+
+    .toolbar-btn i {
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+    }
+
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+        transform: translateY(-2px);
+    }
+
+    .btn-info {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .btn-info:hover {
+        background: #138496;
+        transform: translateY(-2px);
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+    }
+
+    @@media (max-width: 768px) {
+        .search-group {
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .search-input {
+            width: 100%;
+        }
+
+        .button-group {
+            width: 100%;
+        }
+
+        .toolbar-btn {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+</style>
+
 <form method="get" action="@Url.Action("Index","Employee")">
-    <div class="main-bar d-flex align-items-center">
+    <div class="toolbar-container">
+        <div class="toolbar-row">
+            <!-- Search Section -->
+            <div class="search-group">
+                <input class="search-input"
+                       type="text"
+                       name="searchtxt"
+                       value="@Request["searchtxt"]"
+                       placeholder="🔍 Search employees..." />
 
-        <div class="d-flex align-items-center">
-            <input class="main-bar1 search-box searchtxt"
-                   type="text"
-                   name="searchtxt"
-                   value="@Request["searchtxt"]"
-                   placeholder="Search .." />
+                <select class="filter-select" name="top">
+                    <option value="">All</option>
+                    <option value="1" @(Request["top"] == "1" ? "selected" : "")>1</option>
+                    <option value="3" @(Request["top"] == "3" ? "selected" : "")>3</option>
+                    <option value="10" @(Request["top"] == "10" ? "selected" : "")>10</option>
+                    <option value="50" @(Request["top"] == "50" ? "selected" : "")>50</option>
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-group">
+                <button class="toolbar-btn btn-primary" type="submit">
+                    <i class="fas fa-search"></i>
+                    Search
+                </button>
+
+                <button class="toolbar-btn btn-secondary" type="button" onclick="location.href='@Url.Action("Index","Employee")'">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+
+                @if (ViewBag.CanCreate == true)
+                {
+                    <button type="button"
+                            class="toolbar-btn btn-success"
+                            onclick="OpenPopUp()">
+                        <i class="fas fa-plus"></i>
+                        Add New
+                    </button>
+                }
+
+                @if (Session["RoleId"] != null && Session["RoleId"].ToString() == "1")
+                {
+                    <button type="button"
+                            class="toolbar-btn btn-info"
+                            onclick="OpenRoleManagement()">
+                        <i class="fas fa-users-cog"></i>
+                        User Roles
+                    </button>
+                }
+
+                <button class="toolbar-btn btn-danger" type="button" onclick="location.href='@Url.Action("Logout","login")'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
         </div>
-
-        <div class="main-bar2">
-            <select class="dropbtn2 FilterSelect" name="top">
-                <option>None</option>
-                <option value="1" @(Request["top"] == "1" ? "selected" : "")>1</option>
-                <option value="3" @(Request["top"] == "3" ? "selected" : "")>3</option>
-                <option value="10" @(Request["top"] == "10" ? "selected" : "")>10</option>
-                <option value="50" @(Request["top"] == "50" ? "selected" : "")>50</option>
-            </select>
-        </div>
-
-        <div class="main-bar1">
-            <button class="dropbtn" type="submit">Search</button>
-        </div>
-
-        <div class="main-bar1">
-            <button class="dropbtn" type="button" onclick="location.href='@Url.Action("Index","Employee")'">
-                Refresh
-            </button>
-        </div>
-
-        <div class="main-bar1">
-            <button class="dropbtn" onclick="OpenPopUp()">
-                Add New
-            </button>
-        </div>
-
-        <div class="main-bar1">
-            <button class="dropbtn3" type="button" onclick="location.href='@Url.Action("Logout","login")'">
-                Logout
-            </button>
-        </div>
-
     </div>
 </form>
 <div class="d-flex">
@@ -79,10 +285,10 @@
                     </a>
                 </th>
 
-                <th>@Html.DisplayNameFor(m => m.Etype)</th>
-                <th>@Html.DisplayNameFor(m => m.Eaddr)</th>
-                <th>@Html.DisplayNameFor(m => m.Emob)</th>
-                <th>@Html.DisplayNameFor(m => m.Edesign)</th>
+                <th>Type</th>
+                <th>@Html.DisplayNameFor(m => m.Address)</th>
+                <th>@Html.DisplayNameFor(m => m.Mobile)</th>
+                <th>@Html.DisplayNameFor(m => m.Designation)</th>
                 <th>@Html.DisplayNameFor(m => m.IsActive)</th>
                 <th>Actions</th>
             </tr>
@@ -91,13 +297,22 @@
         <tbody>
             @foreach (var item in Model)
             {
+                var permissions = ViewBag.PermissionList as List<TypePermissionDto>;
+                var permission = permissions != null
+                    ? permissions.FirstOrDefault(p => p.TypeId == item.TypeId)
+                    : null;
+
+                bool canView = permission != null && permission.CanRead;
+                bool canEdit = permission != null && permission.CanUpdate;
+                bool canDelete = permission != null && permission.CanDelete;
+
                 <tr>
                     <td>@item.Eid</td>
-                    <td>@item.Ename</td>
-                    <td>@item.Etype</td>
-                    <td>@item.Eaddr</td>
-                    <td>@item.Emob</td>
-                    <td>@item.Edesign</td>
+                    <td>@item.FullName</td>
+                    <td>@item.EmployeeTypeMaster.Name</td>
+                    <td>@item.Address</td>
+                    <td>@item.Mobile</td>
+                    <td>@item.Designation</td>
                     <td class="text-center">
                         @if (item.IsActive)
                         {
@@ -109,15 +324,47 @@
                         }
                     </td>
                     <td>
-                        <button class="btn4" href="javascript:void(0)" onclick="OpenPopUpEdit(@item.Eid)">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button> |
-                        <button class="btn4" href="javascript:void(0)" onclick="OpenPopUpView(@item.Eid)">
-                            <i class="fa-solid fa-eye"></i>
-                        </button> |
-                        <button class="btn4" type="button" onclick="OpenPopUpDelete(@item.Eid)">
-                            <i class="fa-solid fa-trash"></i>
-                        </button> |
+                        @if (canEdit)
+                        {
+                            <button class="btn4" type="button"
+                                    onclick="OpenPopUpEdit(@item.Eid)">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn4 btn-disabled" type="button">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        }
+                        |
+                        @if (canView)
+                        {
+                            <button class="btn4" type="button"
+                                    onclick="OpenPopUpView(@item.Eid)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn4 btn-disabled" type="button">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        }
+                        |
+                        @if (canDelete)
+                        {
+                            <button class="btn4" type="button"
+                                    onclick="OpenPopUpDelete(@item.Eid)">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn4 btn-disabled" type="button">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        } |
                         <button class="btn4" href="javascript:void(0)" type="button" onclick="location.href='@Url.Action("ProfileView","Employee",new {id = item.Eid})'">
                             <i class="fa-regular fa-address-card"></i>
                         </button>
@@ -144,47 +391,70 @@
         </div>
     </div>
 </div>
+<style>
 
+
+    .btn-disabled {
+        opacity: 0.35; 
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+        .btn-disabled i {
+            color: #888888;
+        }
+
+</style>
 @section Scripts {
-    <script>
-        function OpenPopUp() {
-            window.open(
-                '/Employee/Created',
-                'EmployeePopup',
-                'width=790,height=730,top=110,left=510,resizable=yes,scrollbars=yes'
-            );
-        }
-        function OpenPopUpView(id) {
+<script>
+    function OpenPopUp() {
+        window.open(
+            '/Employee/Created',
+            'EmployeePopup',
+            'width=790,height=730,top=110,left=510,resizable=yes,scrollbars=yes'
+        );
+    }
+
+    function OpenRoleManagement() {
+        window.open(
+            '/Employee/ManageRoles',
+            'RoleManagementPopup',
+            'width=1200,height=700,top=100,left=300,resizable=yes,scrollbars=yes'
+        );
+    }
+
+    function OpenPopUpView(id) {
         var url = '@Url.Action("Details", "Employee")' + '?id=' + id;
-            window.open(
-                url,
-                'EmployeePopup',
-                'width=650,height=500,top=300,left=600,resizable=yes,scrollbars=yes'
-            );
-        }
-        function OpenPopUpEdit(id) {
+        window.open(
+            url,
+            'EmployeePopup',
+            'width=650,height=500,top=300,left=600,resizable=yes,scrollbars=yes'
+        );
+    }
+
+    function OpenPopUpEdit(id) {
         var url = '@Url.Action("Edit", "Employee")' + '?id=' + id;
-            window.open(
-                url,
-                'EmployeePopup',
-                'width=790,height=780,top=110,left=510,resizable=yes,scrollbars=yes'
-            );
-        }
-        function OpenPopUpDelete(id) {
-            if (!confirm('Are you sure you want to delete this employee?'))
-                return;
+        window.open(
+            url,
+            'EmployeePopup',
+            'width=790,height=800,top=100,left=510,resizable=yes,scrollbars=yes'
+        );
+    }
 
-            var url = '@Url.Action("Delete", "Employee")' + '?id=' + id;
+    function OpenPopUpDelete(id) {
+        if (!confirm('Are you sure you want to delete this employee?'))
+            return;
 
-            window.location.href = url;
-        }
+        var url = '@Url.Action("Delete", "Employee")' + '?id=' + id;
+        window.location.href = url;
+    }
 
-    $('.searchtxt, .FilterSelect').on('change', function () {
+    // Auto-submit on search/filter change
+    $('.search-input, .filter-select').on('change', function () {
         this.form.submit();
     });
 
     function AddNew(id, mode) {
-
         var title = '';
         if (mode === 'n') title = 'Create New Employee';
         else if (mode === 'e') title = 'Edit Employee';
@@ -201,26 +471,27 @@
                 $('#employeeModal').modal('show');
             },
             error: function () {
+                alert('Error loading form');
             }
         });
     }
-        $(document).on('submit', '#employeeForm', function (e) {
-            e.preventDefault();
 
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: $(this).serialize(),
-                success: function (res) {
-                    if (res.success) {
-                        $('#employeeModal').modal('hide');
-                        location.reload();
-                    } else {
-                        $('#employeeModalBody').html(res);
-                    }
+    $(document).on('submit', '#employeeForm', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                if (res.success) {
+                    $('#employeeModal').modal('hide');
+                    location.reload();
+                } else {
+                    $('#employeeModalBody').html(res);
                 }
-            });
+            }
         });
-
-    </script>
+    });
+</script>
 }

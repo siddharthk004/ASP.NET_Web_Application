@@ -12,10 +12,9 @@ namespace EmployeeCRUD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Company
+    public partial class Action
     {
-        public int Cid { get; set; }
-        public int CEmpCnt { get; set; }
-        public int CWorkDay { get; set; }
+        public int ActionId { get; set; }
+        public string ActionName { get; set; }
     }
 }

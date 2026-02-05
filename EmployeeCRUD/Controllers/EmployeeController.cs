@@ -1,17 +1,15 @@
-﻿using System;
+﻿using EmployeeCRUD.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Security.Principal;
-using System.Web;
 using System.Web.Mvc;
-using EmployeeCRUD.Models;
 
 namespace EmployeeCRUD.Controllers
 {
-    public class EmployeeController : Controller
+    public class EmployeeController : BaseController
     {
         private SanmolEntities db = new SanmolEntities();
 
@@ -25,18 +23,69 @@ namespace EmployeeCRUD.Controllers
             Contract = 6,
             Volunterring = 7
         }
-
+       
+        
         #region Index
-        public ActionResult Index(int top = 10,string searchtxt = null,string sortBy = "Ename",string sortDir = "asc",int page = 1,int pageSize = 10)
+        public ActionResult Index(
+            int? top = null,
+            string searchtxt = null,
+            string sortBy = "Ename",
+            string sortDir = "asc")
         {
-            IQueryable<Employee> query = db.Employees;
-            //IQueryable<Employee> query = db.Employees.Where(x => x.IsActive);
+            int roleId = Convert.ToInt32(Session["RoleId"]);
+            int eid = Convert.ToInt32(Session["EmpId"]);
 
-            if (!string.IsNullOrWhiteSpace(searchtxt))
+            IQueryable<EEmployee> query =
+                db.EEmployees.Include(e => e.EmployeeTypeMaster);
+
+            /* =========================
+               1️⃣ READ PERMISSION (STRICT)
+               ========================= */
+            var readableTypeIds = db.UserRoleTypePermissions
+                .Where(p => p.Eid == eid && p.CanRead && p.IsActive)
+                .Select(p => p.TypeId)
+                .Distinct()
+                .ToList();
+
+            if (!readableTypeIds.Any())
             {
-                query = query.Where(x => x.Ename.Contains(searchtxt));
+                // No readable types → no data
+                query = query.Where(x => false);
             }
 
+            /* =========================
+               2️⃣ ADMIN BYPASS
+               ========================= */
+            if (roleId != 1 && readableTypeIds.Any())
+            {
+                // filter only readable types
+                query = query.Where(x => readableTypeIds.Contains(x.TypeId));
+
+                var menuPermission = db.UserRoleMenuViews
+                    .FirstOrDefault(m =>
+                        m.IsActive &&
+                        m.RolesTypesView.RoleId == roleId);
+
+                if (menuPermission != null)
+                {
+                    if (menuPermission.ViewType == 0)
+                        query = query.Where(x => x.IsActive);
+                    else if (menuPermission.ViewType == 1)
+                        query = query.Where(x => !x.IsActive);
+                }
+            }
+
+            /* =========================
+               3️⃣ SEARCH
+               ========================= */
+            if (!string.IsNullOrWhiteSpace(searchtxt))
+            {
+                query = query.Where(x => x.FullName.Contains(searchtxt));
+            }
+
+            /* =========================
+               4️⃣ SORTING
+               ========================= */
             switch (sortBy)
             {
                 case "Eid":
@@ -46,73 +95,50 @@ namespace EmployeeCRUD.Controllers
                     break;
 
                 case "Ename":
-                    query = sortDir == "asc"
-                        ? query.OrderBy(x => x.Ename)
-                        : query.OrderByDescending(x => x.Ename);
-                    break;
-
-                case "Etype":
-                    query = sortDir == "asc"
-                        ? query.OrderBy(x => x.Etype)
-                        : query.OrderByDescending(x => x.Etype);
-                    break;
-
-                case "Eaddr":
-                    query = sortDir == "asc"
-                        ? query.OrderBy(x => x.Eaddr)
-                        : query.OrderByDescending(x => x.Eaddr);
-                    break;
-
-                case "Emob":
-                    query = sortDir == "asc"
-                        ? query.OrderBy(x => x.Emob)
-                        : query.OrderByDescending(x => x.Emob);
-                    break;
-
-                case "Edesign":
-                    query = sortDir == "asc"
-                        ? query.OrderBy(x => x.Edesign)
-                        : query.OrderByDescending(x => x.Edesign);
-                    break;
-
                 default:
-                    query = query.OrderBy(x => x.Ename);
+                    query = sortDir == "asc"
+                        ? query.OrderBy(x => x.FullName)
+                        : query.OrderByDescending(x => x.FullName);
                     break;
             }
 
-            if (top > 0)
-            {
-                query = query.Take(top);
-            }
+            var data = query.ToList();
 
-            int totalRecords = query.Count();
-            var data = query
-                        .Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                        .ToList();
+            /* =========================
+               5️⃣ VIEW DATA
+               ========================= */
+            ViewBag.CanCreate = db.UserRoleTypePermissions
+                .Any(p => p.Eid == eid && p.CanCreate && p.IsActive);
 
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-            
+            ViewBag.PermissionList = db.UserRoleTypePermissions
+                .Where(p => p.Eid == eid && p.IsActive)
+                .Select(p => new TypePermissionDto
+                {
+                    TypeId = p.TypeId,
+                    CanRead = p.CanRead,
+                    CanUpdate = p.CanUpdate,
+                    CanDelete = p.CanDelete
+                })
+                .ToList();
+
             ViewBag.SortBy = sortBy;
             ViewBag.SortDir = sortDir;
-            ViewBag.Top = top;
-            ViewBag.SearchTxt = searchtxt;
 
-            return View(query.ToList());
+            return View(data);
         }
         #endregion
+
 
 
         #region Home Screen
         public ActionResult Details(int? id = null)
         {
-            Employee model;
+            EEmployee model;
 
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            model = db.Employees.FirstOrDefault(x => x.Eid == id.Value);
+            model = db.EEmployees.FirstOrDefault(x => x.Eid == id.Value);
             if (model == null)
                 return HttpNotFound();
 
@@ -153,7 +179,7 @@ namespace EmployeeCRUD.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var employee = db.Employees.Find(id);
+            var employee = db.EEmployees.Find(id);
             if (employee != null)
             {
                 employee.IsActive = false;
@@ -165,24 +191,36 @@ namespace EmployeeCRUD.Controllers
 
         public ActionResult Created()
         {
+            int eid = Convert.ToInt32(Session["EmpId"]);
+            int currentRoleId = Convert.ToInt32(Session["RoleId"]);
+
+            var allowedTypeIds = db.UserRoleTypePermissions
+                .Where(p => p.Eid == eid && p.CanCreate && p.IsActive)
+                .Select(p => p.TypeId)
+                .Distinct()
+                .ToList();
 
             ViewBag.EmploymentTypes = db.EmployeeTypeMasters
-                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .Where(x => allowedTypeIds.Contains(x.Id))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
-                    Value = x.Name
+                    Value = x.Id.ToString()
                 })
                 .ToList();
 
             ViewBag.Roles = db.Roles
-                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .Where(x =>
+                    !string.IsNullOrEmpty(x.Name) &&
+                    (currentRoleId == 1 || x.RoleId != 1)
+                )
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
-                    Value = x.Name
+                    Value = x.RoleId.ToString()
                 })
                 .ToList();
+
             return PartialView("Created", new Employee());
         }
 
@@ -218,34 +256,83 @@ namespace EmployeeCRUD.Controllers
 
         public ActionResult Edit(int? id = null)
         {
-            var emp = db.Employees.Find(id);
-            if (emp == null) return HttpNotFound();
 
-            // Populate dropdown data
-            ViewBag.EmploymentTypes = db.EmployeeTypeMasters
-                .Where(x => !string.IsNullOrEmpty(x.Name))
-                .Select(x => new SelectListItem
+            int currentUserRoleId = Convert.ToInt32(Session["RoleId"]);
+
+            // flag for view (optional but clean)
+            ViewBag.IsAdmin = (currentUserRoleId == 1);
+
+            // build roles list conditionally
+            ViewBag.Roles = db.Roles
+                .Where(r =>
+                    (
+                        currentUserRoleId == 1      // ADMIN → all roles
+                        || r.RoleId != 1            // NON-ADMIN → exclude Admin
+                    )
+                )
+                .ToList() // Materialize the query to avoid dynamic in expression tree
+                .Select(r => new SelectListItem
                 {
-                    Text = x.Name,
-                    Value = x.Name,
-                    Selected = x.Name == emp.Etype
+                    Text = r.Name,
+                    Value = r.RoleId.ToString(),
+                    Selected = false // Set to false or handle selection in the view
                 })
                 .ToList();
 
-            // Get login info by Employee ID (not by username)
-            var userLogin = db.Logins.FirstOrDefault(l => l.Eid == id);
+
+
+            var emp = db.EEmployees.Find(id);
+            if (emp == null) return HttpNotFound();
+
+            //int eid = Convert.ToInt32(Session["EmpId"]);
+
+            var allowedTypeIds = db.UserRoleTypePermissions
+                .Where(p => p.Eid == id && p.CanUpdate && p.IsActive)
+                .Select(p => p.TypeId)
+                .Distinct()
+                .ToList();
+
+            ViewBag.EmploymentTypes = db.EmployeeTypeMasters
+                .Where(x => allowedTypeIds.Contains(x.Id))
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                })
+                .ToList();
+
             var mail = db.BasicInfoes.FirstOrDefault(l => l.Eid == id);
 
-            ViewBag.UserRole = userLogin != null ? userLogin.Role : "Not Assigned";
-            ViewBag.UserNameVB = userLogin != null ? userLogin.UserName : emp.Ename;  // Fallback to emp.Ename
+            var emps = db.EEmployees
+            .Include(e => e.Login)
+            .FirstOrDefault(e => e.Eid == id);
+
+            if (emps == null || emps.Login == null)
+            {
+                ViewBag.UserRole = "Not Assigned";
+                ViewBag.CurrentRoleId = 0;
+            }
+            else
+            {
+                int roleId = emps.Login.RoleId;
+
+                var role = db.Roles
+                             .FirstOrDefault(r => r.RoleId == roleId);
+
+                ViewBag.UserRole = role != null ? role.Name : "Not Assigned";
+                ViewBag.CurrentRoleId = roleId;
+            }
+            var userLoginId = db.EEmployees.FirstOrDefault(l => l.Eid == id);
+            var userLogin = db.Logins.FirstOrDefault(l => l.LoginId == userLoginId.LoginId);
+            ViewBag.UserNameVB = userLogin.UserName;
             ViewBag.Mail = mail != null ? mail.PersonalEmail : "";
 
             return View("Edit", emp);
         }
-
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Employee model, string username, string password, string email)
+        public ActionResult Edit(EEmployee model, string password, string email, int? roleId)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Invalid data" });
@@ -254,31 +341,36 @@ namespace EmployeeCRUD.Controllers
             {
                 try
                 {
-                    // 1. Update Employee
-                    var emp = db.Employees.Find(model.Eid);
+                    // 1️⃣ Load Employee with Login
+                    var emp = db.EEmployees
+                                .Include(e => e.Login)
+                                .FirstOrDefault(e => e.Eid == model.Eid);
+
                     if (emp == null)
-                    {
                         return Json(new { success = false, message = "Employee not found" });
-                    }
 
-                    emp.Ename = model.Ename;
-                    emp.Etype = model.Etype;
-                    emp.Eaddr = model.Eaddr ?? "";
-                    emp.Emob = model.Emob ?? "";
-                    emp.Edesign = model.Edesign ?? "";
-                    emp.IsActive = model.IsActive;
+                    // 2️⃣ Update Employee fields
+                    emp.FullName = model.FullName;
+                    emp.TypeId = model.TypeId;
+                    emp.Address = model.Address ?? "";
+                    emp.Mobile = model.Mobile ?? "";
+                    emp.Designation = model.Designation ?? "";
+                    emp.UpdatedAt = DateTime.Now;
 
-                    // 2. Update Password if provided
-                    if (!string.IsNullOrWhiteSpace(password))
+                    // 3️⃣ Update password ONLY if provided
+                    if (!string.IsNullOrWhiteSpace(password) && emp.Login != null)
                     {
-                        var login = db.Logins.FirstOrDefault(l => l.Eid == model.Eid);
-                        if (login != null)
-                        {
-                            login.Password = password; // TODO: Hash this!
-                        }
+                        emp.Login.Password = password; // ⚠ hash later
                     }
 
-                    // 3. Update Email if changed
+                    // 4️⃣ Update role if provided and user is admin
+                    int currentUserRoleId = Convert.ToInt32(Session["RoleId"]);
+                    if (roleId.HasValue && currentUserRoleId == 1 && emp.Login != null)
+                    {
+                        emp.Login.RoleId = roleId.Value;
+                    }
+
+                    // 5️⃣ Update / Insert BasicInfo (Email)
                     if (!string.IsNullOrWhiteSpace(email))
                     {
                         var basicInfo = db.BasicInfoes.FirstOrDefault(b => b.Eid == model.Eid);
@@ -288,7 +380,6 @@ namespace EmployeeCRUD.Controllers
                         }
                         else
                         {
-                            // Create BasicInfo if doesn't exist
                             db.BasicInfoes.Add(new BasicInfo
                             {
                                 Eid = model.Eid,
@@ -306,81 +397,62 @@ namespace EmployeeCRUD.Controllers
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    System.Diagnostics.Debug.WriteLine($"Edit Error: {ex.Message}");
-                    return Json(new { success = false, message = ex.Message });
+                    return Json(new
+                    {
+                        success = false,
+                        message = ex.InnerException?.Message ?? ex.Message
+                    });
                 }
             }
         }
-        
-        
+
         [HttpPost]
-        public ActionResult Save(Employee model, string username, string password, String role, string email)
+        public ActionResult Save( Employee model, string username, string password, int roleId, string email)
         {
-            // Debug logging
-            System.Diagnostics.Debug.WriteLine($"Save called - Username: {username}, Password: {password}, Role: {role}, Email: {email}");
-            System.Diagnostics.Debug.WriteLine($"Model - Ename: {model.Ename}, Etype: {model.Etype}, IsActive: {model.IsActive}");
-
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                return Json(new { success = false, message = "Invalid data: " + string.Join(", ", errors) });
-            }
-
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    // 1. Validate required fields
-                    if (string.IsNullOrWhiteSpace(username))
-                        return Json(new { success = false, message = "Username is required" });
-
-                    if (string.IsNullOrWhiteSpace(password))
-                        return Json(new { success = false, message = "Password is required" });
-
-                    if (string.IsNullOrWhiteSpace(role))
-                        return Json(new { success = false, message = "Role is required" });
-
-                    // 2. Check username uniqueness
-                    bool usernameExists = db.Logins.Any(x => x.UserName.ToLower() == username.ToLower());
-                    if (usernameExists)
-                    {
+                    // 1️⃣ Check username
+                    if (db.Logins.Any(x => x.UserName == username))
                         return Json(new { success = false, message = "Username already exists" });
-                    }
 
-                    // 3. Save Employee
-                    var employee = new Employee
-                    {
-                        Ename = model.Ename, 
-                        Etype = model.Etype,
-                        Eaddr = model.Eaddr ?? "", 
-                        Emob = model.Emob ?? "",
-                        Edesign = model.Edesign ?? "",
-                        IsActive = model.IsActive
-                    };
-
-                    db.Employees.Add(employee);
-                    db.SaveChanges(); 
-
-                    int employeeId = employee.Eid;
-
-                    // 4. Save Login
+                    // 2️⃣ Save Login FIRST (no FK dependencies anymore!)
                     var login = new Login
                     {
                         UserName = username,
-                        Password = password,  
-                        Role = role,
-                        Eid = employeeId
+                        Password = password,
+                        RoleId = roleId,
+                        IsActive = true,
+                        CreatedAt = DateTime.Now
                     };
-
                     db.Logins.Add(login);
                     db.SaveChanges();
+                    int loginId = login.LoginId;
 
-                    // 5. Save Basic Info (Email) - Only if email provided
+                    // 3️⃣ Save EEmployee with LoginId
+                    var employee = new EEmployee
+                    {
+                        LoginId = loginId,
+                        FullName = model.Ename,
+                        TypeId = Convert.ToInt32(model.Etype),
+                        Address = model.Eaddr,
+                        Mobile = model.Emob,
+                        Designation = model.Edesign,
+                        IsActive = true,
+                        CreatedAt = DateTime.Now
+                    };
+                    db.EEmployees.Add(employee);
+                    db.SaveChanges();
+
+                    int empId = employee.Eid;
+
+                    // 4️⃣ SAVE BASIC INFO
                     if (!string.IsNullOrWhiteSpace(email))
                     {
                         var basicInfo = new BasicInfo
                         {
-                            Eid = employeeId,
+                            Eid = empId,
                             PersonalEmail = email,
                             CreatedDate = DateTime.Now
                         };
@@ -389,45 +461,49 @@ namespace EmployeeCRUD.Controllers
                         db.SaveChanges();
                     }
 
-                    // 6. Commit all
-                    transaction.Commit();
+                    // 5️⃣ PERMISSIONS
+                    var allTypes = db.EmployeeTypeMasters
+                                     .Select(x => x.Id)
+                                     .ToList();
 
-                    return Json(new { success = true });
-                }
-                catch (System.Data.Entity.Validation.DbEntityValidationException ex)
-                {
-                    transaction.Rollback();
+                    bool isAdmin = (roleId == 1);
 
-                    // Get detailed validation errors
-                    var errorMessages = new List<string>();
-                    foreach (var validationError in ex.EntityValidationErrors)
+                    foreach (var typeId in allTypes)
                     {
-                        var entityName = validationError.Entry.Entity.GetType().Name;
-                        foreach (var error in validationError.ValidationErrors)
-                        {
-                            errorMessages.Add($"{entityName}.{error.PropertyName}: {error.ErrorMessage}");
-                            System.Diagnostics.Debug.WriteLine($"Validation Error - {entityName}.{error.PropertyName}: {error.ErrorMessage}");
-                        }
+                     db.UserRoleTypePermissions.Add(new UserRoleTypePermission
+                     {
+                            Eid = empId,
+                            RoleId = roleId,
+                            TypeId = typeId,
+                            CanCreate = isAdmin,
+                            CanRead = isAdmin,
+                            CanUpdate = isAdmin,
+                            CanDelete = isAdmin,
+                            IsActive = true,
+                            CreatedAt = DateTime.Now
+                        });
                     }
 
-                    return Json(new
-                    {
-                        success = false,
-                        message = "Validation failed: " + string.Join("; ", errorMessages)
-                    });
+                    db.SaveChanges();
+
+                    transaction.Commit();
+                    return Json(new { success = true });
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
-                    System.Diagnostics.Debug.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
+
+                    var error = ex.InnerException != null
+                        ? ex.InnerException.InnerException?.Message ?? ex.InnerException.Message
+                        : ex.Message;
 
                     return Json(new
                     {
                         success = false,
-                        message = ex.Message + (ex.InnerException != null ? " - " + ex.InnerException.Message : "")
+                        message = error
                     });
                 }
+
             }
         }
 
@@ -704,7 +780,6 @@ namespace EmployeeCRUD.Controllers
                     x.RolePerformed.Contains(search)
                 );
             }
-
             var vm = new EmployeeVM
             {
                 Employee = employee,
@@ -721,20 +796,148 @@ namespace EmployeeCRUD.Controllers
         #region View Permissions
 
         [HttpGet]
-        public ActionResult ViewPermissions(int employeeId, string role)
+        public ActionResult ViewPermissions(int employeeId)
         {
-            var employee = db.Employees.Find(employeeId);
+            var employee = db.EEmployees
+                             .Include(e => e.Login)
+                             .FirstOrDefault(e => e.Eid == employeeId);
+
             if (employee == null)
                 return HttpNotFound();
 
-            ViewBag.EmployeeName = employee.Ename;
-            ViewBag.EmployeeId = employeeId;
-            ViewBag.UserRoles = role;
-            
-            return View();
+            var permissions = (from t in db.EmployeeTypeMasters
+                               join p in db.UserRoleTypePermissions
+                                   on new { TypeId = t.Id, Eid = employeeId }
+                                   equals new { p.TypeId, p.Eid }
+                                   into tp
+                               from p in tp.DefaultIfEmpty()
+                               select new PermissionEditVM
+                               {
+                                   TypeId = t.Id,
+                                   TypeName = t.Name,
+                                   CanCreate = p != null && p.CanCreate,
+                                   CanRead = p != null && p.CanRead,
+                                   CanUpdate = p != null && p.CanUpdate,
+                                   CanDelete = p != null && p.CanDelete
+                               }).ToList();
+
+            var vm = new ViewPermissionsVM
+            {
+                EmployeeId = employeeId,
+                EmployeeName = employee.FullName,
+                RoleName = employee.Login.Role.Name,
+                Permissions = permissions
+            };
+
+            return View(vm);
+        }
+        [HttpPost]
+        public ActionResult UpdatePermissions(ViewPermissionsVM model)
+        {
+            foreach (var p in model.Permissions)
+            {
+                var entity = db.UserRoleTypePermissions
+                    .FirstOrDefault(x => x.Eid == model.EmployeeId && x.TypeId == p.TypeId);
+
+                if (entity == null)
+                {
+                    entity = new UserRoleTypePermission
+                    {
+                        Eid = model.EmployeeId,
+                        TypeId = p.TypeId,
+                        IsActive = true
+                    };
+                    db.UserRoleTypePermissions.Add(entity);
+                }
+
+                entity.CanCreate = p.CanCreate;
+                entity.CanRead = p.CanRead;
+                entity.CanUpdate = p.CanUpdate;
+                entity.CanDelete = p.CanDelete;
+            }
+
+            db.SaveChanges();
+            return Json(new { success = true });
         }
 
         #endregion View Permissions
+
+        #region Manage Roles
+
+        [HttpGet]
+        public ActionResult ManageRoles()
+        {
+            var roleManagementData = db.UserRoleMenuViews
+                .Join(
+                    db.RolesTypesViews,
+                    urmv => urmv.RoleTypeViewId,
+                    rtv => rtv.Id,
+                    (urmv, rtv) => new { urmv, rtv }
+                )
+                .Join(
+                    db.Roles,
+                    temp => temp.rtv.RoleId,
+                    r => r.RoleId,
+                    (temp, r) => new RoleManagementVM
+                    {
+                        Id = temp.urmv.Id,
+                        RoleId = r.RoleId,
+                        RoleName = r.Name,
+                        RoleTypeViewId = temp.urmv.RoleTypeViewId,
+                        ViewType = temp.urmv.ViewType,
+                        IsActive = temp.urmv.IsActive,
+
+                        FullTime = temp.rtv.FullTime,
+                        PartTime = temp.rtv.PartTime,
+                        Internship = temp.rtv.Internship,
+                        Freelance = temp.rtv.Freelance,
+                        Contract = temp.rtv.Contract,
+                        Temporary = temp.rtv.Temporary
+                    }
+                )
+                .ToList();
+
+            return View(roleManagementData);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateRoleSettings(List<RoleManagementVM> roles)
+        {
+            try
+            {
+                foreach (var role in roles)
+                {
+                    // Update UserRoleMenuView
+                    var menuView = db.UserRoleMenuViews.FirstOrDefault(x => x.Id == role.Id);
+                    if (menuView != null)
+                    {
+                        menuView.ViewType = (byte)role.ViewType;
+                        menuView.IsActive = role.IsActive;
+                    }
+
+                    // Update RolesTypesView
+                    var roleTypeView = db.RolesTypesViews.FirstOrDefault(x => x.Id == role.RoleTypeViewId);
+                    if (roleTypeView != null)
+                    {
+                        roleTypeView.FullTime = role.FullTime;
+                        roleTypeView.PartTime = role.PartTime;
+                        roleTypeView.Internship = role.Internship;
+                        roleTypeView.Freelance = role.Freelance;
+                        roleTypeView.Contract = role.Contract;
+                        roleTypeView.Temporary = role.Temporary;
+                    }
+                }
+
+                db.SaveChanges();
+                return Json(new { success = true, message = "Role settings updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        #endregion Manage Roles
 
         #endregion Profile View
 
@@ -748,9 +951,8 @@ namespace EmployeeCRUD.Controllers
             db.SaveChanges();
             return true;
         }
-
         protected override void Dispose(bool disposing)
-        { 
+        {
             if (disposing)
             {
                 db.Dispose();

@@ -1,4 +1,5 @@
-﻿using System;
+using Employee_Management.Models;
+using System;
 using System.Collections.Generic;
 
 namespace EmployeeCRUD.Models

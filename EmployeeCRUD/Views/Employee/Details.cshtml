@@ -1,4 +1,4 @@
-﻿@model EmployeeCRUD.Models.Employee
+﻿@model EmployeeCRUD.Models.EEmployee
 
 @{
     ViewBag.Title = "Details";
@@ -12,42 +12,42 @@
 
         <div class="d-flex">
             <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Ename)
+                @Html.DisplayNameFor(model => model.FullName)
             </dt>
             <dd class="right-side">
-                @Html.DisplayFor(model => model.Ename)
+                @Html.DisplayFor(model => model.FullName)
             </dd>
 
             <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Etype)
+                @Html.DisplayNameFor(model => model.Eid)
             </dt>
             <dd class="right-side">
-                @Html.DisplayFor(model => model.Etype)
-            </dd>
-        </div>
-
-        <div class="d-flex">
-            <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Eaddr)
-            </dt>
-            <dd class="right-side">
-                @Html.DisplayFor(model => model.Eaddr)
-            </dd>
-
-            <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Emob)
-            </dt>
-            <dd class="right-side">
-                @Html.DisplayFor(model => model.Emob)
+                @Html.DisplayFor(model => model.Eid)
             </dd>
         </div>
 
         <div class="d-flex">
             <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Edesign)
+                @Html.DisplayNameFor(model => model.Address)
             </dt>
             <dd class="right-side">
-                @Html.DisplayFor(model => model.Edesign)
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+            <dt class="left-side">
+                @Html.DisplayNameFor(model => model.Mobile)
+            </dt>
+            <dd class="right-side">
+                @Html.DisplayFor(model => model.Mobile)
+            </dd>
+        </div>
+
+        <div class="d-flex">
+            <dt class="left-side">
+                @Html.DisplayNameFor(model => model.Designation)
+            </dt>
+            <dd class="right-side">
+                @Html.DisplayFor(model => model.Designation)
             </dd>
 
             <dt class="left-side">

@@ -12,24 +12,14 @@ namespace EmployeeCRUD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Login
+    public partial class ELogin
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Login()
-        {
-            this.EEmployees = new HashSet<EEmployee>();
-        }
-    
         public int LoginId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public int RoleId { get; set; }
-        public bool IsActive { get; set; }
-        public System.DateTime CreatedAt { get; set; }
-        public Nullable<System.DateTime> UpdatedAt { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EEmployee> EEmployees { get; set; }
         public virtual Role Role { get; set; }
     }
 }

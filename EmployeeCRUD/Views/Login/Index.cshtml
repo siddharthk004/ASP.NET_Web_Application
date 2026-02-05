@@ -169,15 +169,29 @@
                 </div>
             }
 
-            @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { id = "loginForm" }))
+            @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { id = "loginForm", autocomplete = "off" }))
             {
                 @Html.AntiForgeryToken()
+
+                <!-- Fake fields to trick autofill -->
+                <input type="text" name="fakeusername" style="position:absolute;top:-9999px;left:-9999px;" tabindex="-1" />
+                <input type="password" name="fakepassword" style="position:absolute;top:-9999px;left:-9999px;" tabindex="-1" />
 
                 <div class="form-group">
                     <label>Username</label>
                     <div class="input-wrapper">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="username" placeholder="Enter Username" name="username" class="form-control" />
+                        <input type="text" 
+                               id="username" 
+                               placeholder="Enter Username" 
+                               name="username" 
+                               class="form-control" 
+                               autocomplete="off" 
+                               autocorrect="off"
+                               autocapitalize="off"
+                               spellcheck="false"
+                               readonly 
+                               onfocus="this.removeAttribute('readonly');" />
                     </div>
                     <span class="error-message" id="username-error">Username is required</span>
                 </div>
@@ -186,7 +200,14 @@
                     <label>Password</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="password" placeholder="Enter Password" name="password" class="form-control" />
+                        <input type="password" 
+                               id="password" 
+                               placeholder="Enter Password" 
+                               name="password" 
+                               class="form-control" 
+                               autocomplete="new-password"
+                               readonly 
+                               onfocus="this.removeAttribute('readonly');" />
                     </div>
                     <span class="error-message" id="password-error">Password is required</span>
                 </div>
@@ -201,6 +222,29 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+        // Clear fields on page load (all scenarios)
+        $(document).ready(function() {
+            $('#username, #password').val('');
+            
+            // Additional clear after a short delay for browser autofill
+            setTimeout(function() {
+                $('#username, #password').val('');
+            }, 100);
+        });
+
+        // Clear on page show (back button)
+        $(window).on('pageshow', function () {
+            $('#username, #password').val('');
+        });
+
+        // Prevent autofill on browser back/forward
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            }
+        });
+
         $('#loginForm').on('submit', function (e) {
             e.preventDefault();
 

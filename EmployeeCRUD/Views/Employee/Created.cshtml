@@ -235,7 +235,7 @@
                    name="username"
                    class="form-control"
                    placeholder="Enter username"
-                   autocomplete="off"
+                   autocomplete="new-username"
                    required />
             <span class="error-message" id="username-error">Username is required</span>
         </div>
@@ -326,7 +326,7 @@
     <div class="form-row">
         <div class="form-group">
             <label class="required">Role</label>
-            <select name="role" id="role" class="form-control" required>
+            <select name="roleId" id="role" class="form-control" required>
                 <option value="">-- Select Role --</option>
                 @if (ViewBag.Roles != null)
                 {

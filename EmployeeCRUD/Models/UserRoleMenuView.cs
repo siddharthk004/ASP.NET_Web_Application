@@ -12,10 +12,13 @@ namespace EmployeeCRUD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Company
+    public partial class UserRoleMenuView
     {
-        public int Cid { get; set; }
-        public int CEmpCnt { get; set; }
-        public int CWorkDay { get; set; }
+        public int Id { get; set; }
+        public int RoleTypeViewId { get; set; }
+        public byte ViewType { get; set; }
+        public bool IsActive { get; set; }
+    
+        public virtual RolesTypesView RolesTypesView { get; set; }
     }
 }

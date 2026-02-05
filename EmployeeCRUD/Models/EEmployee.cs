@@ -12,24 +12,31 @@ namespace EmployeeCRUD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Login
+    public partial class EEmployee
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Login()
+        public EEmployee()
         {
-            this.EEmployees = new HashSet<EEmployee>();
+            this.UserRoleTypePermissions = new HashSet<UserRoleTypePermission>();
+            this.BasicInfoes = new HashSet<BasicInfo>();
         }
     
+        public int Eid { get; set; }
         public int LoginId { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public int RoleId { get; set; }
+        public int TypeId { get; set; }
+        public string FullName { get; set; }
+        public string Address { get; set; }
+        public string Mobile { get; set; }
+        public string Designation { get; set; }
         public bool IsActive { get; set; }
-        public System.DateTime CreatedAt { get; set; }
+        public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
     
+        public virtual EmployeeTypeMaster EmployeeTypeMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EEmployee> EEmployees { get; set; }
-        public virtual Role Role { get; set; }
+        public virtual ICollection<UserRoleTypePermission> UserRoleTypePermissions { get; set; }
+        public virtual Login Login { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BasicInfo> BasicInfoes { get; set; }
     }
 }

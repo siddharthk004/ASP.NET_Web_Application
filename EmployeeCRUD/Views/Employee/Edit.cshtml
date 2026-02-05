@@ -1,4 +1,4 @@
-@model EmployeeCRUD.Models.Employee
+@model EmployeeCRUD.Models.EEmployee
 
 @{
     ViewBag.Title = "Edit Employee";
@@ -305,7 +305,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label class="required">Employee Full Name</label>
-                    @Html.TextBoxFor(m => m.Ename, new
+                    @Html.TextBoxFor(m => m.FullName, new
                     {
                         @class = "form-control",
                         placeholder = "Enter full name",
@@ -317,7 +317,7 @@
 
                 <div class="form-group">
                     <label class="required">Employee Type</label>
-                    @Html.DropDownListFor(m => m.Etype, ViewBag.EmploymentTypes as List<SelectListItem>, "-- Select Type --", new { @class = "form-control", id = "empType", required = "required" })
+                    @Html.DropDownListFor(m => m.TypeId, ViewBag.EmploymentTypes as List<SelectListItem>, "-- Select Type --", new { @class = "form-control", id = "empType", required = "required" })
                     <span class="error-message" id="empType-error">Employee type is required</span>
                 </div>
             </div>
@@ -326,7 +326,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Address</label>
-                    @Html.TextBoxFor(m => m.Eaddr, new
+                    @Html.TextBoxFor(m => m.Address, new
                     {
                         @class = "form-control",
                         placeholder = "Enter address"
@@ -335,7 +335,7 @@
 
                 <div class="form-group">
                     <label>Mobile Number</label>
-                    @Html.TextBoxFor(m => m.Emob, new
+                    @Html.TextBoxFor(m => m.Mobile, new
                     {
                         @class = "form-control",
                         placeholder = "10-digit mobile number",
@@ -350,7 +350,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Designation</label>
-                    @Html.TextBoxFor(m => m.Edesign, new
+                    @Html.TextBoxFor(m => m.Designation, new
                     {
                         @class = "form-control",
                         placeholder = "Job designation"
@@ -368,29 +368,48 @@
                 </div>
             </div>
 
-            <!-- Row 5: Role & Active Status -->
+            <!-- Row 5: Role & Permissions -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Role</label>
                     <div class="role-display">
-                        <span class="">
-                            @(ViewBag.UserRole ?? "Not Assigned")
-                        </span>
-                        <button type="button" class="btn-permissions" onclick="viewPermissions()">
-                            <i class="fas fa-key"></i> View Permissions
-                        </button>
+                        @if (Session["RoleId"] != null && Session["RoleId"].ToString() == "1")
+                        {
+                            @Html.DropDownList(
+                                "roleId",
+                                ViewBag.Roles as List<SelectListItem>,
+                                "-- Select Role --",
+                                new { 
+                                    @class = "form-control", 
+                                    style = "min-width:180px;",
+                                    data_current_role = ViewBag.CurrentRoleId
+                                }
+                            )
+                        }
+                        else
+                        {
+                            <span class="role-badge">
+                                <i class="fas fa-user-tag"></i>
+                                @(ViewBag.UserRole ?? "Not Assigned")
+                            </span>
+                        }
                     </div>
-                    <small style="color: #6c757d; margin-top: 5px; display: block;">Contact administrator to change role</small>
+                    <small style="color: #6c757d; margin-top: 8px; display: block;">
+                        <i class="fas fa-info-circle"></i> Contact administrator to change role
+                    </small>
                 </div>
 
-                @*<div class="form-group">
-                    <label style="visibility: hidden;">Status</label>
-                    <div class="checkbox-wrapper">
-                        @Html.CheckBoxFor(m => m.IsActive)
-                        @Html.LabelFor(m => m.IsActive, "Active Status")
+                <div class="form-group">
+                    <label>Permissions</label>
+                    <div style="padding-top: 8px;">
+                        <button type="button" class="btn-permissions" onclick="viewPermissions()">
+                            <i class="fas fa-shield-alt"></i>
+                            View Permissions
+                        </button>
                     </div>
-                </div>*@
+                </div>
             </div>
+
         </div>
 
         <div class="button-group">
@@ -405,17 +424,23 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            // Password visibility toggle
-            $('#togglePassword').click(function () {
-                const passwordField = $('#password');
-                const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
-                passwordField.attr('type', type);
+<script>
+    $(document).ready(function () {
+        // Set the current role as selected in dropdown
+        var currentRoleId = '@ViewBag.CurrentRoleId';
+        if (currentRoleId && currentRoleId !== '0') {
+            $('#roleId').val(currentRoleId);
+        }
 
-                // Toggle icon
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
+        // Password visibility toggle
+        $('#togglePassword').click(function () {
+            const passwordField = $('#password');
+            const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+            passwordField.attr('type', type);
+
+            // Toggle icon
+            $(this).toggleClass('fa-eye fa-eye-slash');
+        });
 
             // Form submission
             $('#employeeForm').on('submit', function (e) {
@@ -488,7 +513,7 @@
             window.open(
                 url,
                 'PermissionsPopup',
-                'width=790,height=575,top=110,left=510,resizable=yes,scrollbars=yes'
+                'width=790,height=720,top=80,left=550,resizable=yes,scrollbars=yes'
             );
         }
     </script>
