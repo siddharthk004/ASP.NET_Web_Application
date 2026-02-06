@@ -1,0 +1,372 @@
+@model EmployeeCRUD.Models.EmployeeVM
+
+@{
+    ViewBag.Title = "Edit Basic Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+        padding: 20px;
+    }
+
+    .edit-container {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 1000px;
+        margin: 0 auto;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .edit-header {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    .edit-header h2 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .edit-header h2 i {
+        color: #007bff;
+        margin-right: 10px;
+    }
+
+    .form-section {
+        margin-top: 20px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    .form-group label {
+        display: block;
+        color: #495057;
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .btn {
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn i {
+        font-size: 16px;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,123,255,0.4);
+    }
+
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="edit-container">
+    <div class="edit-header">
+        <h2>
+            <i class="fas fa-user-edit"></i>
+            Edit Basic Information
+        </h2>
+    </div>
+
+    @using (Html.BeginForm("EditBasicInfo", "Employee", FormMethod.Post, new { id = "basicInfoForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.EEmployee.Eid)
+
+        <div class="form-section">
+            <div class="section-title">Employee Information</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    @Html.TextBoxFor(m => m.EEmployee.FullName, new { @class = "form-control", placeholder = "Enter full name" })
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    @Html.TextBoxFor(m => m.EEmployee.Mobile, new { @class = "form-control", placeholder = "Enter mobile number", type = "tel" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Designation</label>
+                    @Html.TextBoxFor(m => m.EEmployee.Designation, new { @class = "form-control", placeholder = "Enter designation" })
+                </div>
+
+                <div class="form-group">
+                    <label>Employee Type</label>
+                    @Html.TextBoxFor(m => m.EEmployee.TypeId, new { @class = "form-control", placeholder = "Enter employee type" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Permanent Address</label>
+                    @Html.TextAreaFor(m => m.EEmployee.Address, new { @class = "form-control", placeholder = "Enter address", rows = "2" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Personal Details</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.DOB, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                </div>
+
+                <div class="form-group">
+                    <label>Date of Joining</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.DOJ, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    @Html.DropDownListFor(m => m.BasicInfo.Gender, new List<SelectListItem> {
+                        new SelectListItem { Text = "Select Gender", Value = "" },
+                        new SelectListItem { Text = "Male", Value = "Male" },
+                        new SelectListItem { Text = "Female", Value = "Female" },
+                        new SelectListItem { Text = "Other", Value = "Other" }
+                    }, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nick Name</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.NickName, new { @class = "form-control", placeholder = "Enter nick name" })
+                </div>
+
+                <div class="form-group">
+                    <label>Pay Type</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.PayType, new { @class = "form-control", placeholder = "Enter pay type" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Contact Information</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Personal Email</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.PersonalEmail, new { @class = "form-control", placeholder = "Enter personal email", type = "email" })
+                </div>
+
+                <div class="form-group">
+                    <label>Office Email</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.OfficeEmail, new { @class = "form-control", placeholder = "Enter office email", type = "email" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Hurricane POC Email</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.HurricanePOCEmail, new { @class = "form-control", placeholder = "Enter hurricane POC email", type = "email" })
+                </div>
+
+                <div class="form-group">
+                    <label>Hurricane POC Phone</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.HurricanePOCPhone, new { @class = "form-control", placeholder = "Enter hurricane POC phone", type = "tel" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Work Details</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Department</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.Department, new { @class = "form-control", placeholder = "Enter department" })
+                </div>
+
+                <div class="form-group">
+                    <label>Manager Name</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.ManagerName, new { @class = "form-control", placeholder = "Enter manager name" })
+                </div>
+
+                <div class="form-group">
+                    <label>Zone Manager ID</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.ZoneManagerId, new { @class = "form-control", placeholder = "Enter zone manager ID", type = "number" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cost Center</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.CostCenter, new { @class = "form-control", placeholder = "Enter cost center" })
+                </div>
+
+                <div class="form-group">
+                    <label>Hurricane Zone</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.HurricaneZone, new { @class = "form-control", placeholder = "Enter hurricane zone" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cost Center Address</label>
+                    @Html.TextAreaFor(m => m.BasicInfo.CostCenterAddress, new { @class = "form-control", placeholder = "Enter cost center address", rows = "2" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Competency</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.Competency, new { @class = "form-control", placeholder = "Enter competency" })
+                </div>
+
+                <div class="form-group">
+                    <label>LinkedIn URL</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.LinkedInUrl, new { @class = "form-control", placeholder = "Enter LinkedIn URL", type = "url" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Paid Off Days Per Year</label>
+                    @Html.TextBoxFor(m => m.BasicInfo.PaidOffDaysPerYear, new { @class = "form-control", placeholder = "Enter paid off days", type = "number" })
+                </div>
+
+                <div class="form-group">
+                    <label>Skills</label>
+                    @Html.TextAreaFor(m => m.BasicInfo.Skills, new { @class = "form-control", placeholder = "Enter skills (comma separated)", rows = "2" })
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-save" id="btnSave">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <button type="button" class="btn btn-cancel" onclick="window.close()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#basicInfoForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var $submitBtn = $('#btnSave');
+                var originalText = $submitBtn.html();
+
+                $submitBtn.prop('disabled', true);
+                $submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Saving...');
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            $submitBtn.html('<i class="fas fa-check"></i> Saved!');
+
+                            // Refresh parent window if exists
+                            if (window.opener && !window.opener.closed) {
+                                setTimeout(function() {
+                                    window.opener.location.reload();
+                                }, 300);
+                            }
+
+                            // Close window after short delay
+                            setTimeout(function () {
+                                window.close();
+                            }, 1000);
+                        } else {
+                            alert('Error: ' + (response.message || 'Failed to save changes'));
+                            $submitBtn.prop('disabled', false);
+                            $submitBtn.html(originalText);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error saving changes: ' + error);
+                        $submitBtn.prop('disabled', false);
+                        $submitBtn.html(originalText);
+                    }
+                });
+            });
+        });
+    </script>
+}

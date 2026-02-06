@@ -1,4 +1,4 @@
-﻿@model EmployeeVM
+﻿@model EmployeeCRUD.Models.EmployeeVM
 
 <style>
     .basic-info {
@@ -53,15 +53,51 @@
         margin-top: 10px;
     }
 
-    .add-btn:hover {
-        background-color: #1a4da8;
-    }
-</style>
+        .add-btn:hover {
+            background-color: #1a4da8;
+        }
 
+    .action-bar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 15px;
+    }
+
+    .btn-update-info {
+        padding: 10px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-update-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-update-info i {
+            font-size: 14px;
+        }
+</style>
+<div>
+    <div class="action-bar">
+        <button type="button" class="btn-update-info" onclick="openUpdateBasicInfo(@Model.EEmployee.Eid)">
+            <i class="fas fa-edit"></i>
+            Update Basic Info
+        </button>
+    </div>
     <div class="basic-info">
         <div class="basic-info1">
-            <div class="info-row"><span class="info-label">Name:</span> <span class="info-value">@(Model.Employee.Ename ?? "-")</span></div>
-            <div class="info-row"><span class="info-label">Mobile:</span> <span class="info-value">@(Model.Employee.Emob ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Name:</span> <span class="info-value">@(Model.EEmployee.FullName ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Mobile:</span> <span class="info-value">@(Model.EEmployee.Mobile ?? "-")</span></div>
             <div class="info-row"><span class="info-label">DOJ:</span> <span class="info-value">@(Model.BasicInfo.DOJ != null ? Model.BasicInfo.DOJ.Value.ToString("yyyy-MM-dd") : "-")</span></div>
             <div class="info-row"><span class="info-label">Hurricane POC Email:</span> <span class="info-value">@(Model.BasicInfo.HurricanePOCEmail ?? "-")</span></div>
             <div class="info-row"><span class="info-label">Zone Manager:</span> <span class="info-value">@(Model.BasicInfo.ZoneManagerId != null ? Model.BasicInfo.ZoneManagerId.ToString() : "-")</span></div>
@@ -72,19 +108,19 @@
 
         <div class="basic-info2">
             <div class="info-row"><span class="info-label">Gender:</span> <span class="info-value">@(Model.BasicInfo.Gender ?? "-")</span></div>
-            <div class="info-row"><span class="info-label">Designation:</span> <span class="info-value">@(Model.Employee.Edesign ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Designation:</span> <span class="info-value">@(Model.EEmployee.Designation ?? "-")</span></div>
             <div class="info-row"><span class="info-label">Email:</span> <span class="info-value">@(Model.BasicInfo.PersonalEmail ?? "-")</span></div>
             <div class="info-row"><span class="info-label">Hurricane POC Phone:</span> <span class="info-value">@(Model.BasicInfo.HurricanePOCPhone ?? "-")</span></div>
             <div class="info-row"><span class="info-label">Cost Center:</span> <span class="info-value">@(Model.BasicInfo.CostCenter ?? "-")</span></div>
             <div class="info-row"><span class="info-label">Competency:</span> <span class="info-value">@(Model.BasicInfo.Competency ?? "-")</span></div>
             <div class="info-row"><span class="info-label">Office Email:</span> <span class="info-value">@(Model.BasicInfo.OfficeEmail ?? "-")</span></div>
-            <div class="info-row"><span class="info-label">Permanent Address:</span> <span class="info-value">@(Model.Employee.Eaddr ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Permanent Address:</span> <span class="info-value">@(Model.EEmployee.Address ?? "-")</span></div>
         </div>
 
         <div class="basic-info3">
             <div class="info-row"><span class="info-label">DOB:</span> <span class="info-value">@(Model.BasicInfo.DOB != null ? Model.BasicInfo.DOB.Value.ToString("yyyy-MM-dd") : "-")</span></div>
             <div class="info-row"><span class="info-label">Department:</span> <span class="info-value">@(Model.BasicInfo.Department ?? "-")</span></div>
-            <div class="info-row"><span class="info-label">Employee Type:</span> <span class="info-value">@(Model.Employee.Etype ?? "-")</span></div>
+            <div class="info-row"><span class="info-label">Employee Type:</span> <span class="info-value">@(Model.EEmployee.TypeId.ToString() ?? "-")</span></div>
             <div class="info-row"><span class="info-label">Hurricane Zone:</span> <span class="info-value">@(Model.BasicInfo.HurricaneZone ?? "-")</span></div>
             <div class="info-row">
                 <span class="info-label">Cost Center Address:</span>
@@ -97,5 +133,17 @@
             <div class="info-row"><span class="info-label">Skills:</span> <span class="info-value">@(Model.BasicInfo.Skills ?? "-")</span></div>
         </div>
     </div>
+</div>
 
 
+
+<script>
+    function openUpdateBasicInfo(employeeId) {
+        var url = '@Url.Action("EditBasicInfo", "Employee")?id=' + employeeId;
+        window.open(
+            url,
+            'UpdateBasicInfoPopup',
+            'width=900,height=700,top=100,left=400,resizable=yes,scrollbars=yes'
+        );
+    }
+</script>

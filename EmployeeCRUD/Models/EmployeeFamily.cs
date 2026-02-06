@@ -31,6 +31,6 @@ namespace EmployeeCRUD.Models
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
     
-        public virtual Employee Employee { get; set; }
+        public virtual EEmployee EEmployee { get; set; }
     }
 }

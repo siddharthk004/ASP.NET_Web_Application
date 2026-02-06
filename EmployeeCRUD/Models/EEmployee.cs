@@ -19,6 +19,25 @@ namespace EmployeeCRUD.Models
         {
             this.UserRoleTypePermissions = new HashSet<UserRoleTypePermission>();
             this.BasicInfoes = new HashSet<BasicInfo>();
+            this.Assessments = new HashSet<Assessment>();
+            this.EmployeeBankDetails = new HashSet<EmployeeBankDetail>();
+            this.EmployeeConcessionPasses = new HashSet<EmployeeConcessionPass>();
+            this.EmployeeDisciplinaryLogs = new HashSet<EmployeeDisciplinaryLog>();
+            this.EmployeeEducationHistories = new HashSet<EmployeeEducationHistory>();
+            this.EmployeeEmergencyContacts = new HashSet<EmployeeEmergencyContact>();
+            this.EmployeeFamilies = new HashSet<EmployeeFamily>();
+            this.EmployeeInsurances = new HashSet<EmployeeInsurance>();
+            this.EmployeeLicenses = new HashSet<EmployeeLicens>();
+            this.EmployeeLoans = new HashSet<EmployeeLoan>();
+            this.EmployeePaySlips = new HashSet<EmployeePaySlip>();
+            this.EmployeePensions = new HashSet<EmployeePension>();
+            this.EmployeeReferences = new HashSet<EmployeeReference>();
+            this.EmployeeRemunerations = new HashSet<EmployeeRemuneration>();
+            this.EmployeeTimeZones = new HashSet<EmployeeTimeZone>();
+            this.EmployeeTrainings = new HashSet<EmployeeTraining>();
+            this.EmployeeEmploymentHistories = new HashSet<EmployeeEmploymentHistory>();
+            this.EmployeeLeaveBalances = new HashSet<EmployeeLeaveBalance>();
+            this.EmployeeLeaves = new HashSet<EmployeeLeaf>();
         }
     
         public int Eid { get; set; }
@@ -38,5 +57,43 @@ namespace EmployeeCRUD.Models
         public virtual Login Login { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasicInfo> BasicInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Assessment> Assessments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeBankDetail> EmployeeBankDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeConcessionPass> EmployeeConcessionPasses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeDisciplinaryLog> EmployeeDisciplinaryLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeEducationHistory> EmployeeEducationHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeEmergencyContact> EmployeeEmergencyContacts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeFamily> EmployeeFamilies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeInsurance> EmployeeInsurances { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeLicens> EmployeeLicenses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeLoan> EmployeeLoans { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeePaySlip> EmployeePaySlips { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeePension> EmployeePensions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeReference> EmployeeReferences { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeRemuneration> EmployeeRemunerations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeTimeZone> EmployeeTimeZones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeTraining> EmployeeTrainings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeEmploymentHistory> EmployeeEmploymentHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeLeaveBalance> EmployeeLeaveBalances { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeLeaf> EmployeeLeaves { get; set; }
     }
 }

@@ -31,7 +31,6 @@ namespace EmployeeCRUD.Models
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<EEmployee> EEmployees { get; set; }
         public virtual DbSet<ELogin> ELogins { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeeBankDetail> EmployeeBankDetails { get; set; }
         public virtual DbSet<EmployeeConcessionPass> EmployeeConcessionPasses { get; set; }
         public virtual DbSet<EmployeeDisciplinaryLog> EmployeeDisciplinaryLogs { get; set; }

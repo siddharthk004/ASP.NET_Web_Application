@@ -5,7 +5,7 @@ namespace EmployeeCRUD.Models
 {
     public class EmployeeVM
     {
-        public Employee Employee { get; set; }
+        public EEmployee EEmployee { get; set; }
         public BasicInfo BasicInfo { get; set; }
         public List<EmployeeEmploymentHistory> EmploymentHistory { get; set; }
         public List<EmployeeEducationHistory> EducationHistory { get; set; }

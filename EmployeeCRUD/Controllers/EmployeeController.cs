@@ -26,11 +26,8 @@ namespace EmployeeCRUD.Controllers
        
         
         #region Index
-        public ActionResult Index(
-            int? top = null,
-            string searchtxt = null,
-            string sortBy = "Ename",
-            string sortDir = "asc")
+     
+        public ActionResult Index(  int? top = null,  string searchtxt = null,  string sortBy = "Ename", string sortDir = "asc")
         {
             int roleId = Convert.ToInt32(Session["RoleId"]);
             int eid = Convert.ToInt32(Session["EmpId"]);
@@ -126,9 +123,8 @@ namespace EmployeeCRUD.Controllers
 
             return View(data);
         }
+    
         #endregion
-
-
 
         #region Home Screen
         public ActionResult Details(int? id = null)
@@ -147,13 +143,13 @@ namespace EmployeeCRUD.Controllers
 
         public ActionResult PopUp(int? id, char mode)
         {
-            Employee model;
+            EEmployee model;
             if (mode == 'e')
             {
                 if (id == null)
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-                model = db.Employees.FirstOrDefault(x => x.Eid == id.Value);
+                model = db.EEmployees.FirstOrDefault(x => x.Eid == id.Value);
                 if (model == null)
                     return HttpNotFound();
 
@@ -164,7 +160,7 @@ namespace EmployeeCRUD.Controllers
                 if (id == null)
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-                model = db.Employees.FirstOrDefault(x => x.Eid == id.Value);
+                model = db.EEmployees.FirstOrDefault(x => x.Eid == id.Value);
                 if (model == null)
                     return HttpNotFound();
 
@@ -172,7 +168,7 @@ namespace EmployeeCRUD.Controllers
             }
             else
             {
-                return PartialView("Create", new Employee());
+                return PartialView("Create", new EEmployee());
             }
         }
 
@@ -221,7 +217,7 @@ namespace EmployeeCRUD.Controllers
                 })
                 .ToList();
 
-            return PartialView("Created", new Employee());
+            return PartialView("Created", new EEmployee());
         }
 
         [HttpPost]
@@ -407,7 +403,7 @@ namespace EmployeeCRUD.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save( Employee model, string username, string password, int roleId, string email)
+        public ActionResult Save( EEmployee model, string username, string password, int roleId, string email)
         {
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -434,11 +430,11 @@ namespace EmployeeCRUD.Controllers
                     var employee = new EEmployee
                     {
                         LoginId = loginId,
-                        FullName = model.Ename,
-                        TypeId = Convert.ToInt32(model.Etype),
-                        Address = model.Eaddr,
-                        Mobile = model.Emob,
-                        Designation = model.Edesign,
+                        FullName = model.FullName,
+                        TypeId = Convert.ToInt32(model.TypeId),
+                        Address = model.Address,
+                        Mobile = model.Mobile,
+                        Designation = model.Designation,
                         IsActive = true,
                         CreatedAt = DateTime.Now
                     };
@@ -513,12 +509,12 @@ namespace EmployeeCRUD.Controllers
         #region Profile View
         public ActionResult ProfileView(int? id = null)
         {
-            Employee model;
+            EEmployee model;
 
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            model = db.Employees.FirstOrDefault(x => x.Eid == id.Value);
+            model = db.EEmployees.FirstOrDefault(x => x.Eid == id.Value);
             if (model == null)
                 return HttpNotFound();
 
@@ -527,14 +523,14 @@ namespace EmployeeCRUD.Controllers
 
         public ActionResult ProfileTab(String tab = null, int? id = null)
         {
-            var data = db.Employees.FirstOrDefault(x => x.Eid == id); if (data == null) return HttpNotFound();
+            var data = db.EEmployees.FirstOrDefault(x => x.Eid == id); if (data == null) return HttpNotFound();
             if (id == null)
                 return HttpNotFound();
 
             switch (tab)
             {
                 case "BasicInfo":
-                    var employee = db.Employees.FirstOrDefault(x => x.Eid == id);
+                    var employee = db.EEmployees.FirstOrDefault(x => x.Eid == id);
                     if (employee == null)
                         return HttpNotFound();
 
@@ -552,14 +548,14 @@ namespace EmployeeCRUD.Controllers
 
                     var vm = new EmployeeVM
                     {
-                        Employee = employee,
+                        EEmployee = employee,
                         BasicInfo = basicInfo
                     };
                     return PartialView("_BasicInfo", vm);
 
 
                 case "EmploymentHistory":
-                    employee = db.Employees.FirstOrDefault(x => x.Eid == id);
+                    employee = db.EEmployees.FirstOrDefault(x => x.Eid == id);
                     if (employee == null)
                         return HttpNotFound();
 
@@ -572,7 +568,7 @@ namespace EmployeeCRUD.Controllers
 
                     var EHVM = new EmployeeVM
                     {
-                        Employee = employee,
+                        EEmployee = employee,
                         EmploymentHistory = EmpHistory
                     };
                     return PartialView("_EmploymentHistory", EHVM);
@@ -583,7 +579,7 @@ namespace EmployeeCRUD.Controllers
 
 
                 case "EducationHistory":
-                    employee = db.Employees.FirstOrDefault(x => x.Eid == id);
+                    employee = db.EEmployees.FirstOrDefault(x => x.Eid == id);
                     if (employee == null)
                         return HttpNotFound();
 
@@ -593,7 +589,7 @@ namespace EmployeeCRUD.Controllers
 
                     var EEHVM = new EmployeeVM
                     {
-                        Employee = employee,
+                        EEmployee = employee,
                         EducationHistory = EmpEduHistory
                     };
                     return PartialView("_EducationHistory", EEHVM);
@@ -636,9 +632,115 @@ namespace EmployeeCRUD.Controllers
             }
         }
 
+        #endregion Profile View
+
+
+        #region Edit Basic Info
+
+        [HttpGet]
+        public ActionResult EditBasicInfo(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var employee = db.EEmployees.FirstOrDefault(x => x.Eid == id);
+            if (employee == null)
+                return HttpNotFound();
+
+            var basicInfo = db.BasicInfoes.FirstOrDefault(x => x.Eid == id);
+
+            // If BasicInfo doesn't exist, create a new empty one for the form
+            if (basicInfo == null)
+            {
+                basicInfo = new BasicInfo
+                {
+                    Eid = id.Value
+                };
+            }
+
+            var vm = new EmployeeVM
+            {
+                EEmployee = employee,
+                BasicInfo = basicInfo
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditBasicInfo(EmployeeVM model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Invalid data" });
+
+            try
+            {
+                // Update Employee
+                var employee = db.EEmployees.Find(model.EEmployee.Eid);
+                if (employee != null)
+                {
+                    employee.FullName = model.EEmployee.FullName;
+                    employee.Mobile = model.EEmployee.Mobile;
+                    employee.Address = model.EEmployee.Address;
+                    employee.Designation = model.EEmployee.Designation;
+                    employee.TypeId = model.EEmployee.TypeId;
+                }
+
+                // Update or Insert BasicInfo
+                var basicInfo = db.BasicInfoes.FirstOrDefault(x => x.Eid == model.EEmployee.Eid);
+                
+                if (basicInfo == null)
+                {
+                    // Create new BasicInfo
+                    basicInfo = new BasicInfo
+                    {
+                        Eid = model.EEmployee.Eid,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = Session["UserName"]?.ToString()
+                    };
+                    db.BasicInfoes.Add(basicInfo);
+                }
+
+                // Update BasicInfo fields
+                basicInfo.DOB = model.BasicInfo.DOB;
+                basicInfo.DOJ = model.BasicInfo.DOJ;
+                basicInfo.Gender = model.BasicInfo.Gender;
+                basicInfo.NickName = model.BasicInfo.NickName;
+                basicInfo.PayType = model.BasicInfo.PayType;
+                basicInfo.EmployeeType = model.BasicInfo.EmployeeType;
+                basicInfo.Department = model.BasicInfo.Department;
+                basicInfo.Designation = model.BasicInfo.Designation;
+                basicInfo.PersonalEmail = model.BasicInfo.PersonalEmail;
+                basicInfo.OfficeEmail = model.BasicInfo.OfficeEmail;
+                basicInfo.HurricanePOCEmail = model.BasicInfo.HurricanePOCEmail;
+                basicInfo.HurricanePOCPhone = model.BasicInfo.HurricanePOCPhone;
+                basicInfo.ManagerName = model.BasicInfo.ManagerName;
+                basicInfo.ZoneManagerId = model.BasicInfo.ZoneManagerId;
+                basicInfo.CostCenter = model.BasicInfo.CostCenter;
+                basicInfo.CostCenterAddress = model.BasicInfo.CostCenterAddress;
+                basicInfo.HurricaneZone = model.BasicInfo.HurricaneZone;
+                basicInfo.Competency = model.BasicInfo.Competency;
+                basicInfo.LinkedInUrl = model.BasicInfo.LinkedInUrl;
+                basicInfo.PaidOffDaysPerYear = model.BasicInfo.PaidOffDaysPerYear;
+                basicInfo.Skills = model.BasicInfo.Skills;
+                basicInfo.UpdatedDate = DateTime.Now;
+                basicInfo.UpdatedBy = Session["UserName"]?.ToString();
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        #endregion Edit Basic Info
 
         #region EmployeeHistory
-        
+
         [HttpGet]
         public ActionResult AddEmploymentHistory(int employeeId)
         {
@@ -675,8 +777,8 @@ namespace EmployeeCRUD.Controllers
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Invalid data" });
             
-            var emp = db.Employees.FirstOrDefault(x => x.Eid == model.EmployeeId);
-            model.CreatedBy = emp.Ename;
+            var emp = db.EEmployees.FirstOrDefault(x => x.Eid == model.EmployeeId);
+            model.CreatedBy = emp.FullName;
             model.CreatedDate = DateTime.Now;
 
             db.EmployeeEmploymentHistories.Add(model);
@@ -750,10 +852,10 @@ namespace EmployeeCRUD.Controllers
             history.RolePerformed = model.RolePerformed;
             history.IsActive = model.IsActive;
 
-            var emp = db.Employees.FirstOrDefault(x => x.Eid == model.EmployeeId);
+            var emp = db.EEmployees.FirstOrDefault(x => x.Eid == model.EmployeeId);
             if (emp != null)
             {
-                history.UpdatedBy = emp.Ename;
+                history.UpdatedBy = emp.FullName;
             }
             history.UpdatedDate = DateTime.Now;
 
@@ -765,7 +867,7 @@ namespace EmployeeCRUD.Controllers
         [HttpGet]
         public ActionResult SearchEmploymentHistory(int employeeId, string search)
         {
-            var employee = db.Employees.FirstOrDefault(x => x.Eid == employeeId);
+            var employee = db.EEmployees.FirstOrDefault(x => x.Eid == employeeId);
             if (employee == null)
                 return HttpNotFound();
 
@@ -782,7 +884,7 @@ namespace EmployeeCRUD.Controllers
             }
             var vm = new EmployeeVM
             {
-                Employee = employee,
+                EEmployee = employee,
                 EmploymentHistory = history
                     .OrderByDescending(x => x.DateOfJoining) // ✅ keep sorting
                     .ToList()
@@ -792,6 +894,7 @@ namespace EmployeeCRUD.Controllers
         }
 
         #endregion EmployeeHistory
+
 
         #region View Permissions
 
@@ -831,6 +934,7 @@ namespace EmployeeCRUD.Controllers
 
             return View(vm);
         }
+      
         [HttpPost]
         public ActionResult UpdatePermissions(ViewPermissionsVM model)
         {
@@ -861,6 +965,7 @@ namespace EmployeeCRUD.Controllers
         }
 
         #endregion View Permissions
+
 
         #region Manage Roles
 
@@ -939,7 +1044,6 @@ namespace EmployeeCRUD.Controllers
 
         #endregion Manage Roles
 
-        #endregion Profile View
 
         public bool DeleteEntity<TEntity>(Func<TEntity, bool> predicate) where TEntity : class
         {
@@ -951,6 +1055,7 @@ namespace EmployeeCRUD.Controllers
             db.SaveChanges();
             return true;
         }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

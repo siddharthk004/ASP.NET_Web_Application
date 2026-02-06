@@ -99,18 +99,6 @@
           <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="Employee">
-          <Key>
-            <PropertyRef Name="Eid" />
-          </Key>
-          <Property Name="Eid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Ename" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Etype" Type="nvarchar" MaxLength="50" />
-          <Property Name="Eaddr" Type="nvarchar" MaxLength="200" />
-          <Property Name="Emob" Type="nvarchar" MaxLength="15" />
-          <Property Name="Edesign" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="EmployeeBankDetails">
           <Key>
             <PropertyRef Name="BankId" />
@@ -551,18 +539,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Assessment_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="Assessment" Type="Self.Assessment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="Assessment">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BasicInfo_EEmployee">
           <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="BasicInfo" Type="Self.BasicInfo" Multiplicity="*" />
@@ -572,6 +548,18 @@
             </Principal>
             <Dependent Role="BasicInfo">
               <PropertyRef Name="Eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EEmployee_Assessment">
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
+          <End Role="Assessment" Type="Self.Assessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="Assessment">
+              <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -612,10 +600,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeBankDetails_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeBankDetails" Type="Self.EmployeeBankDetails" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeBankDetails">
@@ -624,10 +612,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeConcessionPass_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeConcessionPass" Type="Self.EmployeeConcessionPass" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeConcessionPass">
@@ -636,10 +624,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeDisciplinaryLog_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeDisciplinaryLog" Type="Self.EmployeeDisciplinaryLog" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeDisciplinaryLog">
@@ -648,10 +636,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeEducationHistory_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeEducationHistory" Type="Self.EmployeeEducationHistory" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeEducationHistory">
@@ -660,10 +648,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeEmergencyContact_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeEmergencyContact" Type="Self.EmployeeEmergencyContact" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeEmergencyContact">
@@ -672,10 +660,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeFamily_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeFamily" Type="Self.EmployeeFamily" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeFamily">
@@ -684,10 +672,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeInsurance_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeInsurance" Type="Self.EmployeeInsurance" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeInsurance">
@@ -696,10 +684,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeLicenses_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeLicenses" Type="Self.EmployeeLicenses" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeLicenses">
@@ -708,10 +696,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeLoans_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeLoans" Type="Self.EmployeeLoans" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeLoans">
@@ -720,10 +708,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeePaySlips_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeePaySlips" Type="Self.EmployeePaySlips" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeePaySlips">
@@ -732,10 +720,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeePensions_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeePensions" Type="Self.EmployeePensions" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeePensions">
@@ -744,10 +732,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeReferences_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeReferences" Type="Self.EmployeeReferences" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeReferences">
@@ -756,10 +744,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeRemuneration_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeRemuneration" Type="Self.EmployeeRemuneration" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeRemuneration">
@@ -768,10 +756,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeTimeZone_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeTimeZone" Type="Self.EmployeeTimeZone" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeTimeZone">
@@ -780,10 +768,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmployeeTraining_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeTraining" Type="Self.EmployeeTraining" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeTraining">
@@ -792,10 +780,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EmploymentHistory_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeEmploymentHistory" Type="Self.EmployeeEmploymentHistory" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeEmploymentHistory">
@@ -804,10 +792,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LeaveBalance_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeLeaveBalance" Type="Self.EmployeeLeaveBalance" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeLeaveBalance">
@@ -816,10 +804,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Leaves_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="1" />
           <End Role="EmployeeLeaves" Type="Self.EmployeeLeaves" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employee">
+            <Principal Role="EEmployee">
               <PropertyRef Name="Eid" />
             </Principal>
             <Dependent Role="EmployeeLeaves">
@@ -924,7 +912,6 @@
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EEmployee" EntityType="Self.EEmployee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ELogin" EntityType="Self.ELogin" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeBankDetails" EntityType="Self.EmployeeBankDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeConcessionPass" EntityType="Self.EmployeeConcessionPass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeDisciplinaryLog" EntityType="Self.EmployeeDisciplinaryLog" Schema="dbo" store:Type="Tables" />
@@ -954,13 +941,13 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="ELogin" EntitySet="ELogin" />
           </AssociationSet>
-          <AssociationSet Name="FK_Assessment_Employee" Association="Self.FK_Assessment_Employee">
-            <End Role="Employee" EntitySet="Employee" />
-            <End Role="Assessment" EntitySet="Assessment" />
-          </AssociationSet>
           <AssociationSet Name="FK_BasicInfo_EEmployee" Association="Self.FK_BasicInfo_EEmployee">
             <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="BasicInfo" EntitySet="BasicInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EEmployee_Assessment" Association="Self.FK_EEmployee_Assessment">
+            <End Role="EEmployee" EntitySet="EEmployee" />
+            <End Role="Assessment" EntitySet="Assessment" />
           </AssociationSet>
           <AssociationSet Name="FK_ELogin_Roles" Association="Self.FK_ELogin_Roles">
             <End Role="Roles" EntitySet="Roles" />
@@ -975,75 +962,75 @@
             <End Role="EEmployee" EntitySet="EEmployee" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeBankDetails_Employee" Association="Self.FK_EmployeeBankDetails_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeBankDetails" EntitySet="EmployeeBankDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeConcessionPass_Employee" Association="Self.FK_EmployeeConcessionPass_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeConcessionPass" EntitySet="EmployeeConcessionPass" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeDisciplinaryLog_Employee" Association="Self.FK_EmployeeDisciplinaryLog_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeDisciplinaryLog" EntitySet="EmployeeDisciplinaryLog" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeEducationHistory_Employee" Association="Self.FK_EmployeeEducationHistory_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeEducationHistory" EntitySet="EmployeeEducationHistory" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeEmergencyContact_Employee" Association="Self.FK_EmployeeEmergencyContact_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeEmergencyContact" EntitySet="EmployeeEmergencyContact" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeFamily_Employee" Association="Self.FK_EmployeeFamily_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeFamily" EntitySet="EmployeeFamily" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeInsurance_Employee" Association="Self.FK_EmployeeInsurance_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeInsurance" EntitySet="EmployeeInsurance" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeLicenses_Employee" Association="Self.FK_EmployeeLicenses_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeLicenses" EntitySet="EmployeeLicenses" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeLoans_Employee" Association="Self.FK_EmployeeLoans_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeLoans" EntitySet="EmployeeLoans" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeePaySlips_Employee" Association="Self.FK_EmployeePaySlips_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeePaySlips" EntitySet="EmployeePaySlips" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeePensions_Employee" Association="Self.FK_EmployeePensions_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeePensions" EntitySet="EmployeePensions" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeReferences_Employee" Association="Self.FK_EmployeeReferences_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeReferences" EntitySet="EmployeeReferences" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeRemuneration_Employee" Association="Self.FK_EmployeeRemuneration_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeRemuneration" EntitySet="EmployeeRemuneration" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeTimeZone_Employee" Association="Self.FK_EmployeeTimeZone_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeTimeZone" EntitySet="EmployeeTimeZone" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeTraining_Employee" Association="Self.FK_EmployeeTraining_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeTraining" EntitySet="EmployeeTraining" />
           </AssociationSet>
           <AssociationSet Name="FK_EmploymentHistory_Employee" Association="Self.FK_EmploymentHistory_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeEmploymentHistory" EntitySet="EmployeeEmploymentHistory" />
           </AssociationSet>
           <AssociationSet Name="FK_LeaveBalance_Employee" Association="Self.FK_LeaveBalance_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeLeaveBalance" EntitySet="EmployeeLeaveBalance" />
           </AssociationSet>
           <AssociationSet Name="FK_Leaves_Employee" Association="Self.FK_Leaves_Employee">
-            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EEmployee" EntitySet="EEmployee" />
             <End Role="EmployeeLeaves" EntitySet="EmployeeLeaves" />
           </AssociationSet>
           <AssociationSet Name="FK_RolesTypesView_Roles" Association="Self.FK_RolesTypesView_Roles">
@@ -1107,7 +1094,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_Assessment_Employee" FromRole="Assessment" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EEmployee_Assessment" FromRole="Assessment" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="BasicInfo">
           <Key>
@@ -1140,7 +1127,6 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_BasicInfo_Employee" FromRole="BasicInfo" ToRole="Employee" />
           <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_BasicInfo_EEmployee" FromRole="BasicInfo" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="Company">
@@ -1169,6 +1155,25 @@
           <NavigationProperty Name="UserRoleTypePermissions" Relationship="Self.FK_UserRoleTypePermissions_Employee" FromRole="EEmployee" ToRole="UserRoleTypePermissions" />
           <NavigationProperty Name="Login" Relationship="SanmolModel.FK_Employee_Login_New" FromRole="EEmployee" ToRole="Login" />
           <NavigationProperty Name="BasicInfoes" Relationship="SanmolModel.FK_BasicInfo_EEmployee" FromRole="EEmployee" ToRole="BasicInfo" />
+          <NavigationProperty Name="Assessments" Relationship="SanmolModel.FK_EEmployee_Assessment" FromRole="EEmployee" ToRole="Assessment" />
+          <NavigationProperty Name="EmployeeBankDetails" Relationship="SanmolModel.FK_EmployeeBankDetails_Employee1" FromRole="EEmployee" ToRole="EmployeeBankDetail" />
+          <NavigationProperty Name="EmployeeConcessionPasses" Relationship="SanmolModel.FK_EmployeeConcessionPass_Employee1" FromRole="EEmployee" ToRole="EmployeeConcessionPass" />
+          <NavigationProperty Name="EmployeeDisciplinaryLogs" Relationship="SanmolModel.FK_EmployeeDisciplinaryLog_Employee1" FromRole="EEmployee" ToRole="EmployeeDisciplinaryLog" />
+          <NavigationProperty Name="EmployeeEducationHistories" Relationship="SanmolModel.FK_EmployeeEducationHistory_Employee1" FromRole="EEmployee" ToRole="EmployeeEducationHistory" />
+          <NavigationProperty Name="EmployeeEmergencyContacts" Relationship="SanmolModel.FK_EmployeeEmergencyContact_Employee1" FromRole="EEmployee" ToRole="EmployeeEmergencyContact" />
+          <NavigationProperty Name="EmployeeFamilies" Relationship="SanmolModel.FK_EmployeeFamily_Employee1" FromRole="EEmployee" ToRole="EmployeeFamily" />
+          <NavigationProperty Name="EmployeeInsurances" Relationship="SanmolModel.FK_EmployeeInsurance_Employee1" FromRole="EEmployee" ToRole="EmployeeInsurance" />
+          <NavigationProperty Name="EmployeeLicenses" Relationship="SanmolModel.FK_EmployeeLicenses_Employee1" FromRole="EEmployee" ToRole="EmployeeLicens" />
+          <NavigationProperty Name="EmployeeLoans" Relationship="SanmolModel.FK_EmployeeLoans_Employee1" FromRole="EEmployee" ToRole="EmployeeLoan" />
+          <NavigationProperty Name="EmployeePaySlips" Relationship="SanmolModel.FK_EmployeePaySlips_Employee1" FromRole="EEmployee" ToRole="EmployeePaySlip" />
+          <NavigationProperty Name="EmployeePensions" Relationship="SanmolModel.FK_EmployeePensions_Employee1" FromRole="EEmployee" ToRole="EmployeePension" />
+          <NavigationProperty Name="EmployeeReferences" Relationship="SanmolModel.FK_EmployeeReferences_Employee1" FromRole="EEmployee" ToRole="EmployeeReference" />
+          <NavigationProperty Name="EmployeeRemunerations" Relationship="SanmolModel.FK_EmployeeRemuneration_Employee1" FromRole="EEmployee" ToRole="EmployeeRemuneration" />
+          <NavigationProperty Name="EmployeeTimeZones" Relationship="SanmolModel.FK_EmployeeTimeZone_Employee1" FromRole="EEmployee" ToRole="EmployeeTimeZone" />
+          <NavigationProperty Name="EmployeeTrainings" Relationship="SanmolModel.FK_EmployeeTraining_Employee1" FromRole="EEmployee" ToRole="EmployeeTraining" />
+          <NavigationProperty Name="EmployeeEmploymentHistories" Relationship="SanmolModel.FK_EmploymentHistory_Employee1" FromRole="EEmployee" ToRole="EmployeeEmploymentHistory" />
+          <NavigationProperty Name="EmployeeLeaveBalances" Relationship="SanmolModel.FK_LeaveBalance_Employee1" FromRole="EEmployee" ToRole="EmployeeLeaveBalance" />
+          <NavigationProperty Name="EmployeeLeaves" Relationship="SanmolModel.FK_Leaves_Employee1" FromRole="EEmployee" ToRole="EmployeeLeaf" />
         </EntityType>
         <EntityType Name="ELogin">
           <Key>
@@ -1180,38 +1185,6 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="Role" Relationship="Self.FK__E_Login__RoleId__5AB9788F" FromRole="ELogin" ToRole="Roles" />
-        </EntityType>
-        <EntityType Name="Employee">
-          <Key>
-            <PropertyRef Name="Eid" />
-          </Key>
-          <Property Name="Eid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ename" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Etype" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Eaddr" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Emob" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Edesign" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Assessments" Relationship="Self.FK_Assessment_Employee" FromRole="Employee" ToRole="Assessment" />
-          <NavigationProperty Name="BasicInfoes" Relationship="Self.FK_BasicInfo_Employee" FromRole="Employee" ToRole="BasicInfo" />
-          <NavigationProperty Name="EmployeeBankDetails" Relationship="Self.FK_EmployeeBankDetails_Employee" FromRole="Employee" ToRole="EmployeeBankDetails" />
-          <NavigationProperty Name="EmployeeConcessionPasses" Relationship="Self.FK_EmployeeConcessionPass_Employee" FromRole="Employee" ToRole="EmployeeConcessionPass" />
-          <NavigationProperty Name="EmployeeDisciplinaryLogs" Relationship="Self.FK_EmployeeDisciplinaryLog_Employee" FromRole="Employee" ToRole="EmployeeDisciplinaryLog" />
-          <NavigationProperty Name="EmployeeEducationHistories" Relationship="Self.FK_EmployeeEducationHistory_Employee" FromRole="Employee" ToRole="EmployeeEducationHistory" />
-          <NavigationProperty Name="EmployeeEmergencyContacts" Relationship="Self.FK_EmployeeEmergencyContact_Employee" FromRole="Employee" ToRole="EmployeeEmergencyContact" />
-          <NavigationProperty Name="EmployeeFamilies" Relationship="Self.FK_EmployeeFamily_Employee" FromRole="Employee" ToRole="EmployeeFamily" />
-          <NavigationProperty Name="EmployeeInsurances" Relationship="Self.FK_EmployeeInsurance_Employee" FromRole="Employee" ToRole="EmployeeInsurance" />
-          <NavigationProperty Name="EmployeeLicenses" Relationship="Self.FK_EmployeeLicenses_Employee" FromRole="Employee" ToRole="EmployeeLicenses" />
-          <NavigationProperty Name="EmployeeLoans" Relationship="Self.FK_EmployeeLoans_Employee" FromRole="Employee" ToRole="EmployeeLoans" />
-          <NavigationProperty Name="EmployeePaySlips" Relationship="Self.FK_EmployeePaySlips_Employee" FromRole="Employee" ToRole="EmployeePaySlips" />
-          <NavigationProperty Name="EmployeePensions" Relationship="Self.FK_EmployeePensions_Employee" FromRole="Employee" ToRole="EmployeePensions" />
-          <NavigationProperty Name="EmployeeReferences" Relationship="Self.FK_EmployeeReferences_Employee" FromRole="Employee" ToRole="EmployeeReferences" />
-          <NavigationProperty Name="EmployeeRemunerations" Relationship="Self.FK_EmployeeRemuneration_Employee" FromRole="Employee" ToRole="EmployeeRemuneration" />
-          <NavigationProperty Name="EmployeeTimeZones" Relationship="Self.FK_EmployeeTimeZone_Employee" FromRole="Employee" ToRole="EmployeeTimeZone" />
-          <NavigationProperty Name="EmployeeTrainings" Relationship="Self.FK_EmployeeTraining_Employee" FromRole="Employee" ToRole="EmployeeTraining" />
-          <NavigationProperty Name="EmployeeEmploymentHistories" Relationship="Self.FK_EmploymentHistory_Employee" FromRole="Employee" ToRole="EmployeeEmploymentHistory" />
-          <NavigationProperty Name="EmployeeLeaveBalances" Relationship="Self.FK_LeaveBalance_Employee" FromRole="Employee" ToRole="EmployeeLeaveBalance" />
-          <NavigationProperty Name="EmployeeLeaves" Relationship="Self.FK_Leaves_Employee" FromRole="Employee" ToRole="EmployeeLeaves" />
         </EntityType>
         <EntityType Name="EmployeeBankDetail">
           <Key>
@@ -1232,7 +1205,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeBankDetails_Employee" FromRole="EmployeeBankDetails" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeBankDetails_Employee1" FromRole="EmployeeBankDetail" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeConcessionPass">
           <Key>
@@ -1251,7 +1224,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeConcessionPass_Employee" FromRole="EmployeeConcessionPass" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeConcessionPass_Employee1" FromRole="EmployeeConcessionPass" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeDisciplinaryLog">
           <Key>
@@ -1272,7 +1245,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeDisciplinaryLog_Employee" FromRole="EmployeeDisciplinaryLog" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeDisciplinaryLog_Employee1" FromRole="EmployeeDisciplinaryLog" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeEducationHistory">
           <Key>
@@ -1293,7 +1266,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeEducationHistory_Employee" FromRole="EmployeeEducationHistory" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeEducationHistory_Employee1" FromRole="EmployeeEducationHistory" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeEmergencyContact">
           <Key>
@@ -1310,7 +1283,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeEmergencyContact_Employee" FromRole="EmployeeEmergencyContact" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeEmergencyContact_Employee1" FromRole="EmployeeEmergencyContact" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeEmploymentHistory">
           <Key>
@@ -1330,7 +1303,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmploymentHistory_Employee" FromRole="EmployeeEmploymentHistory" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmploymentHistory_Employee1" FromRole="EmployeeEmploymentHistory" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeFamily">
           <Key>
@@ -1352,7 +1325,7 @@
           <Property Name="LastUpdated" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeFamily_Employee" FromRole="EmployeeFamily" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeFamily_Employee1" FromRole="EmployeeFamily" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeInsurance">
           <Key>
@@ -1374,7 +1347,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeInsurance_Employee" FromRole="EmployeeInsurance" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeInsurance_Employee1" FromRole="EmployeeInsurance" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeLeaveBalance">
           <Key>
@@ -1394,7 +1367,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_LeaveBalance_Employee" FromRole="EmployeeLeaveBalance" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_LeaveBalance_Employee1" FromRole="EmployeeLeaveBalance" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeLeaf">
           <Key>
@@ -1421,7 +1394,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_Leaves_Employee" FromRole="EmployeeLeaves" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_Leaves_Employee1" FromRole="EmployeeLeaf" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeLicens">
           <Key>
@@ -1438,7 +1411,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeLicenses_Employee" FromRole="EmployeeLicenses" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeLicenses_Employee1" FromRole="EmployeeLicens" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeLoan">
           <Key>
@@ -1456,7 +1429,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeLoans_Employee" FromRole="EmployeeLoans" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeLoans_Employee1" FromRole="EmployeeLoan" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeePaySlip">
           <Key>
@@ -1480,7 +1453,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeePaySlips_Employee" FromRole="EmployeePaySlips" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeePaySlips_Employee1" FromRole="EmployeePaySlip" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeePension">
           <Key>
@@ -1497,7 +1470,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeePensions_Employee" FromRole="EmployeePensions" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeePensions_Employee1" FromRole="EmployeePension" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeReference">
           <Key>
@@ -1517,7 +1490,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeReferences_Employee" FromRole="EmployeeReferences" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeReferences_Employee1" FromRole="EmployeeReference" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeRemuneration">
           <Key>
@@ -1537,7 +1510,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeRemuneration_Employee" FromRole="EmployeeRemuneration" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeRemuneration_Employee1" FromRole="EmployeeRemuneration" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeTimeZone">
           <Key>
@@ -1553,7 +1526,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeTimeZone_Employee" FromRole="EmployeeTimeZone" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeTimeZone_Employee1" FromRole="EmployeeTimeZone" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeTraining">
           <Key>
@@ -1574,7 +1547,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeTraining_Employee" FromRole="EmployeeTraining" ToRole="Employee" />
+          <NavigationProperty Name="EEmployee" Relationship="SanmolModel.FK_EmployeeTraining_Employee1" FromRole="EmployeeTraining" ToRole="EEmployee" />
         </EntityType>
         <EntityType Name="EmployeeTypeMaster">
           <Key>
@@ -1663,30 +1636,6 @@
           <NavigationProperty Name="EmployeeTypeMaster" Relationship="Self.FK_UserRoleTypePermissions_Type" FromRole="UserRoleTypePermissions" ToRole="EmployeeTypeMaster" />
           <NavigationProperty Name="Role" Relationship="Self.FK_UserRoleTypePermissions_Role" FromRole="UserRoleTypePermissions" ToRole="Roles" />
         </EntityType>
-        <Association Name="FK_Assessment_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="Assessment" Type="Self.Assessment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="Assessment">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BasicInfo_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="BasicInfo" Type="Self.BasicInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="BasicInfo">
-              <PropertyRef Name="Eid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Employee_Type">
           <End Role="EmployeeTypeMaster" Type="Self.EmployeeTypeMaster" Multiplicity="1" />
           <End Role="EEmployee" Type="Self.EEmployee" Multiplicity="*" />
@@ -1722,222 +1671,6 @@
             </Principal>
             <Dependent Role="ELogin">
               <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeBankDetails_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeBankDetails" Type="Self.EmployeeBankDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeBankDetails">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeConcessionPass_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeConcessionPass" Type="Self.EmployeeConcessionPass" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeConcessionPass">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeDisciplinaryLog_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeDisciplinaryLog" Type="Self.EmployeeDisciplinaryLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeDisciplinaryLog">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeEducationHistory_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeEducationHistory" Type="Self.EmployeeEducationHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeEducationHistory">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeEmergencyContact_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeEmergencyContact" Type="Self.EmployeeEmergencyContact" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeEmergencyContact">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeFamily_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeFamily" Type="Self.EmployeeFamily" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeFamily">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeInsurance_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeInsurance" Type="Self.EmployeeInsurance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeInsurance">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeLicenses_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeLicenses" Type="Self.EmployeeLicens" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeLicenses">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeLoans_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeLoans" Type="Self.EmployeeLoan" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeLoans">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeePaySlips_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeePaySlips" Type="Self.EmployeePaySlip" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeePaySlips">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeePensions_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeePensions" Type="Self.EmployeePension" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeePensions">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeReferences_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeReferences" Type="Self.EmployeeReference" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeReferences">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeRemuneration_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeRemuneration" Type="Self.EmployeeRemuneration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeRemuneration">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeTimeZone_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeTimeZone" Type="Self.EmployeeTimeZone" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeTimeZone">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeTraining_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeTraining" Type="Self.EmployeeTraining" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeTraining">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmploymentHistory_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeEmploymentHistory" Type="Self.EmployeeEmploymentHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeEmploymentHistory">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LeaveBalance_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeLeaveBalance" Type="Self.EmployeeLeaveBalance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeLeaveBalance">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Leaves_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="EmployeeLeaves" Type="Self.EmployeeLeaf" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Eid" />
-            </Principal>
-            <Dependent Role="EmployeeLeaves">
-              <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2024,7 +1757,6 @@
           <EntitySet Name="Companies" EntityType="Self.Company" />
           <EntitySet Name="EEmployees" EntityType="Self.EEmployee" />
           <EntitySet Name="ELogins" EntityType="Self.ELogin" />
-          <EntitySet Name="Employees" EntityType="Self.Employee" />
           <EntitySet Name="EmployeeBankDetails" EntityType="Self.EmployeeBankDetail" />
           <EntitySet Name="EmployeeConcessionPasses" EntityType="Self.EmployeeConcessionPass" />
           <EntitySet Name="EmployeeDisciplinaryLogs" EntityType="Self.EmployeeDisciplinaryLog" />
@@ -2049,14 +1781,6 @@
           <EntitySet Name="RoleTypePermissions" EntityType="Self.RoleTypePermission" />
           <EntitySet Name="UserRoleMenuViews" EntityType="Self.UserRoleMenuView" />
           <EntitySet Name="UserRoleTypePermissions" EntityType="Self.UserRoleTypePermission" />
-          <AssociationSet Name="FK_Assessment_Employee" Association="Self.FK_Assessment_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Assessment" EntitySet="Assessments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BasicInfo_Employee" Association="Self.FK_BasicInfo_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="BasicInfo" EntitySet="BasicInfoes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Employee_Type" Association="Self.FK_Employee_Type">
             <End Role="EmployeeTypeMaster" EntitySet="EmployeeTypeMasters" />
             <End Role="EEmployee" EntitySet="EEmployees" />
@@ -2068,78 +1792,6 @@
           <AssociationSet Name="FK__E_Login__RoleId__5AB9788F" Association="Self.FK__E_Login__RoleId__5AB9788F">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="ELogin" EntitySet="ELogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeBankDetails_Employee" Association="Self.FK_EmployeeBankDetails_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeBankDetails" EntitySet="EmployeeBankDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeConcessionPass_Employee" Association="Self.FK_EmployeeConcessionPass_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeConcessionPass" EntitySet="EmployeeConcessionPasses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeDisciplinaryLog_Employee" Association="Self.FK_EmployeeDisciplinaryLog_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeDisciplinaryLog" EntitySet="EmployeeDisciplinaryLogs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeEducationHistory_Employee" Association="Self.FK_EmployeeEducationHistory_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeEducationHistory" EntitySet="EmployeeEducationHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeEmergencyContact_Employee" Association="Self.FK_EmployeeEmergencyContact_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeEmergencyContact" EntitySet="EmployeeEmergencyContacts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeFamily_Employee" Association="Self.FK_EmployeeFamily_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeFamily" EntitySet="EmployeeFamilies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeInsurance_Employee" Association="Self.FK_EmployeeInsurance_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeInsurance" EntitySet="EmployeeInsurances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeLicenses_Employee" Association="Self.FK_EmployeeLicenses_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeLicenses" EntitySet="EmployeeLicenses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeLoans_Employee" Association="Self.FK_EmployeeLoans_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeLoans" EntitySet="EmployeeLoans" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeePaySlips_Employee" Association="Self.FK_EmployeePaySlips_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeePaySlips" EntitySet="EmployeePaySlips" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeePensions_Employee" Association="Self.FK_EmployeePensions_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeePensions" EntitySet="EmployeePensions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeReferences_Employee" Association="Self.FK_EmployeeReferences_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeReferences" EntitySet="EmployeeReferences" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeRemuneration_Employee" Association="Self.FK_EmployeeRemuneration_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeRemuneration" EntitySet="EmployeeRemunerations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeTimeZone_Employee" Association="Self.FK_EmployeeTimeZone_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeTimeZone" EntitySet="EmployeeTimeZones" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeTraining_Employee" Association="Self.FK_EmployeeTraining_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeTraining" EntitySet="EmployeeTrainings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmploymentHistory_Employee" Association="Self.FK_EmploymentHistory_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeEmploymentHistory" EntitySet="EmployeeEmploymentHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LeaveBalance_Employee" Association="Self.FK_LeaveBalance_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeLeaveBalance" EntitySet="EmployeeLeaveBalances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Leaves_Employee" Association="Self.FK_Leaves_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeLeaves" EntitySet="EmployeeLeaves" />
           </AssociationSet>
           <AssociationSet Name="FK_RTP_Type" Association="Self.FK_RTP_Type">
             <End Role="EmployeeTypeMaster" EntitySet="EmployeeTypeMasters" />
@@ -2177,6 +1829,82 @@
           <AssociationSet Name="FK_BasicInfo_EEmployee" Association="SanmolModel.FK_BasicInfo_EEmployee">
             <End Role="EEmployee" EntitySet="EEmployees" />
             <End Role="BasicInfo" EntitySet="BasicInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EEmployee_Assessment" Association="SanmolModel.FK_EEmployee_Assessment">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="Assessment" EntitySet="Assessments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeBankDetails_Employee1" Association="SanmolModel.FK_EmployeeBankDetails_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeBankDetail" EntitySet="EmployeeBankDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeConcessionPass_Employee1" Association="SanmolModel.FK_EmployeeConcessionPass_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeConcessionPass" EntitySet="EmployeeConcessionPasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeDisciplinaryLog_Employee1" Association="SanmolModel.FK_EmployeeDisciplinaryLog_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeDisciplinaryLog" EntitySet="EmployeeDisciplinaryLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeEducationHistory_Employee1" Association="SanmolModel.FK_EmployeeEducationHistory_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeEducationHistory" EntitySet="EmployeeEducationHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeEmergencyContact_Employee1" Association="SanmolModel.FK_EmployeeEmergencyContact_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeEmergencyContact" EntitySet="EmployeeEmergencyContacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeFamily_Employee1" Association="SanmolModel.FK_EmployeeFamily_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeFamily" EntitySet="EmployeeFamilies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeInsurance_Employee1" Association="SanmolModel.FK_EmployeeInsurance_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeInsurance" EntitySet="EmployeeInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeLicenses_Employee1" Association="SanmolModel.FK_EmployeeLicenses_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeLicens" EntitySet="EmployeeLicenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeLoans_Employee1" Association="SanmolModel.FK_EmployeeLoans_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeLoan" EntitySet="EmployeeLoans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePaySlips_Employee1" Association="SanmolModel.FK_EmployeePaySlips_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeePaySlip" EntitySet="EmployeePaySlips" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePensions_Employee1" Association="SanmolModel.FK_EmployeePensions_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeePension" EntitySet="EmployeePensions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReferences_Employee1" Association="SanmolModel.FK_EmployeeReferences_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeReference" EntitySet="EmployeeReferences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeRemuneration_Employee1" Association="SanmolModel.FK_EmployeeRemuneration_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeRemuneration" EntitySet="EmployeeRemunerations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTimeZone_Employee1" Association="SanmolModel.FK_EmployeeTimeZone_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeTimeZone" EntitySet="EmployeeTimeZones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTraining_Employee1" Association="SanmolModel.FK_EmployeeTraining_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeTraining" EntitySet="EmployeeTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmploymentHistory_Employee1" Association="SanmolModel.FK_EmploymentHistory_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeEmploymentHistory" EntitySet="EmployeeEmploymentHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaveBalance_Employee1" Association="SanmolModel.FK_LeaveBalance_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeLeaveBalance" EntitySet="EmployeeLeaveBalances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leaves_Employee1" Association="SanmolModel.FK_Leaves_Employee1">
+            <End Role="EEmployee" EntitySet="EEmployees" />
+            <End Role="EmployeeLeaf" EntitySet="EmployeeLeaves" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Login">
@@ -2226,6 +1954,234 @@
             </Principal>
             <Dependent Role="BasicInfo">
               <PropertyRef Name="Eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EEmployee_Assessment">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.Assessment" Role="Assessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="Assessment">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeBankDetails_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeBankDetail" Role="EmployeeBankDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeBankDetail">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeConcessionPass_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeConcessionPass" Role="EmployeeConcessionPass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeConcessionPass">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeDisciplinaryLog_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeDisciplinaryLog" Role="EmployeeDisciplinaryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeDisciplinaryLog">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeEducationHistory_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeEducationHistory" Role="EmployeeEducationHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEducationHistory">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeEmergencyContact_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeEmergencyContact" Role="EmployeeEmergencyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEmergencyContact">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeFamily_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeFamily" Role="EmployeeFamily" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeFamily">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeInsurance_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeInsurance" Role="EmployeeInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeInsurance">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeLicenses_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeLicens" Role="EmployeeLicens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLicens">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeLoans_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeLoan" Role="EmployeeLoan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLoan">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePaySlips_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeePaySlip" Role="EmployeePaySlip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeePaySlip">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePensions_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeePension" Role="EmployeePension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeePension">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReferences_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeReference" Role="EmployeeReference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeReference">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeRemuneration_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeRemuneration" Role="EmployeeRemuneration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeRemuneration">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTimeZone_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeTimeZone" Role="EmployeeTimeZone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeTimeZone">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTraining_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeTraining" Role="EmployeeTraining" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeTraining">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmploymentHistory_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeEmploymentHistory" Role="EmployeeEmploymentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeEmploymentHistory">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaveBalance_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeLeaveBalance" Role="EmployeeLeaveBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLeaveBalance">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leaves_Employee1">
+          <End Type="SanmolModel.EEmployee" Role="EEmployee" Multiplicity="1" />
+          <End Type="SanmolModel.EmployeeLeaf" Role="EmployeeLeaf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EEmployee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="EmployeeLeaf">
+              <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2331,19 +2287,6 @@
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Employees">
-            <EntityTypeMapping TypeName="SanmolModel.Employee">
-              <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="Eid" ColumnName="Eid" />
-                <ScalarProperty Name="Ename" ColumnName="Ename" />
-                <ScalarProperty Name="Etype" ColumnName="Etype" />
-                <ScalarProperty Name="Eaddr" ColumnName="Eaddr" />
-                <ScalarProperty Name="Emob" ColumnName="Emob" />
-                <ScalarProperty Name="Edesign" ColumnName="Edesign" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>

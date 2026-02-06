@@ -6,12 +6,11 @@
     <edmx:Diagrams>
       <Diagram DiagramId="22e4c0abc2384a4292a809ffb02ca0f0" Name="Diagram1" ZoomLevel="77">
         <EntityTypeShape EntityType="SanmolModel.Action" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SanmolModel.Assessment" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SanmolModel.Assessment" Width="1.5" PointX="3.25" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.BasicInfo" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.Company" Width="1.5" PointX="2.75" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.EEmployee" Width="1.5" PointX="10.25" PointY="7" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.ELogin" Width="1.5" PointX="8" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SanmolModel.Employee" Width="1.5" PointX="0.75" PointY="51" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.EmployeeBankDetail" Width="1.5" PointX="3" PointY="18.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.EmployeeConcessionPass" Width="1.5" PointX="3" PointY="23.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.EmployeeDisciplinaryLog" Width="1.5" PointX="3" PointY="27.75" IsExpanded="true" />
@@ -36,29 +35,9 @@
         <EntityTypeShape EntityType="SanmolModel.RoleTypePermission" Width="1.5" PointX="13" PointY="7.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.UserRoleMenuView" Width="1.5" PointX="10.25" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SanmolModel.UserRoleTypePermission" Width="1.5" PointX="15.5" PointY="7" IsExpanded="true" />
-        <AssociationConnector Association="SanmolModel.FK_Assessment_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_BasicInfo_Employee" ManuallyRouted="false" />
         <AssociationConnector Association="SanmolModel.FK_Employee_Type" ManuallyRouted="false" />
         <AssociationConnector Association="SanmolModel.FK_UserRoleTypePermissions_Employee" ManuallyRouted="false" />
         <AssociationConnector Association="SanmolModel.FK__E_Login__RoleId__5AB9788F" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeBankDetails_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeConcessionPass_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeDisciplinaryLog_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeEducationHistory_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeEmergencyContact_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeFamily_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeInsurance_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeLicenses_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeLoans_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeePaySlips_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeePensions_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeReferences_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeRemuneration_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeTimeZone_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmployeeTraining_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_EmploymentHistory_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_LeaveBalance_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="SanmolModel.FK_Leaves_Employee" ManuallyRouted="false" />
         <AssociationConnector Association="SanmolModel.FK_RTP_Type" ManuallyRouted="false" />
         <AssociationConnector Association="SanmolModel.FK_UserRoleTypePermissions_Type" ManuallyRouted="false" />
         <AssociationConnector Association="SanmolModel.FK_RolesTypesView_Roles" ManuallyRouted="false" />
@@ -69,6 +48,203 @@
         <AssociationConnector Association="SanmolModel.FK_Employee_Login_New" />
         <AssociationConnector Association="SanmolModel.FK_ELogin_Roles" />
         <AssociationConnector Association="SanmolModel.FK_BasicInfo_EEmployee" />
+        <AssociationConnector Association="SanmolModel.FK_EEmployee_Assessment" />
+        <AssociationConnector Association="SanmolModel.FK_EmployeeBankDetails_Employee1" />
+        <AssociationConnector Association="SanmolModel.FK_EmployeeConcessionPass_Employee1" />
+        <AssociationConnector Association="SanmolModel.FK_EmployeeDisciplinaryLog_Employee1" />
+        <AssociationConnector Association="SanmolModel.FK_EmployeeEducationHistory_Employee1" />
+        <AssociationConnector Association="SanmolModel.FK_EmployeeEmergencyContact_Employee1" />
+        <AssociationConnector Association="SanmolModel.FK_EmployeeFamily_Employee1" />
+        <AssociationConnector Association="SanmolModel.FK_EmployeeInsurance_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="11.609378750000001" PointY="14.3647265625" />
+          <ConnectorPoint PointX="11.609378750000001" PointY="27.244370898437502" />
+          <ConnectorPoint PointX="11.627608541666666" PointY="27.244370898437502" />
+          <ConnectorPoint PointX="11.794275208333334" PointY="27.244370898437502" />
+          <ConnectorPoint PointX="11.811202251183191" PointY="27.244370898437502" />
+          <ConnectorPoint PointX="11.977868917849859" PointY="27.244370898437502" />
+          <ConnectorPoint PointX="12.007376933965684" PointY="27.244370898437502" />
+          <ConnectorPoint PointX="12.007376933965684" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="11.951618262646994" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="11.784951595980326" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="11.591148958333335" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="11.424482291666667" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="11.388022708333335" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="11.221356041666667" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="11.015794832652411" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="10.849128165985743" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="10.531349919799169" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="10.364683253132501" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="10.315171056607564" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="10.148504389940896" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="10.144460270503362" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="9.9777936038366946" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="9.96434095826467" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="9.7976742915980015" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="9.64302592561086" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="9.4763592589441927" PointY="53.393951822916662" />
+          <ConnectorPoint PointX="4.5" PointY="53.393951822916662" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmployeeLicenses_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="10.405268046875" PointY="14.3647265625" />
+          <ConnectorPoint PointX="10.405268046875" PointY="20.277830128417968" />
+          <ConnectorPoint PointX="10.416174440104166" PointY="20.277830128417964" />
+          <ConnectorPoint PointX="11.794275208333334" PointY="20.277830128417968" />
+          <ConnectorPoint PointX="11.811202251183191" PointY="20.277830128417968" />
+          <ConnectorPoint PointX="11.977868917849859" PointY="20.277830128417968" />
+          <ConnectorPoint PointX="12.181242171545028" PointY="20.277830128417968" />
+          <ConnectorPoint PointX="12.181242171545028" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="12.090710267299018" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="11.92404360063235" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="11.794275208333334" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="11.627608541666666" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="11.591148958333335" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="11.424482291666667" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="11.388022708333335" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="11.018229791666666" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="10.981770208333334" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="10.611977291666665" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="10.582841106770834" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="10.297523385416666" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="10.23183772327423" PointY="32.283222216796872" />
+          <ConnectorPoint PointX="10.23183772327423" PointY="68.663198242187491" />
+          <ConnectorPoint PointX="9.64302592561086" PointY="68.663198242187491" />
+          <ConnectorPoint PointX="9.4763592589441927" PointY="68.663198242187491" />
+          <ConnectorPoint PointX="4.5" PointY="68.663198242187491" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmployeeLoans_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="10.4995077734375" PointY="14.3647265625" />
+          <ConnectorPoint PointX="10.4995077734375" PointY="33.634951953125" />
+          <ConnectorPoint PointX="10.611977291666665" PointY="33.634951953125" />
+          <ConnectorPoint PointX="10.981770208333334" PointY="33.634951953125" />
+          <ConnectorPoint PointX="11.018229791666666" PointY="33.634951953125" />
+          <ConnectorPoint PointX="11.388022708333335" PointY="33.634951953125" />
+          <ConnectorPoint PointX="11.424482291666667" PointY="33.634951953125" />
+          <ConnectorPoint PointX="11.591148958333335" PointY="33.634951953125" />
+          <ConnectorPoint PointX="11.627608541666666" PointY="33.634951953125" />
+          <ConnectorPoint PointX="11.794275208333334" PointY="33.634951953125" />
+          <ConnectorPoint PointX="11.86828492931366" PointY="33.634951953125" />
+          <ConnectorPoint PointX="11.86828492931366" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="11.591148958333335" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="11.424482291666667" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="11.388022708333335" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="11.221356041666667" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="11.015794832652411" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="10.849128165985743" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="10.531349919799169" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="10.364683253132501" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="9.64302592561086" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="9.4763592589441927" PointY="72.759348958333334" />
+          <ConnectorPoint PointX="4.5" PointY="72.759348958333334" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmployeePaySlips_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="10.695310625" PointY="14.3647265625" />
+          <ConnectorPoint PointX="10.695310625" PointY="35.227830371093752" />
+          <ConnectorPoint PointX="10.448016586465835" PointY="35.227830371093752" />
+          <ConnectorPoint PointX="10.448016586465835" PointY="77.586253255208334" />
+          <ConnectorPoint PointX="9.64302592561086" PointY="77.586253255208334" />
+          <ConnectorPoint PointX="9.4763592589441927" PointY="77.586253255208334" />
+          <ConnectorPoint PointX="4.5" PointY="77.586253255208334" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmployeePensions_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="10.898436875" PointY="14.3647265625" />
+          <ConnectorPoint PointX="10.898436875" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="10.880207083333334" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="10.713540416666666" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="10.531349919799169" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="10.364683253132501" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="10.315171056607564" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="10.148504389940896" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="10.144460270503362" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="9.9777936038366946" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="9.96434095826467" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="9.7976742915980015" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="9.5596925922775267" PointY="36.820722216796874" />
+          <ConnectorPoint PointX="9.5596925922775267" PointY="82.413198242187491" />
+          <ConnectorPoint PointX="4.5" PointY="82.413198242187491" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmployeeReferences_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="11.101563125" PointY="14.3647265625" />
+          <ConnectorPoint PointX="11.101563125" PointY="38.235911425781254" />
+          <ConnectorPoint PointX="10.932461499319077" PointY="38.235911425781254" />
+          <ConnectorPoint PointX="10.932461499319077" PointY="86.701650390624991" />
+          <ConnectorPoint PointX="4.5" PointY="86.701650390624991" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmployeeRemuneration_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="11.304689375" PointY="14.3647265625" />
+          <ConnectorPoint PointX="11.304689375" PointY="91.326650390624991" />
+          <ConnectorPoint PointX="4.5" PointY="91.326650390624991" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmployeeTimeZone_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="11.507815625000001" PointY="14.3647265625" />
+          <ConnectorPoint PointX="11.507815625000001" PointY="95.692047526041677" />
+          <ConnectorPoint PointX="4.5" PointY="95.692047526041677" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmployeeTraining_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="11.710941875" PointY="14.3647265625" />
+          <ConnectorPoint PointX="11.710941875" PointY="42.640141162109373" />
+          <ConnectorPoint PointX="11.784951595980326" PointY="42.640141162109373" />
+          <ConnectorPoint PointX="12.090710267299018" PointY="42.640141162109373" />
+          <ConnectorPoint PointX="12.108939939756393" PointY="42.640141162109373" />
+          <ConnectorPoint PointX="12.108939939756393" PointY="100.04780110677083" />
+          <ConnectorPoint PointX="4.5" PointY="100.04780110677083" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_EmploymentHistory_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="10.27929359375" PointY="14.3647265625" />
+          <ConnectorPoint PointX="10.27929359375" PointY="23.963411425781249" />
+          <ConnectorPoint PointX="9.1854084104156488" PointY="23.963411425781249" />
+          <ConnectorPoint PointX="9.1854084104156488" PointY="43.451650390625" />
+          <ConnectorPoint PointX="4.5" PointY="43.451650390625" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_LeaveBalance_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="10.31444890625" PointY="14.3647265625" />
+          <ConnectorPoint PointX="10.31444890625" PointY="19.138567567382811" />
+          <ConnectorPoint PointX="10.321934713541665" PointY="19.138567567382808" />
+          <ConnectorPoint PointX="11.794275208333332" PointY="19.138567567382811" />
+          <ConnectorPoint PointX="11.894535584516525" PointY="19.138567567382811" />
+          <ConnectorPoint PointX="11.894535584516525" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="11.794275208333334" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="11.627608541666666" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="11.591148958333335" PointY="28.830911425781245" />
+          <ConnectorPoint PointX="11.018229791666666" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="10.981770208333334" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="10.611977291666665" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="10.582841106770834" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="10.297523385416666" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="9.8810076249313354" PointY="28.830911425781249" />
+          <ConnectorPoint PointX="9.8810076249313354" PointY="58.201650390625" />
+          <ConnectorPoint PointX="9.64302592561086" PointY="58.201650390625" />
+          <ConnectorPoint PointX="9.4763592589441927" PointY="58.201650390625" />
+          <ConnectorPoint PointX="4.5" PointY="58.201650390625" />
+        </AssociationConnector>
+        <AssociationConnector Association="SanmolModel.FK_Leaves_Employee1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="10.3476528125" PointY="14.3647265625" />
+          <ConnectorPoint PointX="10.3476528125" PointY="19.729138258300782" />
+          <ConnectorPoint PointX="10.416174440104166" PointY="19.729138258300779" />
+          <ConnectorPoint PointX="11.794275208333334" PointY="19.729138258300782" />
+          <ConnectorPoint PointX="11.811202251183191" PointY="19.729138258300782" />
+          <ConnectorPoint PointX="11.977868917849859" PointY="19.729138258300782" />
+          <ConnectorPoint PointX="12.47941710521698" PointY="19.729138258300782" />
+          <ConnectorPoint PointX="12.47941710521698" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="12.264575504878362" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="12.097908838211694" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="12.090710267299018" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="11.92404360063235" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="11.794275208333334" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="11.627608541666666" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="11.591148958333335" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="11.424482291666667" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="11.388022708333335" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="11.018229791666666" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="10.981770208333334" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="10.611977291666665" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="10.582841106770834" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="10.297523385416666" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="10.061126937170028" PointY="30.620519580078128" />
+          <ConnectorPoint PointX="10.061126937170028" PointY="63.624705403645834" />
+          <ConnectorPoint PointX="9.64302592561086" PointY="63.624705403645834" />
+          <ConnectorPoint PointX="9.4763592589441927" PointY="63.624705403645834" />
+          <ConnectorPoint PointX="4.5" PointY="63.624705403645834" />
+        </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
