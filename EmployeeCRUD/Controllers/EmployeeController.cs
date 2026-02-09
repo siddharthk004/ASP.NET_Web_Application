@@ -634,7 +634,6 @@ namespace EmployeeCRUD.Controllers
 
         #endregion Profile View
 
-
         #region Edit Basic Info
 
         [HttpGet]
