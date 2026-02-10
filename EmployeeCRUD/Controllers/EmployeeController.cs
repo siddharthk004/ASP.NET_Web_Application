@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web.Mvc;
 
 namespace EmployeeCRUD.Controllers
@@ -71,6 +72,10 @@ namespace EmployeeCRUD.Controllers
                         query = query.Where(x => !x.IsActive);
                 }
             }
+            if(roleId == 1)
+            {
+                ViewBag.Restore = "canRestore";
+            }
 
             /* =========================
                3️⃣ SEARCH
@@ -129,14 +134,35 @@ namespace EmployeeCRUD.Controllers
         #region Home Screen
         public ActionResult Details(int? id = null)
         {
-            EEmployee model;
-
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            model = db.EEmployees.FirstOrDefault(x => x.Eid == id.Value);
+            var model = db.EEmployees
+                .Include(e => e.EmployeeTypeMaster)
+                .Include(e => e.Login)
+                .Include(e => e.Login.Role)
+                .FirstOrDefault(x => x.Eid == id.Value);
+
             if (model == null)
                 return HttpNotFound();
+
+            // Get BasicInfo
+            var basicInfo = db.BasicInfoes.FirstOrDefault(x => x.Eid == id);
+
+            // Pass additional data to view
+            ViewBag.Username = model.Login?.UserName ?? "Not Assigned";
+            ViewBag.RoleName = model.Login?.Role?.Name ?? "Not Assigned";
+            ViewBag.Email = basicInfo?.PersonalEmail;
+            ViewBag.PersonalEmail = basicInfo?.PersonalEmail;
+            ViewBag.OfficeEmail = basicInfo?.OfficeEmail;
+            ViewBag.DOB = basicInfo?.DOB;
+            ViewBag.DOJ = basicInfo?.DOJ;
+            ViewBag.Gender = basicInfo?.Gender;
+            ViewBag.Department = basicInfo?.Department;
+            ViewBag.Manager = basicInfo?.ManagerName;
+            ViewBag.CostCenter = basicInfo?.CostCenter;
+            ViewBag.Competency = basicInfo?.Competency;
+            ViewBag.PayType = basicInfo?.PayType;
 
             return View("Details", model);
         }
@@ -185,6 +211,18 @@ namespace EmployeeCRUD.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public ActionResult Restore(int? id)
+        {
+            var employee = db.EEmployees.Find(id);
+            if (employee != null)
+            {
+                employee.IsActive = true;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Created()
         {
             int eid = Convert.ToInt32(Session["EmpId"]);
@@ -218,6 +256,77 @@ namespace EmployeeCRUD.Controllers
                 .ToList();
 
             return PartialView("Created", new EEmployee());
+        }
+        [HttpPost]
+        public ActionResult SendEmployeeDetails(int id)
+        {
+            try
+            {
+                int loggedInEmpId = Convert.ToInt32(Session["EmpId"]);
+
+                // 1️⃣ Permission check
+                bool canRead = db.UserRoleTypePermissions
+                    .Any(p => p.Eid == loggedInEmpId && p.CanRead && p.IsActive);
+
+                if (!canRead)
+                    return new HttpStatusCodeResult(403, "Read permission denied");
+
+                // 2️⃣ Fetch employee
+                var emp = db.EEmployees
+                    .Include(e => e.EmployeeTypeMaster)
+                    .FirstOrDefault(e => e.Eid == id);
+
+                if (emp == null)
+                    return HttpNotFound("Employee not found");
+
+                var login = db.Logins.FirstOrDefault(l => l.LoginId == emp.LoginId);
+                var basic = db.BasicInfoes.FirstOrDefault(b => b.Eid == id);
+
+                // 3️⃣ Build email body
+                string body = $@"
+            <h2>Employee Details</h2>
+            <p><b>Name:</b> {emp.FullName}</p>
+            <p><b>Employee ID:</b> {emp.Eid}</p>
+            <p><b>Username:</b> {login?.UserName ?? "N/A"}</p>
+            <p><b>Role:</b> {login?.Role?.Name ?? "N/A"}</p>
+            <p><b>Designation:</b> {emp.Designation ?? "N/A"}</p>
+            <p><b>Type:</b> {emp.EmployeeTypeMaster?.Name ?? "N/A"}</p>
+            <p><b>Email:</b> {basic?.PersonalEmail ?? "N/A"}</p>
+            <p><b>Mobile:</b> {emp.Mobile ?? "N/A"}</p>
+            <p><b>Status:</b> {(emp.IsActive ? "Active" : "Inactive")}</p>
+            <hr />
+            <small>Generated on {DateTime.Now:dd MMM yyyy HH:mm}</small>";
+
+                // 4️⃣ Send email (INLINE)
+                var mail = new MailMessage
+                {
+                    From = new MailAddress("noreply@company.com"),
+                    Subject = "Employee Details",
+                    Body = body,
+                    IsBodyHtml = true
+                };
+
+                mail.To.Add(basic?.PersonalEmail);
+
+                var smtp = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential(
+                    )
+                };
+
+                smtp.Send(mail);
+
+                return Json(new { success = true });
+            }
+            catch (SmtpException)
+            {
+                return new HttpStatusCodeResult(500, "Email sending failed");
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
 
         [HttpPost]
@@ -289,7 +398,7 @@ namespace EmployeeCRUD.Controllers
                 .ToList();
 
             ViewBag.EmploymentTypes = db.EmployeeTypeMasters
-                .Where(x => allowedTypeIds.Contains(x.Id))
+                //.Where(x => allowedTypeIds.Contains(x.Id))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,

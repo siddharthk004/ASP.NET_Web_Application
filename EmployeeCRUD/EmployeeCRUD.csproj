@@ -367,11 +367,6 @@
     <Content Include="Views\Employee\_EmploymentHistoryRows.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Employee\ViewPermissions.cshtml" />
-    <Content Include="Views\Base\Create.cshtml" />
-    <Content Include="Views\Base\Delete.cshtml" />
-    <Content Include="Views\Base\Details.cshtml" />
-    <Content Include="Views\Base\Edit.cshtml" />
-    <Content Include="Views\Base\Index.cshtml" />
     <Content Include="Views\Employee\ManageRoles.cshtml" />
     <Content Include="Views\Employee\EditBasicInfo.cshtml" />
   </ItemGroup>

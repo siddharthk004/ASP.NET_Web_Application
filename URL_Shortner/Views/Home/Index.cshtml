@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+    <div class="container py-5">
+        <div class="text-center mb-4 header-section">
+            <h1 class="brand-title">ShortLY</h1>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-9 col-lg-7">
+                <div class="card main-card">
+                    <div class="card-body p-5">
+                        <!-- Long URL Input -->
+                        <div class="form-group mb-4">
+                            <label for="longUrl" class="form-label">
+                                <i class="fas fa-link"></i> Enter Your Long URL:
+                            </label>
+                            <input type="text"
+                                   class="form-control form-control-lg input-field"
+                                   id="longUrl"
+                                   placeholder="https://example.com/your-very-long-url-here" />
+                        </div>
+
+                        <!-- Custom Code Input (NEW!) -->
+                        <div class="form-group mb-4">
+                            <label for="customCode" class="form-label">
+                                <i class="fas fa-magic"></i> Custom Short Code (Optional):
+                            </label> 
+                            <div class="input-group">
+                                <span class="input-group-text custom-prefix">/u/</span>
+                                <input type="text"
+                                       class="form-control input-field"
+                                       id="customCode"
+                                       placeholder="mylink"
+                                       maxlength="20" />
+                            </div>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> Leave empty for random code. Only letters and numbers (min 3 chars).
+                            </small>
+                        </div>
+
+                        <div class="text-center mb-4">
+                            <button type="button" class="btn btn-shorten" id="shortenBtn">
+                                <i class="fas fa-cut"></i> Shorten URL
+                            </button>
+                        </div>
+
+                        <!-- Short URL Output -->
+                        <div class="form-group mb-0">
+                            <label for="shortUrl" class="form-label">
+                                <i class="fas fa-check-circle"></i> Your Shortened URL:
+                            </label>
+                            <div class="input-group">
+                                <input type="text"
+                                       class="form-control output-field"
+                                       id="shortUrl"
+                                       readonly
+                                       placeholder="Your shortened link will appear here" />
+                                <button class="btn btn-copy" type="button" id="copyBtn" style="display:none;">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="features-section mt-4">
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <div class="feature-box">
+                                <i class="fas fa-bolt feature-icon"></i>
+                                <h5>Fast & Easy</h5>
+                                <p>Generate short links</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="feature-box">
+                                <i class="fas fa-shield-alt feature-icon"></i>
+                                <h5>Secure</h5>
+                                <p>Safe and reliable service</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="feature-box">
+                                <i class="fas fa-chart-line feature-icon"></i>
+                                <h5>Track Links</h5>
+                                <p>Monitor shortened URLs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Validate custom code input - only alphanumeric
+    document.getElementById('customCode').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+    });
+
+    document.getElementById('shortenBtn').addEventListener('click', function() {
+        var longUrl = document.getElementById('longUrl').value.trim();
+        var customCode = document.getElementById('customCode').value.trim();
+
+        if (!longUrl) {
+            toastr.info('Please enter a URL to shorten!');
+            return;
+        }
+
+        // Validate URL format
+        if (!isValidUrl(longUrl)) {
+            toastr.warning('Please enter a valid URL (e.g., https://example.com)');
+            return;
+        }
+
+        // Validate custom code if provided
+        if (customCode && customCode.length < 3) {
+            toastr.info('Custom code must be at least 3 characters long!');
+            return;
+        }
+
+        var shortUrlField = document.getElementById('shortUrl');
+        var shortenBtn = this;
+
+        // Disable button and show processing
+        shortenBtn.disabled = true;
+        shortenBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        shortUrlField.value = 'Processing...';
+        document.getElementById('copyBtn').style.display = 'none';
+
+        // Make AJAX call to controller
+        $.ajax({
+            url: '@Url.Action("CreateShortUrl", "Home")',
+            type: 'POST',
+            data: {
+                longUrl: longUrl,
+                customCode: customCode || null
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    shortUrlField.value = response.shortUrl;
+                    document.getElementById('copyBtn').style.display = 'block';
+
+                    // Clear custom code field after successful creation
+                    document.getElementById('customCode').value = '';
+                } else {
+                    toastr.warning(response.message || 'An error occurred while shortening the URL.');
+                    shortUrlField.value = '';
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.warning('An error occurred: ' + error);
+                shortUrlField.value = '';
+            },
+            complete: function() {
+                // Re-enable button
+                shortenBtn.disabled = false;
+                shortenBtn.innerHTML = '<i class="fas fa-cut"></i> Shorten URL';
+            }
+        });
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', function() {
+        var shortUrlField = document.getElementById('shortUrl');
+        shortUrlField.select();
+        shortUrlField.setSelectionRange(0, 99999);
+
+        try {
+            document.execCommand('copy');
+
+            var btn = this;
+            var originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.style.background = '#17a2b8';
+
+            setTimeout(function() {
+                btn.innerHTML = originalText;
+                btn.style.background = '#28a745';
+            }, 2000);
+        } catch (err) {
+            toastr.warning('Failed to copy URL. Please copy manually.');
+        }
+    });
+
+    function isValidUrl(string) {
+        try {
+            var url = new URL(string);
+            return url.protocol === "http:" || url.protocol === "https:";
+        } catch (_) {
+            return false;
+        }
+    }
+</script>

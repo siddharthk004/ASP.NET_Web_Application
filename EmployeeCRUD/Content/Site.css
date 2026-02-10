@@ -144,3 +144,6 @@ textarea {
     border: thin;
     background-color: transparent;
 }
+.fa-trash-arrow-up {
+    color: cornflowerblue;
+}

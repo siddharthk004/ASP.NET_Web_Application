@@ -1,78 +1,399 @@
 ﻿@model EmployeeCRUD.Models.EEmployee
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Employee Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div>
-    <h4>Employee</h4>
-    <hr />
-
-    <dl class="dl-horizontal">
-
-        <div class="d-flex">
-            <dt class="left-side">
-                @Html.DisplayNameFor(model => model.FullName)
-            </dt>
-            <dd class="right-side">
-                @Html.DisplayFor(model => model.FullName)
-            </dd>
-
-            <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Eid)
-            </dt>
-            <dd class="right-side">
-                @Html.DisplayFor(model => model.Eid)
-            </dd>
-        </div>
-
-        <div class="d-flex">
-            <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Address)
-            </dt>
-            <dd class="right-side">
-                @Html.DisplayFor(model => model.Address)
-            </dd>
-
-            <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Mobile)
-            </dt>
-            <dd class="right-side">
-                @Html.DisplayFor(model => model.Mobile)
-            </dd>
-        </div>
-
-        <div class="d-flex">
-            <dt class="left-side">
-                @Html.DisplayNameFor(model => model.Designation)
-            </dt>
-            <dd class="right-side">
-                @Html.DisplayFor(model => model.Designation)
-            </dd>
-
-            <dt class="left-side">
-                @Html.DisplayNameFor(model => model.IsActive)
-            </dt>
-            <dd class="right-side active-status">
-                @Html.DisplayFor(model => model.IsActive)
-            </dd>
-        </div>
-
-    </dl>
-</div>
-
 <style>
-    .d-flex {
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+        padding: 20px;
+    }
+
+    .details-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .details-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 12px 12px 0 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
+        gap: 25px;
     }
 
-    dt, dd {
-        width: 50%;
-        padding: 6px 10px;
+    .employee-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        font-weight: 700;
+        color: #667eea;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
-    dt {
+    .employee-header-info {
+        flex: 1;
+    }
+
+    .employee-header-info h2 {
+        margin: 0 0 8px 0;
+        font-size: 28px;
         font-weight: 600;
     }
+
+    .employee-meta {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+    }
+
+    .meta-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 20px;
+        font-size: 13px;
+    }
+
+    .meta-badge i {
+        font-size: 14px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .status-badge.active {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-badge.inactive {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .details-body {
+        background: white;
+        padding: 30px;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .info-section {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        color: #667eea;
+        font-size: 20px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 15px;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .info-value.empty {
+        color: #adb5bd;
+        font-style: italic;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn i {
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+    }
+
+    @@media (max-width: 768px) {
+        .details-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
 </style>
+
+<div class="details-container">
+    <div class="details-header">
+        <div class="employee-avatar">
+            @(Model.FullName != null && Model.FullName.Length > 0 ? Model.FullName.Substring(0, 1).ToUpper() : "E")
+        </div>
+        <div class="employee-header-info">
+            <h2>@Model.FullName</h2>
+            <div class="employee-meta">
+                <span class="meta-badge">
+                    <i class="fas fa-id-badge"></i>
+                    ID: @Model.Eid
+                </span>
+                <span class="meta-badge">
+                    <i class="fas fa-user"></i>
+                    @(ViewBag.Username ?? "N/A")
+                </span>
+                <span class="meta-badge">
+                    <i class="fas fa-briefcase"></i>
+                    @(Model.Designation ?? "N/A")
+                </span>
+                @if (Model.IsActive)
+                {
+                    <span class="status-badge active">
+                        <i class="fas fa-check-circle"></i>
+                        Active
+                    </span>
+                }
+                else
+                {
+                    <span class="status-badge inactive">
+                        <i class="fas fa-times-circle"></i>
+                        Inactive
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="details-body">
+        <!-- Account Information -->
+        <div class="info-section">
+            <div class="section-title">
+                <i class="fas fa-user-circle"></i>
+                Account Information
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Username</div>
+                    <div class="info-value">@(ViewBag.Username ?? "Not Assigned")</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Role</div>
+                    <div class="info-value">@(ViewBag.RoleName ?? "Not Assigned")</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Email</div>
+                    <div class="info-value @(ViewBag.Email == null ? "empty" : "")">
+                        @(ViewBag.Email ?? "Not Provided")
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Employee Type</div>
+                    <div class="info-value">@(Model.EmployeeTypeMaster.Name ?? "N/A")</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="info-section">
+            <div class="section-title">
+                <i class="fas fa-address-book"></i>
+                Contact Information
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Mobile Number</div>
+                    <div class="info-value @(Model.Mobile == null ? "empty" : "")">
+                        @(Model.Mobile ?? "Not Provided")
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Personal Email</div>
+                    <div class="info-value @(ViewBag.PersonalEmail == null ? "empty" : "")">
+                        @(ViewBag.PersonalEmail ?? "Not Provided")
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Office Email</div>
+                    <div class="info-value @(ViewBag.OfficeEmail == null ? "empty" : "")">
+                        @(ViewBag.OfficeEmail ?? "Not Provided")
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Address</div>
+                    <div class="info-value @(Model.Address == null ? "empty" : "")">
+                        @(Model.Address ?? "Not Provided")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Basic Information -->
+        @if (ViewBag.DOB != null || ViewBag.DOJ != null || ViewBag.Gender != null)
+        {
+            <div class="info-section">
+                <div class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    Basic Information
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Date of Birth</div>
+                        <div class="info-value @(ViewBag.DOB == null ? "empty" : "")">
+                            @(ViewBag.DOB != null ? ((DateTime)ViewBag.DOB).ToString("MMMM dd, yyyy") : "Not Provided")
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Date of Joining</div>
+                        <div class="info-value @(ViewBag.DOJ == null ? "empty" : "")">
+                            @(ViewBag.DOJ != null ? ((DateTime)ViewBag.DOJ).ToString("MMMM dd, yyyy") : "Not Provided")
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Gender</div>
+                        <div class="info-value @(ViewBag.Gender == null ? "empty" : "")">
+                            @(ViewBag.Gender ?? "Not Provided")
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Department</div>
+                        <div class="info-value @(ViewBag.Department == null ? "empty" : "")">
+                            @(ViewBag.Department ?? "Not Provided")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Work Information -->
+        @if (ViewBag.Manager != null || ViewBag.CostCenter != null)
+        {
+            <div class="info-section">
+                <div class="section-title">
+                    <i class="fas fa-building"></i>
+                    Work Information
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Manager</div>
+                        <div class="info-value @(ViewBag.Manager == null ? "empty" : "")">
+                            @(ViewBag.Manager ?? "Not Assigned")
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Cost Center</div>
+                        <div class="info-value @(ViewBag.CostCenter == null ? "empty" : "")">
+                            @(ViewBag.CostCenter ?? "Not Assigned")
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Competency</div>
+                        <div class="info-value @(ViewBag.Competency == null ? "empty" : "")">
+                            @(ViewBag.Competency ?? "Not Assigned")
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Pay Type</div>
+                        <div class="info-value @(ViewBag.PayType == null ? "empty" : "")">
+                            @(ViewBag.PayType ?? "Not Specified")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="window.close()">
+                <i class="fas fa-times"></i>
+                Close
+            </button>
+        </div>
+    </div>
+</div>

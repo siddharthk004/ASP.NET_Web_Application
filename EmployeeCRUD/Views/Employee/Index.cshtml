@@ -6,46 +6,6 @@
     ViewBag.Title = "Employee List";
 }
 <h2 class="header-tag">Employee List Display</h2>
-
-@if (ViewBag.DebugInfo != null && ViewBag.CurrentRoleId != 1)
-{
-    <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 8px; font-family: monospace; font-size: 13px;">
-        <strong style="font-size: 16px;">🔍 Debug Information</strong>
-        <hr style="margin: 10px 0; border-top: 1px solid #ffc107;" />
-        <div><strong>📊 Database Stats:</strong></div>
-        <div style="margin-left: 20px;">
-            • Total Employees in EEmployees Table: <strong>@ViewBag.TotalEmployeesInDb</strong><br />
-            • Distribution by Type: <strong>@ViewBag.EmployeeTypeDistribution</strong>
-        </div>
-        <div style="margin-top: 10px;"><strong>🔐 Role Configuration:</strong></div>
-        <div style="margin-left: 20px;">
-            @ViewBag.DebugInfo
-        </div>
-        <div style="margin-top: 10px;"><strong>📋 Final Result:</strong></div>
-        <div style="margin-left: 20px;">
-            Total Records After All Filters: <strong style="color: @(ViewBag.TotalRecords > 0 ? "green" : "red"); font-size: 16px;">@ViewBag.TotalRecords</strong>
-        </div>
-        
-        @if (ViewBag.TotalEmployeesInDb == 0)
-        {
-            <div style="margin-top: 15px; padding: 10px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;">
-                <strong>⚠️ Problem Found:</strong> The <code>EEmployees</code> table is empty! You need to add employees first.
-            </div>
-        }
-        else if (ViewBag.TotalRecords == 0 && ViewBag.TotalEmployeesInDb > 0)
-        {
-            <div style="margin-top: 15px; padding: 10px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;">
-                <strong>⚠️ Problem Found:</strong> Employees exist but none match your filter criteria.<br />
-                <strong>Possible reasons:</strong>
-                <ul style="margin: 5px 0;">
-                    <li>Employee TypeId values don't match the allowed types [1-6]</li>
-                    <li>All employees are filtered by Active/Inactive status</li>
-                </ul>
-            </div>
-        }
-    </div>
-}
-
 <style>
     .toolbar-container {
         background: white;
@@ -304,7 +264,8 @@
 
                 bool canView = permission != null && permission.CanRead;
                 bool canEdit = permission != null && permission.CanUpdate;
-                bool canDelete = permission != null && permission.CanDelete;
+                bool canDelete = permission != null && permission.CanDelete && item.IsActive;
+                bool canRestore = ((ViewBag.Restore != null) && (item.IsActive == false));
 
                 <tr>
                     <td>@item.Eid</td>
@@ -364,10 +325,30 @@
                             <button class="btn4 btn-disabled" type="button">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
-                        } |
+                        }
+                        |
+                        @if (canRestore)
+                        {
+                            <button class="btn4" type="button"
+                                    onclick="RestoreUser(@item.Eid)">
+                                <i class="fa-solid fa-trash-arrow-up"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn4 btn-disabled" type="button">
+                                <i class="fa-solid fa-trash-arrow-up"></i>
+                            </button>
+                        }
+                        |
                         <button class="btn4" href="javascript:void(0)" type="button" onclick="location.href='@Url.Action("ProfileView","Employee",new {id = item.Eid})'">
                             <i class="fa-regular fa-address-card"></i>
                         </button>
+                        |
+                        <button class="btn4" onclick="sendEmployeeDetails(@item.Eid)">
+                             <i class="fa-regular fa-envelope"></i>
+                        </button>
+
                     </td>
                 </tr>
             }
@@ -407,6 +388,26 @@
 </style>
 @section Scripts {
 <script>
+
+    function sendEmployeeDetails(empId) {
+        if (!confirm("Send employee details via email?")) return;
+
+        $.ajax({
+            url: '/Employee/SendEmployeeDetails',
+            type: 'POST',
+            data: { id: empId },
+            success: function () {
+                alert("Employee details sent successfully.");
+            },
+            error: function (xhr) {
+                if (xhr.status === 403)
+                    alert("You do not have permission.");
+                else
+                    alert("Failed to send details.");
+            }
+        });
+    }
+
     function OpenPopUp() {
         window.open(
             '/Employee/Created',
@@ -428,7 +429,7 @@
         window.open(
             url,
             'EmployeePopup',
-            'width=650,height=500,top=300,left=600,resizable=yes,scrollbars=yes'
+            'width=790,height=800,top=100,left=510,resizable=yes,scrollbars=yes'
         );
     }
 
@@ -442,11 +443,16 @@
     }
 
     function OpenPopUpDelete(id) {
-        if (!confirm('Are you sure you want to delete this employee?'))
-            return;
+        //if (!confirm('Are you sure you want to delete this employee?'))
+        //    return;
 
         var url = '@Url.Action("Delete", "Employee")' + '?id=' + id;
         window.location.href = url;
+    }
+
+    function RestoreUser(id) {
+        var URL = '@Url.Action("Restore","Employee")' + '?id=' + id;
+        window.location.href = URL;
     }
 
     // Auto-submit on search/filter change
