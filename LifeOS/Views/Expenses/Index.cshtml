@@ -1,0 +1,82 @@
+@model List<Expense>
+@{
+    ViewBag.Title = "Expenses";
+}
+
+<div class="content-card fade-in">
+    <div class="card-header">
+        <h5><i class="fas fa-receipt"></i> Add Expense</h5>
+    </div>
+    <form method="post" action="/Expenses/Add" class="add-form">
+        <div class="form-row">
+            <input name="reason" class="form-control" placeholder="Reason (e.g., Groceries)" required />
+            <select name="category" class="form-control">
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Bills">Bills</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Others">Others</option>
+            </select>
+            <input name="amount" type="number" step="0.01" class="form-control" placeholder="Amount (?)" required />
+            <input name="expenseDate" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Expense
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="content-card fade-in">
+    <div class="card-header">
+        <h5><i class="fas fa-chart-pie"></i> This Month's Expenses</h5>
+        <div>
+            <h4 style="color: var(--danger); margin: 0;">?@ViewBag.TotalExpenses.ToString("N2")</h4>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Reason</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var expense in Model)
+                {
+                    <tr>
+                        <td>@expense.ExpenseDate.ToString("MMM dd, yyyy")</td>
+                        <td><strong>@expense.Reason</strong></td>
+                        <td><span class="badge badge-info">@expense.Category</span></td>
+                        <td style="font-size: 16px; font-weight: 600; color: var(--danger);">?@expense.Amount.ToString("N2")</td>
+                        <td>
+                            <a href="/Expenses/Delete/@expense.ExpenseId" class="btn btn-danger btn-sm" onclick="return confirm('Delete this expense?')">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr style="background: var(--light); font-weight: 700;">
+                    <td colspan="3" style="text-align: right; padding-right: 20px;">TOTAL:</td>
+                    <td style="font-size: 18px; color: var(--danger);">?@ViewBag.TotalExpenses.ToString("N2")</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-wallet"></i>
+            <p>No expenses recorded this month. Add your first expense above!</p>
+        </div>
+    }
+</div>

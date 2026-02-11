@@ -1,0 +1,90 @@
+﻿@model List<DailyHabit>
+@{
+    ViewBag.Title = "Daily Habits";
+}
+
+<div class="content-card fade-in">
+    <div class="card-header">
+        <h5><i class="fas fa-fire"></i> Add New Habit</h5>
+    </div>
+    <form method="post" action="/Habits/Add" class="add-form">
+        <div class="form-row">
+            <input name="habitName" class="form-control" placeholder="Habit name (e.g., Drink Water)" required />
+            <input name="targetValue" class="form-control" placeholder="Target (e.g., 3L, 30min)" required />
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Habit
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="content-card fade-in">
+    <div class="card-header">
+        <h5><i class="fas fa-calendar-day"></i> Today's Habits (@DateTime.Today.ToString("MMM dd, yyyy"))</h5>
+        <div>
+            <span class="badge badge-success">@Model.Count(h => h.IsCompleted) Completed</span>
+            <span class="badge badge-warning">@Model.Count(h => !h.IsCompleted) Pending</span>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Habit Name</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                    <th>Streak</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var h in Model)
+                {
+                    <tr>
+                        <td><strong>@h.HabitName</strong></td>
+                        <td>@h.TargetValue</td>
+                        <td>
+                            @if (h.IsCompleted)
+                            {
+                                <span class="badge badge-success"><i class="fas fa-check"></i> Done</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning"><i class="fas fa-clock"></i> Pending</span>
+                            }
+                        </td>
+                        <td>
+                            <span style="font-size: 18px; font-weight: 600; color: #f59e0b;">
+                                🔥 @h.Streak days
+                            </span>
+                        </td>
+                        <td>
+                            @if (!h.IsCompleted)
+                            {
+                                <a href="/Habits/Complete/@h.HabitId" class="btn btn-success btn-sm">
+                                    <i class="fas fa-check"></i> Mark Done
+                                </a>
+                            }
+                            else
+                            {
+                                <span style="color: #10b981; font-weight: 600;">
+                                    <i class="fas fa-check-circle"></i> Completed
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-calendar-plus"></i>
+            <p>No habits for today. Add your first habit above!</p>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,109 @@
+@model List<TaskItem>
+@{
+    ViewBag.Title = "Tasks";
+}
+
+<div class="content-card fade-in">
+    <div class="card-header">
+        <h5><i class="fas fa-plus-circle"></i> Add New Task</h5>
+    </div>
+    <form method="post" action="/Task/Add" class="add-form">
+        <div class="form-row">
+            <input name="title" class="form-control" placeholder="Task title" required />
+            <input name="description" class="form-control" placeholder="Description" />
+            <input name="dueDateTime" type="datetime-local" class="form-control" required />
+            <select name="priority" class="form-control">
+                <option value="Low">Low Priority</option>
+                <option value="Medium" selected>Medium Priority</option>
+                <option value="High">High Priority</option>
+            </select>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Task
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="content-card fade-in">
+    <div class="card-header">
+        <h5><i class="fas fa-list-check"></i> Your Tasks</h5>
+        <div>
+            <span class="badge badge-success">@Model.Count(t => t.Status == "Done") Done</span>
+            <span class="badge badge-warning">@Model.Count(t => t.Status == "Pending") Pending</span>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model)
+                {
+                    <tr>
+                        <td><strong>@task.Title</strong></td>
+                        <td>@(task.Description ?? "-")</td>
+                        <td>
+                            @task.DueDateTime.ToString("MMM dd, yyyy hh:mm tt")
+                            @if (task.DueDateTime < DateTime.Now && task.Status == "Pending")
+                            {
+                                <br /><span class="badge badge-danger">Overdue</span>
+                            }
+                        </td>
+                        <td>
+                            @if (task.Priority == "High")
+                            {
+                                <span class="badge priority-high">High</span>
+                            }
+                            else if (task.Priority == "Medium")
+                            {
+                                <span class="badge priority-medium">Medium</span>
+                            }
+                            else
+                            {
+                                <span class="badge priority-low">Low</span>
+                            }
+                        </td>
+                        <td>
+                            @if (task.Status == "Done")
+                            {
+                                <span class="badge badge-success"><i class="fas fa-check"></i> Done</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning"><i class="fas fa-clock"></i> Pending</span>
+                            }
+                        </td>
+                        <td>
+                            @if (task.Status == "Pending")
+                            {
+                                <a href="/Task/Complete/@task.TaskId" class="btn btn-success btn-sm">
+                                    <i class="fas fa-check"></i> Complete
+                                </a>
+                            }
+                            <a href="/Task/Delete/@task.TaskId" class="btn btn-danger btn-sm" onclick="return confirm('Delete this task?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-tasks"></i>
+            <p>No tasks yet. Add your first task above!</p>
+        </div>
+    }
+</div>

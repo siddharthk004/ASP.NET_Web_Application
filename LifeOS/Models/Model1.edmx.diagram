@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5ad66cb9c0954395b78d96e7bc1b443c" Name="Diagram1">
+        <EntityTypeShape EntityType="LifeOSModel.DailyHabit" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LifeOSModel.Expens" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="LifeOSModel.FocusLog" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="LifeOSModel.Income" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="LifeOSModel.MoodLog" Width="1.5" PointX="3" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LifeOSModel.Task" Width="1.5" PointX="3" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LifeOSModel.User" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
+        <AssociationConnector Association="LifeOSModel.FK__DailyHabi__UserI__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="LifeOSModel.FK__Expenses__UserId__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="LifeOSModel.FK__FocusLogs__UserI__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="LifeOSModel.FK__Income__UserId__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="LifeOSModel.FK__MoodLogs__UserId__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="LifeOSModel.FK__Tasks__UserId__2C3393D0" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

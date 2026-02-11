@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - LifeOS</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-rocket"></i>
+            <h3>LifeOS</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="@Url.Action("Index", "Dashboard")" class="nav-item">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="@Url.Action("Index", "Habits")" class="nav-item">
+                <i class="fas fa-fire"></i>
+                <span>Daily Habits</span>
+            </a>
+            <a href="@Url.Action("Index", "Task")" class="nav-item">
+                <i class="fas fa-tasks"></i>
+                <span>Tasks</span>
+            </a>
+            <a href="@Url.Action("Index", "Expenses")" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Expenses</span>
+            </a>
+            <a href="@Url.Action("Index", "Income")" class="nav-item">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Income</span>
+            </a>
+            <a href="@Url.Action("Index", "Focus")" class="nav-item">
+                <i class="fas fa-stopwatch"></i>
+                <span>Focus Time</span>
+            </a>
+            <a href="@Url.Action("Index", "Mood")" class="nav-item">
+                <i class="fas fa-smile"></i>
+                <span>Mood Tracker</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="@Url.Action("Logout", "Dashboard")" class="nav-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="top-header">
+            <h4>@(ViewBag.Title ?? "LifeOS")</h4>
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span>@(Session["UserName"] ?? "User")</span>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        <div class="content-area">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

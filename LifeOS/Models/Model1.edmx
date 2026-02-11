@@ -1,0 +1,495 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LifeOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DailyHabits">
+          <Key>
+            <PropertyRef Name="HabitId" />
+          </Key>
+          <Property Name="HabitId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="HabitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="TargetValue" Type="nvarchar" MaxLength="50" />
+          <Property Name="HabitDate" Type="date" />
+          <Property Name="IsCompleted" Type="bit" />
+          <Property Name="Streak" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Expenses">
+          <Key>
+            <PropertyRef Name="ExpenseId" />
+          </Key>
+          <Property Name="ExpenseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="100" />
+          <Property Name="Category" Type="nvarchar" MaxLength="50" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ExpenseDate" Type="date" />
+        </EntityType>
+        <EntityType Name="FocusLogs">
+          <Key>
+            <PropertyRef Name="FocusId" />
+          </Key>
+          <Property Name="FocusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Category" Type="nvarchar" MaxLength="50" />
+          <Property Name="MinutesSpent" Type="int" />
+          <Property Name="LogDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Income">
+          <Key>
+            <PropertyRef Name="IncomeId" />
+          </Key>
+          <Property Name="IncomeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Month" Type="int" />
+          <Property Name="Year" Type="int" />
+          <Property Name="MonthlyIncome" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="MoodLogs">
+          <Key>
+            <PropertyRef Name="MoodId" />
+          </Key>
+          <Property Name="MoodId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="MoodLevel" Type="int" />
+          <Property Name="MoodDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="DueDateTime" Type="datetime" />
+          <Property Name="Priority" Type="nvarchar" MaxLength="20" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="CreatedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__DailyHabi__UserI__286302EC">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="DailyHabits" Type="Self.DailyHabits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="DailyHabits">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Expenses__UserId__300424B4">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Expenses">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FocusLogs__UserI__36B12243">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="FocusLogs" Type="Self.FocusLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FocusLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Income__UserId__33D4B598">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Income" Type="Self.Income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Income">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoodLogs__UserId__3A81B327">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="MoodLogs" Type="Self.MoodLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="MoodLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Tasks__UserId__2C3393D0">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LifeOSModelStoreContainer">
+          <EntitySet Name="DailyHabits" EntityType="Self.DailyHabits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FocusLogs" EntityType="Self.FocusLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Income" EntityType="Self.Income" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MoodLogs" EntityType="Self.MoodLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__DailyHabi__UserI__286302EC" Association="Self.FK__DailyHabi__UserI__286302EC">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DailyHabits" EntitySet="DailyHabits" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Expenses__UserId__300424B4" Association="Self.FK__Expenses__UserId__300424B4">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Expenses" EntitySet="Expenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FocusLogs__UserI__36B12243" Association="Self.FK__FocusLogs__UserI__36B12243">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FocusLogs" EntitySet="FocusLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Income__UserId__33D4B598" Association="Self.FK__Income__UserId__33D4B598">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Income" EntitySet="Income" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoodLogs__UserId__3A81B327" Association="Self.FK__MoodLogs__UserId__3A81B327">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MoodLogs" EntitySet="MoodLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Tasks__UserId__2C3393D0" Association="Self.FK__Tasks__UserId__2C3393D0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LifeOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DailyHabit">
+          <Key>
+            <PropertyRef Name="HabitId" />
+          </Key>
+          <Property Name="HabitId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="HabitName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TargetValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HabitDate" Type="DateTime" Precision="0" />
+          <Property Name="IsCompleted" Type="Boolean" />
+          <NavigationProperty Name="User" Relationship="Self.FK__DailyHabi__UserI__286302EC" FromRole="DailyHabits" ToRole="Users" />
+          <Property Name="Streak" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Expens">
+          <Key>
+            <PropertyRef Name="ExpenseId" />
+          </Key>
+          <Property Name="ExpenseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Reason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ExpenseDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Expenses__UserId__300424B4" FromRole="Expenses" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="FocusLog">
+          <Key>
+            <PropertyRef Name="FocusId" />
+          </Key>
+          <Property Name="FocusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MinutesSpent" Type="Int32" />
+          <Property Name="LogDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="User" Relationship="Self.FK__FocusLogs__UserI__36B12243" FromRole="FocusLogs" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Income">
+          <Key>
+            <PropertyRef Name="IncomeId" />
+          </Key>
+          <Property Name="IncomeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Month" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="MonthlyIncome" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Income__UserId__33D4B598" FromRole="Income" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="MoodLog">
+          <Key>
+            <PropertyRef Name="MoodId" />
+          </Key>
+          <Property Name="MoodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="MoodLevel" Type="Int32" />
+          <Property Name="MoodDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="User" Relationship="Self.FK__MoodLogs__UserId__3A81B327" FromRole="MoodLogs" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DueDateTime" Type="DateTime" Precision="3" />
+          <Property Name="Priority" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Tasks__UserId__2C3393D0" FromRole="Tasks" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DailyHabits" Relationship="Self.FK__DailyHabi__UserI__286302EC" FromRole="Users" ToRole="DailyHabits" />
+          <NavigationProperty Name="Expenses" Relationship="Self.FK__Expenses__UserId__300424B4" FromRole="Users" ToRole="Expenses" />
+          <NavigationProperty Name="FocusLogs" Relationship="Self.FK__FocusLogs__UserI__36B12243" FromRole="Users" ToRole="FocusLogs" />
+          <NavigationProperty Name="Incomes" Relationship="Self.FK__Income__UserId__33D4B598" FromRole="Users" ToRole="Income" />
+          <NavigationProperty Name="MoodLogs" Relationship="Self.FK__MoodLogs__UserId__3A81B327" FromRole="Users" ToRole="MoodLogs" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__UserId__2C3393D0" FromRole="Users" ToRole="Tasks" />
+        </EntityType>
+        <Association Name="FK__DailyHabi__UserI__286302EC">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="DailyHabits" Type="Self.DailyHabit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="DailyHabits">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Expenses__UserId__300424B4">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Expenses" Type="Self.Expens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Expenses">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FocusLogs__UserI__36B12243">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="FocusLogs" Type="Self.FocusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FocusLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Income__UserId__33D4B598">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Income" Type="Self.Income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Income">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoodLogs__UserId__3A81B327">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="MoodLogs" Type="Self.MoodLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="MoodLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Tasks__UserId__2C3393D0">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LifeOSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DailyHabits" EntityType="Self.DailyHabit" />
+          <EntitySet Name="Expenses" EntityType="Self.Expens" />
+          <EntitySet Name="FocusLogs" EntityType="Self.FocusLog" />
+          <EntitySet Name="Incomes" EntityType="Self.Income" />
+          <EntitySet Name="MoodLogs" EntityType="Self.MoodLog" />
+          <EntitySet Name="Tasks" EntityType="Self.Task" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK__DailyHabi__UserI__286302EC" Association="Self.FK__DailyHabi__UserI__286302EC">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DailyHabits" EntitySet="DailyHabits" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Expenses__UserId__300424B4" Association="Self.FK__Expenses__UserId__300424B4">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Expenses" EntitySet="Expenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FocusLogs__UserI__36B12243" Association="Self.FK__FocusLogs__UserI__36B12243">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FocusLogs" EntitySet="FocusLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Income__UserId__33D4B598" Association="Self.FK__Income__UserId__33D4B598">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Income" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoodLogs__UserId__3A81B327" Association="Self.FK__MoodLogs__UserId__3A81B327">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MoodLogs" EntitySet="MoodLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Tasks__UserId__2C3393D0" Association="Self.FK__Tasks__UserId__2C3393D0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LifeOSModelStoreContainer" CdmEntityContainer="LifeOSEntities">
+          <EntitySetMapping Name="DailyHabits">
+            <EntityTypeMapping TypeName="LifeOSModel.DailyHabit">
+              <MappingFragment StoreEntitySet="DailyHabits">
+                <ScalarProperty Name="Streak" ColumnName="Streak" />
+                <ScalarProperty Name="HabitId" ColumnName="HabitId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HabitName" ColumnName="HabitName" />
+                <ScalarProperty Name="TargetValue" ColumnName="TargetValue" />
+                <ScalarProperty Name="HabitDate" ColumnName="HabitDate" />
+                <ScalarProperty Name="IsCompleted" ColumnName="IsCompleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Expenses">
+            <EntityTypeMapping TypeName="LifeOSModel.Expens">
+              <MappingFragment StoreEntitySet="Expenses">
+                <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FocusLogs">
+            <EntityTypeMapping TypeName="LifeOSModel.FocusLog">
+              <MappingFragment StoreEntitySet="FocusLogs">
+                <ScalarProperty Name="FocusId" ColumnName="FocusId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="MinutesSpent" ColumnName="MinutesSpent" />
+                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Incomes">
+            <EntityTypeMapping TypeName="LifeOSModel.Income">
+              <MappingFragment StoreEntitySet="Income">
+                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="MonthlyIncome" ColumnName="MonthlyIncome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MoodLogs">
+            <EntityTypeMapping TypeName="LifeOSModel.MoodLog">
+              <MappingFragment StoreEntitySet="MoodLogs">
+                <ScalarProperty Name="MoodId" ColumnName="MoodId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="MoodLevel" ColumnName="MoodLevel" />
+                <ScalarProperty Name="MoodDate" ColumnName="MoodDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="LifeOSModel.Task">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DueDateTime" ColumnName="DueDateTime" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="LifeOSModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
