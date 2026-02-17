@@ -1,5 +1,4 @@
 ﻿using Sanmol_Management.Models;
-using Sanmol_Management.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +67,7 @@ namespace Sanmol_Management.Controllers
 
             return sb.ToString();
         }
+
         [HttpPost]
         public async Task<JsonResult> ChatBot(string message)
         {
@@ -79,17 +79,16 @@ namespace Sanmol_Management.Controllers
                 }
 
                 var aiService = new AiService();
-                string dbData = GetDatabaseContext(); // your method
+                string dbData = GetDatabaseContext();
                 string aiResponse = await aiService.AskAI(message, dbData);
 
                 return Json(new { success = true, response = aiResponse });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, response = ex.Message });
+                return Json(new { success = false, response = "Error occurred." });
             }
         }
-
 
         #region process chat message (legacy, not used with AI)
         //private string ProcessChatMessage(string message)
