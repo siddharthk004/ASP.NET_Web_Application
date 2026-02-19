@@ -49,6 +49,7 @@ namespace Sanmol_Management.Services
 
                 var requestBody = new
                 {
+
                     model = "llama-3.3-70b-versatile",
                     messages = new[]
                     {
